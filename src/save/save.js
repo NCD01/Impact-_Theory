@@ -26,7 +26,7 @@ import { DEFAULT_DIFFICULTY, DIFFICULTY } from '../core/constants.js';
 export const SAVE_KEY = 'impact-theory.save.v1';
 
 /** The schema version this build writes. Bump when the shape changes, and add a step. */
-export const SAVE_SCHEMA_VERSION = 2;
+export const SAVE_SCHEMA_VERSION = 3;
 
 /**
  * A brand new save.
@@ -49,8 +49,16 @@ export function createEmptySave() {
     endlessBest: 0,
     /** Whether the how to play hint has been shown. It is shown once, ever. */
     seenHint: false,
-    /** Whether the camera reacts to impacts. Some players simply do not want it. */
-    shake: true,
+    /**
+     * Whether the camera reacts to impacts.
+     *
+     * Off by default. It was introduced on, dialled down once after the owner called it
+     * terrible, and he reported it was still moving the screen. Measured: with it on the
+     * camera travels about 0.17 SU during a collapse, and with it off it is perfectly
+     * static, 0.0000 SU across 120 frames. Two reports is a decision, so the default is
+     * now off and anyone who wants it can turn it on in settings.
+     */
+    shake: false,
   };
 }
 
@@ -70,6 +78,15 @@ const MIGRATIONS = {
    * is restored with `stars: 0` and `score: 0` and a `migrated: true` marker, and the
    * level stays cleared. Losing the unlock would be far worse than losing the stars.
    */
+  /**
+   * 2 to 3. Turns the camera shake off for everyone who already has a save.
+   *
+   * Changing only the default would have left every existing player with the setting they
+   * already had, which is the one being complained about. A migration is the honest way to
+   * make a changed default actually reach the people it is for.
+   */
+  2: (save) => ({ ...save, schema: 3, shake: false }),
+
   1: (save) => {
     const levels = {};
     const cleared = Array.isArray(save.cleared) ? save.cleared : [];
@@ -80,12 +97,15 @@ const MIGRATIONS = {
       };
     }
     return {
+      // Returns schema 2, and the chain then runs the 2 to 3 step over it.
       schema: 2,
       difficulty: save.difficulty ?? DEFAULT_DIFFICULTY,
       muted: save.muted === true,
       unlocked: Math.max(1, cleared.length ? Math.max(...cleared) + 1 : 1),
       levels,
       endlessBest: Number.isFinite(save.endlessBest) ? save.endlessBest : 0,
+      seenHint: save.seenHint === true,
+      shake: false,
     };
   },
 };
@@ -146,8 +166,8 @@ function normalise(save) {
   clean.endlessBest = Number.isFinite(save.endlessBest) && save.endlessBest >= 0
     ? save.endlessBest : 0;
   clean.seenHint = save.seenHint === true;
-  // Defaults to on, so only an explicit false turns it off.
-  clean.shake = save.shake !== false;
+  // Defaults to off, so only an explicit true turns it on.
+  clean.shake = save.shake === true;
 
   if (typeof save.levels === 'object' && save.levels !== null) {
     for (const [key, value] of Object.entries(save.levels)) {
@@ -202,10 +222,15 @@ export function createSaveStore(storage = safeStorage()) {
     }
     const result = migrateSave(raw);
     state = result.save;
-    if (result.reset) lastLoadNote = `save was unreadable or from a newer version, reset`;
-    else if (result.migratedFrom !== null) {
+    if (result.reset) {
+      lastLoadNote = 'save was unreadable or from a newer version, reset';
+    } else if (result.migratedFrom !== null) {
       lastLoadNote = `save migrated from schema ${result.migratedFrom} to ${SAVE_SCHEMA_VERSION}`;
     }
+    // Write the upgraded save straight back. Without this the stored copy stays at the old
+    // schema and is migrated again on every single load, which is wasted work and means a
+    // changed default is applied over and over rather than settled once.
+    if (result.reset || result.migratedFrom !== null) persist();
     return state;
   }
 

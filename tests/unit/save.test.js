@@ -207,3 +207,72 @@ describe('save store', () => {
     expect(store.totalStars()).toBe(5);
   });
 });
+
+describe('camera shake preference', () => {
+  it('is off in a brand new save', () => {
+    expect(createEmptySave().shake).toBe(false);
+  });
+
+  it('turns shake off for a player who already had it on', () => {
+    // The setting shipped on, was reported as unpleasant twice, and the default changed.
+    // Changing only the default would have left every existing player with the setting
+    // being complained about, so the 2 to 3 migration turns it off for them.
+    const withShakeOn = {
+      schema: 2,
+      difficulty: 'easy',
+      muted: false,
+      unlocked: 7,
+      levels: { 1: { cleared: true, stars: 3, score: 900, ballsUsed: 4 } },
+      endlessBest: 0,
+      seenHint: true,
+      shake: true,
+    };
+    const { save, migratedFrom, reset } = migrateSave(withShakeOn);
+    expect(reset).toBe(false);
+    expect(migratedFrom).toBe(2);
+    expect(save.shake).toBe(false);
+    // And nothing else is disturbed by the migration.
+    expect(save.unlocked).toBe(7);
+    expect(save.levels['1'].stars).toBe(3);
+    expect(save.seenHint).toBe(true);
+  });
+
+  it('carries a schema 1 save all the way to the current version with shake off', () => {
+    const { save } = migrateSave({ schema: 1, cleared: [1, 2, 3], difficulty: 'normal' });
+    expect(save.schema).toBe(SAVE_SCHEMA_VERSION);
+    expect(save.shake).toBe(false);
+    expect(save.unlocked).toBe(4);
+    expect(save.difficulty).toBe('normal');
+  });
+
+  it('respects a player who turns it back on', () => {
+    const store = createSaveStore(memoryStorage());
+    expect(store.state.shake).toBe(false);
+    store.setShake(true);
+    expect(store.state.shake).toBe(true);
+    store.setShake(false);
+    expect(store.state.shake).toBe(false);
+  });
+});
+
+describe('a migrated save is written back', () => {
+  it('stores the upgraded save rather than migrating again on every load', () => {
+    const storage = memoryStorage({
+      [SAVE_KEY]: JSON.stringify({ schema: 1, cleared: [1, 2], difficulty: 'normal' }),
+    });
+
+    const first = createSaveStore(storage);
+    expect(first.loadNote).toMatch(/migrated from schema 1/);
+
+    // The stored text should now be at the current schema, so a second load has nothing
+    // to migrate and reports no note.
+    const stored = JSON.parse(storage.getItem(SAVE_KEY));
+    expect(stored.schema).toBe(SAVE_SCHEMA_VERSION);
+    expect(stored.shake).toBe(false);
+
+    const second = createSaveStore(storage);
+    expect(second.loadNote).toBeNull();
+    expect(second.state.unlocked).toBe(3);
+    expect(second.state.difficulty).toBe('normal');
+  });
+});

@@ -265,7 +265,7 @@ export function createUI(root, projection, handlers = {}) {
     }
     nodes.muteButton.textContent = muted ? 'Sound: off' : 'Sound: on';
     nodes.muteButton.setAttribute('aria-pressed', String(muted));
-    const shakeOn = shake !== false;
+    const shakeOn = shake === true;
     nodes.shakeButton.textContent = shakeOn ? 'Screen shake: on' : 'Screen shake: off';
     nodes.shakeButton.setAttribute('aria-pressed', String(shakeOn));
   }
@@ -425,7 +425,7 @@ const TEMPLATE = `
     <p class="subtle small">Easy gives unlimited balls and no way to lose. Normal limits
       your balls to the level's par.</p>
     <button id="mute-button" type="button" aria-pressed="false">Sound: on</button>
-    <button id="shake-button" type="button" aria-pressed="true">Screen shake: on</button>
+    <button id="shake-button" type="button" aria-pressed="false">Screen shake: off</button>
     <button id="settings-reset" type="button">Erase progress</button>
     <button id="settings-back" class="primary" type="button">Back</button>
   </div>

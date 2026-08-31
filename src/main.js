@@ -535,6 +535,12 @@ async function start() {
     // the yaw, because a sign error here is what made dragging right aim left.
     globalThis.__IT_CANNON__ = { yaw: cannon.yaw, pitch: cannon.pitch };
 
+    // Camera position, for the browser diagnostics. Used to prove the camera is actually
+    // still when shake is off, rather than assuming it.
+    globalThis.__IT_CAMERA__ = {
+      x: rig.camera.position.x, y: rig.camera.position.y, z: rig.camera.position.z,
+    };
+
     // Live piece positions, for the browser tests only. Used to measure whether a hit
     // actually moves anything, which is a question screenshots cannot answer.
     globalThis.__IT_PIECES__ = [...structure._pieces.values()].map((e) => {

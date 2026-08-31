@@ -5,6 +5,37 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.15.0+22 - 2026-08-31 - Fix
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The owner reported the screen still vibrating after the amplitude had already
+been reduced once. Two reports is a decision.
+
+**Changes:**
+- Camera shake is **off by default**. The setting stays, so anyone who wants it can turn
+  it on in settings, but nobody has to find the switch to be rid of it.
+- Save schema 2 to 3 migration turns it off for players who already have a save. Changing
+  only the default would have left every existing player with exactly the setting being
+  complained about.
+- A migrated save is now **written straight back** to storage. Previously the upgraded
+  save lived only in memory, so the stored copy stayed at the old schema and was migrated
+  again on every load.
+- Five new unit tests covering the default, the migration, a schema 1 save carried all the
+  way through, a player turning shake back on, and the write back.
+
+**Validation Evidence:** Measured rather than judged by eye. The camera position was
+sampled every frame for 120 frames during a collapse: with shake on it travelled 0.1717 SU
+in x and 0.1435 in y, and with it off the range is **0.0000 SU on both axes**, so the
+camera is genuinely static and not merely calmer.
+
+The migration was then verified end to end in a browser against exactly the save an
+existing player has, schema 2 with `shake: true`, 12 levels unlocked and three stars on
+level 1. After loading, the stored save reads `schema 3, shake false, unlocked 12, level 1
+stars 3`: the setting is off, the schema is upgraded on disk, and no progress was lost.
+Camera range during a collapse on that save is 0.0000 SU.
+
+`npx vitest run` reports 186 of 186 passing, up from 181. `npx eslint .` exits 0.
+
 ## v1.14.1+21 - 2026-08-31 - Fix
 
 **Author:** Claude Opus 5, unattended build session
