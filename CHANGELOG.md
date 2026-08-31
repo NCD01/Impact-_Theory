@@ -5,6 +5,33 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.2.1+4 - 2026-08-30 - Structural
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Resolves a direct conflict between two instructions in the build brief.
+The workspace section required the `Assets\` tree to be committed verbatim with
+nothing filtered out. The git section required `.gitignore` to exclude OS junk
+including `Thumbs.db` before the first commit, and stated that nothing generated is
+ever tracked. Both could not hold at once for two files.
+
+**Resolution:** The backup instruction was honoured first, so the verbatim commit
+`9f848f2` contains both `Thumbs.db` files and they are recoverable from history
+forever. This commit then satisfies the standard by removing them from tracking. No
+file was silently dropped at any point, which was the concern behind the verbatim
+instruction.
+
+**Changes:**
+- Added `Thumbs.db` to `.gitignore`.
+- `git rm --cached` on both `Thumbs.db` files and on the two `Thumbs.db.meta`
+  sidecars Unity generated alongside them. All four remain on disk.
+
+**Validation Evidence:** `git ls-files | grep -c Thumbs` returned 4 before and 0
+after. The count is 4 rather than 2 because Unity wrote a `.meta` sidecar for each
+cache file, and those two sidecars are untracked here as well since their target is no
+longer tracked. `git ls-tree -r 9f848f2 --name-only | grep -c Thumbs` returned 4,
+confirming all four are still retrievable from the backup commit. All four files
+confirmed still present on disk with `find`.
+
 ## v1.2.0+3 - 2026-08-30 - Asset
 
 **Author:** Claude Opus 5, unattended build session

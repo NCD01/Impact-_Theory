@@ -43,3 +43,7 @@ desktop.ini
 .env
 .env.local
 .env.*.local
+
+# Windows thumbnail caches. Preserved in commit 9f848f2 and untracked from v1.2.1+4.
+Thumbs.db
+Thumbs.db.meta
