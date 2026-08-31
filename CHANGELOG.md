@@ -5,6 +5,49 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.10.0+14 - 2026-08-31 - Refactor
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The owner asked during the run for the game to be lightweight. The bundle was
+measured rather than assumed, and 73 percent of it turned out to be one avoidable thing.
+
+**Changes:**
+- Switched from `@dimforge/rapier3d-compat` to `@dimforge/rapier3d` with
+  `vite-plugin-wasm`, so the physics WebAssembly is emitted as a real `.wasm` asset
+  instead of inlined as base64.
+- Production source maps turned off. A 6.3 MB map served to a child's phone is waste.
+- `scripts/serve-dist.mjs` and `npm run serve:dist`, a plain static server for checking a
+  production build.
+- `docs/DECISIONS.md` D-010 and D-011.
+
+**Measured effect:**
+
+| | Before | After |
+|---|---|---|
+| JavaScript | 3,530 kB | 881 kB |
+| JavaScript, gzipped | 1,272 kB | 211 kB |
+| WebAssembly, separate cacheable file | none | 2,021 kB, 774 kB gzipped |
+| Source map, deployed | 6,330 kB | not emitted |
+| Total deployed | 9,861 kB | 2,903 kB |
+| Over the wire, gzipped | 1,272 kB | 985 kB |
+
+A return visit re-downloads only the 211 kB of JavaScript, because the WebAssembly is now
+a separately cached file rather than part of the script.
+
+**A second finding, which would otherwise look like a broken deployment.** The production
+build returns 404 for its own bundle under `vite preview`, while curl fetches the same URL
+happily. Isolated by replaying the browser's headers through curl one at a time: the
+request fails if and only if it carries `Sec-Fetch-Dest: script`, which every browser
+sends for a module script. Vite's preview server rejects those. GitHub Pages is a plain
+static host with no such middleware, which is why `serve-dist.mjs` exists.
+
+**Validation Evidence:** Sizes are from the Vite build output before and after, not
+estimated. The built game was then loaded in a real browser from the plain static server
+at a 390 x 844 portrait viewport: it reached `ready`, loaded 15 of 15 models and all 30
+levels, fetched the WebAssembly module with HTTP 200, had zero failed network requests and
+zero console errors, and played. `npx vitest run` reports 139 of 139 passing and
+`npx eslint .` exits 0.
+
 ## v1.9.0+13 - 2026-08-30 - Feature
 
 **Author:** Claude Opus 5, unattended build session

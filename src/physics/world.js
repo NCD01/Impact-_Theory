@@ -26,13 +26,13 @@
  * That is the energy actually available to be absorbed in the collision, which is the
  * quantity a material's toughness should be measured against.
  *
- * API facts here were read from node_modules/@dimforge/rapier3d-compat/dist/*.d.ts at
+ * API facts here were read from node_modules/@dimforge/rapier3d/rapier.d.ts at
  * version 0.20.0, not recalled: init() must be awaited before any other call,
  * world.step(eventQueue) drives the simulation, and contact force events are only
  * delivered for colliders that opt in with setActiveEvents and a force threshold.
  */
 
-import RAPIER from '@dimforge/rapier3d-compat';
+import * as RAPIER from '@dimforge/rapier3d';
 import { WORLD } from '../core/constants.js';
 
 /** Contact force below which Rapier does not raise an event, newtons. Resting stacks
@@ -51,7 +51,10 @@ let rapierReady = null;
  * @returns {Promise<typeof RAPIER>}
  */
 export function initPhysics() {
-  if (!rapierReady) rapierReady = RAPIER.init().then(() => RAPIER);
+  // The non-compat build initialises its WebAssembly through the bundler at module load
+  // rather than through an init() call, so there is nothing to await. The promise is
+  // kept so callers do not have to care which build is in use.
+  if (!rapierReady) rapierReady = Promise.resolve(RAPIER);
   return rapierReady;
 }
 
@@ -96,7 +99,7 @@ export function createPhysicsWorld() {
 
   /**
    * @typedef {object} BodyRecord
-   * @property {import('@dimforge/rapier3d-compat').RigidBody} body
+   * @property {import('@dimforge/rapier3d').RigidBody} body
    * @property {string} kind      'piece', 'ball' or 'fragment'.
    * @property {object} userData  Whatever the game layer attached.
    * @property {number} mass
@@ -112,7 +115,7 @@ export function createPhysicsWorld() {
    *
    * @param {object} desc
    * @param {number} scale Uniform scale, used for fragments. 1 for a whole piece.
-   * @returns {import('@dimforge/rapier3d-compat').ColliderDesc[]}
+   * @returns {import('@dimforge/rapier3d').ColliderDesc[]}
    */
   function buildColliderDescs(desc, scale = 1) {
     const lift = desc.pivotLift * scale;

@@ -301,3 +301,69 @@ computed for both and the larger wins.
 
 **Rollback.** One function, `originForSize` in `src/main.js`, plus `frameLevel` in
 `src/render/scene.js`. Returning a constant from the first restores the old behaviour.
+
+---
+
+## D-010: Rapier's standard build, not the compat build, to cut the bundle by 70 percent.
+
+**Decided:** 2026-08-31, phase 14. Departs from the brief, deliberately, after measuring.
+
+**The brief specified `@dimforge/rapier3d-compat`,** so the WebAssembly would not fight
+the bundler. That worked, and the build succeeded on the first try. Then the owner said
+during the run that the game needs to be lightweight, so the bundle was measured rather
+than assumed.
+
+**What the measurement showed.** The compat build inlines its 2.0 MB WebAssembly module
+as a 2.57 MB base64 string inside a 2.73 MB JavaScript file. That was 73 percent of the
+bundle, and base64 compresses badly because it destroys the byte patterns gzip relies on.
+
+| | Before | After |
+|---|---|---|
+| JavaScript | 3,530 kB | 881 kB |
+| JavaScript, gzipped | 1,272 kB | 211 kB |
+| WebAssembly, separate file | none | 2,021 kB, 774 kB gzipped |
+| Source map, deployed | 6,330 kB | not emitted |
+| **Total deployed** | **9,861 kB** | **2,903 kB** |
+| **Over the wire, gzipped** | **1,272 kB** | **985 kB** |
+
+**The change.** `@dimforge/rapier3d` with `vite-plugin-wasm`, so the module is emitted as
+a real `.wasm` asset. It is then cached separately by the browser, so a return visit
+re-downloads only the 211 kB of JavaScript. Production source maps are off; a 6.3 MB map
+served to a child's phone is pure waste.
+
+`vite-plugin-top-level-await` was tried and dropped: its `@swc/core` postinstall is
+blocked by this machine's npm script policy, and at the es2022 target the transform is
+not needed, because every browser with WebAssembly ESM integration also has top level
+await.
+
+**Conflict recorded, as standard 10 requires.** This departs from the brief's explicit
+package choice. The brief also said to verify the package against current documentation
+rather than write from memory, and the owner's instruction during the run was that the
+game must be lightweight. Both point the same way.
+
+**Rollback.** Reinstall `@dimforge/rapier3d-compat`, change one import in
+`src/physics/world.js` back, restore `init()` to `RAPIER.init()`, and remove the plugin
+from `vite.config.js`. Four lines.
+
+---
+
+## D-011: `vite preview` cannot serve this build. That is a preview bug, not a deploy bug.
+
+**Decided:** 2026-08-31, phase 14.
+
+**The symptom.** The production build returned 404 for its own JavaScript bundle under
+`vite preview`, while `curl` fetched the identical URL successfully.
+
+**The cause, isolated by replaying the browser's headers through curl one at a time.**
+The request 404s if and only if it carries `Sec-Fetch-Dest: script`, which is exactly
+what a browser sends for a module script and what curl does not send by default. Vite's
+preview server carries security middleware that rejects those requests.
+
+**Why it does not affect the deployment.** GitHub Pages is a plain static file host with
+no such middleware. To verify rather than assume, `scripts/serve-dist.mjs` serves `dist/`
+over plain HTTP under the same base path Pages uses. Against that server the built game
+boots, loads all fifteen models and the WebAssembly module, and plays, with no failed
+requests and no console errors.
+
+**Consequence for anyone working on this later.** Use `npm run serve:dist` to check a
+production build, not `npm run preview`. It is documented in README.md and docs/TESTING.md.

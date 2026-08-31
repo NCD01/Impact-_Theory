@@ -11,6 +11,7 @@
  */
 
 import { defineConfig } from 'vite';
+import wasm from 'vite-plugin-wasm';
 
 /**
  * The repository name, which is also the GitHub Pages sub path.
@@ -21,6 +22,15 @@ import { defineConfig } from 'vite';
 const PAGES_BASE = '/Impact-_Theory/';
 
 export default defineConfig(({ command }) => ({
+  // Rapier's standard build ships its WebAssembly as a real .wasm file with an ESM
+  // integration wrapper. These two plugins let the bundler emit it as a separate asset
+  // instead of a base64 string. That matters: the compat build inlines the same 2 MB
+  // module as 2.57 MB of base64, which is 73 percent of the bundle and compresses badly,
+  // because base64 destroys the byte patterns gzip relies on.
+  // Top level await is used by the wasm wrapper and is supported natively by every
+  // browser that supports WebAssembly ESM integration, so no transform plugin is needed
+  // at the es2022 target this project builds for.
+  plugins: [wasm()],
   base: command === 'build' ? PAGES_BASE : '/',
   build: {
     outDir: 'dist',
@@ -28,7 +38,10 @@ export default defineConfig(({ command }) => ({
     // would inline small assets as base64; the wasm is far above the limit so it is
     // emitted as a file, which is what we want for caching.
     target: 'es2022',
-    sourcemap: true,
+    // No source map in the production build. It was 6.3 MB, larger than the bundle, and
+    // it is deployed to a public page for a child to open on a phone. Development builds
+    // still have full source mapping.
+    sourcemap: false,
   },
   server: {
     host: true,
