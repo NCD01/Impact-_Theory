@@ -5,6 +5,48 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.11.0+15 - 2026-08-31 - Test
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Phase 13's browser half, and the continuous integration and deployment the
+brief requires. The unit suite cannot see a hidden panel swallowing touches, a level that
+never declares itself cleared, or a structure framed for the wrong size, and all three of
+those were real defects in this build.
+
+**Changes:**
+- `playwright.config.js`. Two viewports, a phone at 390 x 844 and a desktop at 1280 x
+  720, both against the production build served by `scripts/serve-dist.mjs`, with GPU
+  flags so the browser uses real hardware instead of SwiftShader.
+- `tests/e2e/smoke.spec.js`. Five tests per viewport: boot with every asset loaded and no
+  console errors, a full playthrough from title to results, a shot that lands and
+  registers impact energy, survival of a viewport change, and the four class visual gate.
+- `.github/workflows/ci.yml`. Lint, block kit conversion, unit tests, build, bundle size
+  summary, and the browser suite with screenshots kept as an artifact.
+- `.github/workflows/deploy.yml`. Builds and publishes to GitHub Pages on every push to
+  main.
+
+**The visual gate's four classes, each with an acceptance criterion checked in code
+rather than left for someone to remember:** the playing screen with the debug overlay
+off, judged on the structure being present and standing; the playing screen with the
+overlay on, judged on the overlay showing real frame rate and body counts; the level
+select, judged on all thirty cells being present with no horizontal overflow; and the
+results screen, judged on a star row and a score both being non-empty. All four are
+captured at both viewports, so eight images per run.
+
+**One switch the owner has to flip.** GitHub Pages cannot be enabled from a workflow. In
+the repository settings, under Pages, set Build and deployment Source to "GitHub
+Actions". Until that is done the deploy workflow fails at Configure Pages and nothing
+else is wrong. After it is done the game is live at
+https://ncd01.github.io/Impact-_Theory/
+
+**Validation Evidence:** `npx playwright test` reports 10 of 10 passing across both
+viewports, run against the real production build, not the dev server. One defect was
+found and fixed while writing it: the gate clicked a locked level cell, which is a
+disabled button, so Playwright waited for it to become enabled until the test timed out
+after two minutes. Progress is now unlocked through an init script before the page loads.
+Both workflow files are written but have not run, because this session cannot push a
+workflow run and observe it; that is stated plainly rather than claimed as passing.
+
 ## v1.10.0+14 - 2026-08-31 - Refactor
 
 **Author:** Claude Opus 5, unattended build session

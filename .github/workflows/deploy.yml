@@ -1,0 +1,73 @@
+# Publish the game to GitHub Pages.
+#
+# BEFORE THIS CAN RUN, one switch has to be flipped by hand, once:
+#   GitHub, this repository, Settings, Pages, and under "Build and deployment" set
+#   Source to "GitHub Actions".
+# It cannot be set from a workflow. Until it is set, this workflow fails at the
+# "Configure Pages" step with a message about Pages not being enabled, and nothing else
+# is wrong. After it is set, the game is published at
+#   https://ncd01.github.io/Impact-_Theory/
+# on every push to main.
+#
+# The site's base path is /Impact-_Theory/, set in vite.config.js. It follows the
+# repository name, not the npm package name, and it is the reason a build works locally
+# from the repository root but 404s its own assets if the base is wrong.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# The token needs to write Pages and to mint an id-token for the deploy action.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time. `cancel-in-progress: false` so a running deploy finishes
+# rather than leaving the site half published.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build the site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        # prebuild converts the FBX block kit to glTF and checks every piece against the
+        # manifest, so a bad conversion stops the deploy rather than shipping.
+        run: npm run build
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload the built site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Publish
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
