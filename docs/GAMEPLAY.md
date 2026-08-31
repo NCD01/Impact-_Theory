@@ -113,16 +113,29 @@ somewhere else, and why placing a roller in a structure is a decision.
 
 Stated once, in one function, in `src/game/structure.js`:
 
-> A level is cleared when every non support piece is either destroyed, or has come to rest
-> with its centre below 0.62 SU, or has been knocked more than 34 SU from the structure
-> origin.
+> A level is cleared when every piece is either destroyed, or has fallen more than 0.9 SU
+> below **where that piece started**, or has been knocked more than 34 SU from the
+> structure origin.
 
-Pedestals are not pieces and are not in this check. They are fixed scenery, they never
-fall, and they survive every collapse, exactly as in the reference clip where the plinths
-stand untouched in the rubble of the structure they were carrying.
+Per piece, against its own starting height. Two other rules were tried and both were
+wrong. An absolute height near the sand meant a level was only cleared once every piece had
+rolled all the way to the ground. A height relative to the platform meant a piece knocked
+off but landing on other rubble still counted as standing, and a structure lying completely
+flat refused to end.
+
+The height compared is the piece's **centre of volume, with the pivot offset rotated by the
+body**. Thirteen of the fifteen pieces have their origin on the base, so the centre is half
+a height above it in the piece's own frame. Adding that offset without rotating it made a
+toppled piece read as still upright: a 3 SU column lying flat on the sand registered as
+having fallen 0.6 SU and never counted as down, which left one unclearable piece surviving
+120 shots.
+
+Pedestals and their deck are not pieces and are not in this check. They are fixed scenery
+and they survive every collapse, exactly as in the reference clip where the plinths stand
+untouched in the rubble of the structure they were carrying.
 
 The clear is only declared once the condition holds **and** the world has been quiet for
-1.1 s. Without that, a structure mid collapse satisfies the condition for a single frame
+0.35 s. Without that, a structure mid collapse satisfies the condition for a single frame
 and the results screen appears over a still moving pile. Balls are excluded from that
 quietness check: a ball rolling across the sand long after the tower fell is not a reason
 to withhold a result.

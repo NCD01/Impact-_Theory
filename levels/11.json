@@ -2,7 +2,7 @@
   "schema": 2,
   "id": 11,
   "name": "Low Wall",
-  "par": 15,
+  "par": 13,
   "pedestals": [
     -3,
     0,
@@ -10,74 +10,64 @@
   ],
   "pieces": [
     {
-      "piece": "B03_LONG_BEAM",
-      "x": -2,
-      "y": 1.6
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 2,
-      "y": 1.6
-    },
-    {
       "piece": "B02_MEDIUM_BLOCK",
       "x": -3,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": -1,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": 1,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": 3,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -3.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -2.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 2.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 3.5,
-      "y": 3.6
+      "y": 3.1
     }
   ]
 }

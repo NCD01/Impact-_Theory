@@ -2,46 +2,41 @@
   "schema": 2,
   "id": 9,
   "name": "Stilts",
-  "par": 8,
+  "par": 7,
   "pedestals": [
     -1.5,
     1.5
   ],
   "pieces": [
     {
-      "piece": "B03_LONG_BEAM",
-      "x": 0,
-      "y": 1.6
-    },
-    {
       "piece": "B05_LARGE_BLOCK",
       "x": -1,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 1,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 4.6
+      "y": 4.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 4.6
+      "y": 4.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 4.6
+      "y": 4.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 4.6
+      "y": 4.1
     }
   ]
 }

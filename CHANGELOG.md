@@ -5,6 +5,51 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.14.1+21 - 2026-08-31 - Fix
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The owner sent a screenshot of a structure lying completely flat on the sand
+with the level refusing to end. Three separate defects were behind it, and the last one
+was the interesting one.
+
+**1. The clear rule was measured against the wrong thing.** It compared a piece's height
+against the platform, so a piece knocked off but landing on top of other rubble still sat
+above the line. It is now measured **per piece against its own starting height**: anything
+that has come down by more than 0.9 SU has visibly come down.
+
+**2. The centre of volume ignored rotation.** Thirteen of the fifteen pieces are authored
+with their origin on the base, so the centre sits half a height above it in the piece's own
+frame. That offset was added without rotating it by the body, so a toppled piece read as
+still standing upright. A 3 SU column lying flat on the sand registered as having fallen
+0.6 SU, under the threshold, and never counted as down. One such piece survived 120 shots
+in testing and made level 30 impossible to finish.
+
+**3. The deck was a piece, and an immovable one.** Each deck beam was 4 SU of painted steel
+weighing 1880 kg, laid flat across three plinths. Effectively unmovable, so every level
+ended with two of them plus whatever was still balanced on top as unclearable survivors.
+The deck is now part of the platform: a fixed slab with a lip, placed by the game alongside
+the plinths, never scored and never part of the clear condition. That is exactly what the
+owner described, "a different platform with a top that does not move".
+
+**Also fixed:** pieces that tunnel through the ground now die at a kill plane. A scripted
+playthrough found one at y = -506 still being simulated. Pieces have no continuous
+collision detection, so one launched hard enough can pass through the one unit thick
+ground box and fall for ever, costing solver time and stopping the world ever settling.
+
+**Also:** the Normal ball allowance went from par plus six to par plus ten, because the
+last few scattered pieces of a collapse are where the balls go.
+
+**Validation Evidence:** A scripted playthrough that sweeps shots across the whole
+structure now clears levels 11, 16 and 30 in 12, 15 and 27 seconds. Before this change
+level 30 was still unfinished after 120 shots and 59 seconds with one piece standing, and
+that piece was identified by name and position from a live diagnostic:
+`S01_ROUND_COLUMN at x=-2.83 y=1.50, start centre 3.60, apparent fall 0.60`, which is the
+rotation bug in one line. `npm run verify` exits 0 with 181 of 181 unit tests,
+`node scripts/verify-level-support.mjs` reports nothing floating or teetering across all
+thirty rebuilt levels, and `npx playwright test` passes 6 of 6 on the phone viewport. A
+screenshot of level 16 shows three plinths carrying a continuous deck with the structure
+standing on it.
+
 ## v1.14.0+20 - 2026-08-31 - Fix
 
 **Author:** Claude Opus 5, unattended build session

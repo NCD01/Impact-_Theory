@@ -2,7 +2,7 @@
   "schema": 2,
   "id": 12,
   "name": "The Roller",
-  "par": 13,
+  "par": 11,
   "note": "Introduces A04. A ball off rubber goes somewhere else, which is the lesson.",
   "pedestals": [
     -3,
@@ -11,64 +11,54 @@
   ],
   "pieces": [
     {
-      "piece": "B03_LONG_BEAM",
-      "x": -2,
-      "y": 1.6
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 2,
-      "y": 1.6
-    },
-    {
       "piece": "A04_ROLLER",
       "x": -3,
-      "y": 3.1
+      "y": 2.6
     },
     {
       "piece": "A04_ROLLER",
       "x": -1,
-      "y": 3.1
+      "y": 2.6
     },
     {
       "piece": "A04_ROLLER",
       "x": 1,
-      "y": 3.1
+      "y": 2.6
     },
     {
       "piece": "A04_ROLLER",
       "x": 3,
-      "y": 3.1
+      "y": 2.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -2.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 3.6
+      "y": 3.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 2.5,
-      "y": 3.6
+      "y": 3.1
     }
   ]
 }

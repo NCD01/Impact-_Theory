@@ -2,7 +2,7 @@
   "schema": 2,
   "id": 7,
   "name": "Kiln",
-  "par": 7,
+  "par": 6,
   "note": "First brick. A player who has only met wood learns some things take two hits.",
   "pedestals": [
     -1.5,
@@ -10,29 +10,24 @@
   ],
   "pieces": [
     {
-      "piece": "B03_LONG_BEAM",
-      "x": 0,
-      "y": 1.6
-    },
-    {
       "piece": "B04_TALL_BLOCK",
       "x": -1.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B04_TALL_BLOCK",
       "x": -0.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B04_TALL_BLOCK",
       "x": 0.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B04_TALL_BLOCK",
       "x": 1.5,
-      "y": 2.6
+      "y": 2.1
     }
   ]
 }

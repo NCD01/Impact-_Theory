@@ -2,7 +2,7 @@
   "schema": 2,
   "id": 14,
   "name": "Cold Store",
-  "par": 10,
+  "par": 8,
   "pedestals": [
     -3,
     0,
@@ -10,49 +10,39 @@
   ],
   "pieces": [
     {
-      "piece": "B03_LONG_BEAM",
-      "x": -2,
-      "y": 1.6
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 2,
-      "y": 1.6
-    },
-    {
       "piece": "B04_TALL_BLOCK",
       "x": -2.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B04_TALL_BLOCK",
       "x": -1.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B04_TALL_BLOCK",
       "x": -0.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B04_TALL_BLOCK",
       "x": 0.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B04_TALL_BLOCK",
       "x": 1.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B04_TALL_BLOCK",
       "x": 2.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B03_LONG_BEAM",
       "x": 0,
-      "y": 5.6
+      "y": 5.1
     }
   ]
 }

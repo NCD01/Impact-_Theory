@@ -2,7 +2,7 @@
   "schema": 2,
   "id": 30,
   "name": "Last Stand",
-  "par": 24,
+  "par": 22,
   "note": "Steel columns, a stone core and a wooden crown. Everything the kit does.",
   "pedestals": [
     -3,
@@ -11,128 +11,118 @@
   ],
   "pieces": [
     {
-      "piece": "B03_LONG_BEAM",
-      "x": -2,
-      "y": 1.6
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 2,
-      "y": 1.6
-    },
-    {
       "piece": "S01_ROUND_COLUMN",
       "x": -2.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "S01_ROUND_COLUMN",
       "x": -1.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "S01_ROUND_COLUMN",
       "x": -0.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "S01_ROUND_COLUMN",
       "x": 0.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "S01_ROUND_COLUMN",
       "x": 1.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "S01_ROUND_COLUMN",
       "x": 2.5,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B03_LONG_BEAM",
       "x": -2,
-      "y": 5.6
+      "y": 5.1
     },
     {
       "piece": "B03_LONG_BEAM",
       "x": 2,
-      "y": 5.6
+      "y": 5.1
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": -3,
-      "y": 6.6,
+      "y": 6.1,
       "family": "stone"
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": -1,
-      "y": 6.6,
+      "y": 6.1,
       "family": "stone"
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 1,
-      "y": 6.6,
+      "y": 6.1,
       "family": "stone"
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 3,
-      "y": 6.6,
+      "y": 6.1,
       "family": "stone"
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": -3,
-      "y": 8.6
+      "y": 8.1
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": -1,
-      "y": 8.6
+      "y": 8.1
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": 1,
-      "y": 8.6
+      "y": 8.1
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": 3,
-      "y": 8.6
+      "y": 8.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -2.5,
-      "y": 9.6
+      "y": 9.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 9.6
+      "y": 9.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 9.6
+      "y": 9.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 9.6
+      "y": 9.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 9.6
+      "y": 9.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 2.5,
-      "y": 9.6
+      "y": 9.1
     }
   ]
 }

@@ -24,7 +24,7 @@ This is `levels/01.json`, complete and unedited:
   "schema": 2,
   "id": 1,
   "name": "First Light",
-  "par": 5,
+  "par": 4,
   "note": "Two big crates on a wide deck. The largest target in the game, on purpose.",
   "pedestals": [
     -1.5,
@@ -32,27 +32,22 @@ This is `levels/01.json`, complete and unedited:
   ],
   "pieces": [
     {
-      "piece": "B03_LONG_BEAM",
-      "x": 0,
-      "y": 1.6
-    },
-    {
       "piece": "B05_LARGE_BLOCK",
       "x": -1,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 1,
-      "y": 2.6
+      "y": 2.1
     }
   ]
 }
 ```
 
-Two plinths 3 SU apart, a 4 SU beam laid across them as a deck, and two large crates on
-top. The plinths are 1.6 SU tall, so the deck sits at `y: 1.6` and the crates at `y: 2.6`.
-The deliberately large target makes this winnable by pointing roughly at it.
+Two plinths 3 SU apart with a fixed deck across them, and two large crates standing on it.
+The plinths are 1.6 SU tall and the deck 0.5, so the crates sit at `y: 2.1`. The
+deliberately large target makes this winnable by pointing roughly at it.
 
 ## Top level fields
 
@@ -103,18 +98,22 @@ are **not pieces**. They are scenery placed by the game, they never move, they a
 scored, and they are not part of the clear condition. The reference clip's frame 9 shows
 exactly this: a collapsed structure with both plinths standing untouched in the rubble.
 
-Each plinth is 1.6 SU tall with a 1 SU wide cap, so a structure starts at `y: 1.6`.
+**The deck on top of them is part of the platform too.** The game lays a fixed slab across
+the plinths, overhanging each outer one by 1 SU. A plinth is 1.6 SU tall and the deck adds
+0.5, so a structure starts at `y: 2.1`.
 
-Three arrangements are used, and they are the only ones that keep a deck properly carried:
+The deck used to be an ordinary kit beam, and that was a design defect rather than a
+cosmetic one: a 4 SU painted steel beam weighs 1880 kg and sits flat on three plinths, so
+it was effectively immovable and every level ended with two unclearable survivors plus
+whatever was still balanced on them.
 
-| Arrangement | Pedestals | Deck | Usable width |
+Three arrangements are used:
+
+| Arrangement | Pedestals | Deck span | Usable width |
 |---|---|---|---|
-| single | `[0]` | none | 1 SU, so only a 1 SU wide piece |
-| pair | `[-1.5, 1.5]` | one 4 SU beam at `y: 1.6` | 4 SU |
-| triple | `[-3, 0, 3]` | two 4 SU beams at `y: 1.6` | 8 SU |
-
-Each has a pedestal on both sides of every deck beam's centre. That is what stops a beam
-teetering on a single plinth.
+| single | `[0]` | 1.4 SU square | 1 SU, so only a 1 SU wide piece |
+| pair | `[-1.5, 1.5]` | 4.6 SU | 4 SU |
+| triple | `[-3, 0, 3]` | 8 SU | 8 SU |
 
 **`support` is no longer a piece field.** A level carrying one is rejected with a message
 pointing here, so an old schema 1 level fails loudly rather than loading wrong.

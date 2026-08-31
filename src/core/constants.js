@@ -237,21 +237,36 @@ export const PLAYFIELD = {
   /** Ground plane height, SU. Everything rests on this. */
   GROUND_Y: 0,
   /**
-   * How far below the platform top a piece's centre must fall to count as no longer
-   * standing, SU.
+   * How far a piece's centre must drop from where it started to count as knocked down, SU.
    *
-   * Relative to the platform rather than to the sand, and that matters. Structures stand
-   * on plinths, so a piece resting on the deck sits well above the ground; an absolute
-   * threshold near the sand meant a level was only cleared once every piece was either
-   * destroyed outright or had rolled all the way off, which took twenty shots and a long
-   * wait on a wide wall. The owner's words were that the game "lags waiting".
+   * Measured against the piece's **own starting height**, not against an absolute height
+   * and not against the platform. Both of those were tried and both were wrong:
    *
-   * Measured from the deck top: a piece knocked off the platform onto the sand is down, a
-   * piece still sitting on the deck is not.
+   *   Absolute, near the sand: a level was only cleared once every piece had rolled all
+   *   the way down to the ground, which took a long wait on a wide wall.
+   *
+   *   Relative to the platform: a piece knocked off but landing on top of other rubble
+   *   still sat above the line and counted as standing. The owner sent a screenshot of a
+   *   structure lying completely flat on the sand with the level refusing to end.
+   *
+   * Per piece, from where it began, is the rule that matches what a player sees. Anything
+   * that has come down by most of a unit has visibly come down. A piece that merely rocks
+   * or slides on the spot has not.
    */
-  REST_BELOW_PLATFORM: 0.35,
+  FALL_TO_COUNT_DOWN: 0.9,
   /** A piece further than this from the structure origin has been knocked clear, SU. */
   OUT_OF_PLAY_RADIUS: 34,
+
+  /**
+   * Below this height a piece or fragment has left the world and is removed, SU.
+   *
+   * Balls already have a kill height; pieces did not, and a scripted playthrough found one
+   * at y = -506 still being simulated. Pieces have no continuous collision detection, so a
+   * piece launched hard enough can tunnel through the one unit thick ground box and then
+   * falls for ever, costing solver time and never coming to rest. Anything down here is
+   * gone and is treated as destroyed.
+   */
+  KILL_BELOW_Y: -12,
 };
 
 // ---------------------------------------------------------------------------
@@ -408,13 +423,17 @@ export const DIFFICULTY = {
     /**
      * Balls available equals par plus this.
      *
-     * Six rather than zero. Par is the target a three star run has to beat, not the hard
+     * Ten rather than zero. Par is the target a three star run has to beat, not the hard
      * limit: giving exactly par made every level past the third unwinnable on Normal,
      * because clearing a structure means knocking every piece off rather than landing a
-     * perfect shot each time. The allowance is generous, and the stars are what reward
-     * efficiency.
+     * perfect shot each time.
+     *
+     * Raised from six after a scripted playthrough ran out with four or five pieces left
+     * on the largest levels. The last few pieces of a collapse are scattered and small,
+     * and that tail is where the balls go. The allowance is generous and the stars are
+     * what reward efficiency.
      */
-    ballLimitFromPar: 6,
+    ballLimitFromPar: 10,
     canFail: true,
     hitPointScale: 1,
     damageScale: 1,

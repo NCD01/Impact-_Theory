@@ -2,7 +2,7 @@
   "schema": 2,
   "id": 19,
   "name": "The Frame",
-  "par": 10,
+  "par": 8,
   "pedestals": [
     -3,
     0,
@@ -10,50 +10,40 @@
   ],
   "pieces": [
     {
-      "piece": "B03_LONG_BEAM",
-      "x": -2,
-      "y": 1.6
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 2,
-      "y": 1.6
-    },
-    {
       "piece": "A02_L_BLOCK",
       "x": -1,
-      "y": 2.6
+      "y": 2.1
     },
     {
       "piece": "A02_L_BLOCK",
       "x": 1,
-      "y": 2.6,
+      "y": 2.1,
       "rotY": 3.142
     },
     {
       "piece": "B03_LONG_BEAM",
       "x": 0,
-      "y": 4.6
+      "y": 4.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 5.6
+      "y": 5.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 5.6
+      "y": 5.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 5.6
+      "y": 5.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 5.6
+      "y": 5.1
     }
   ]
 }

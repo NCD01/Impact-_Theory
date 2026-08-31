@@ -52,6 +52,9 @@ const ROW_PIECES = [
  */
 const PEDESTAL_HEIGHT = 1.6;
 
+/** Thickness of the fixed deck. Must match DECK_THICKNESS in src/game/pedestal.js. */
+const DECK_THICKNESS = 0.5;
+
 /**
  * The two base arrangements the generator uses, matching the hand designed levels.
  *
@@ -59,8 +62,8 @@ const PEDESTAL_HEIGHT = 1.6;
  * beam teetering on a single plinth.
  */
 const BASES = {
-  pair: { xs: [-1.5, 1.5], beams: 1, width: 4 },
-  triple: { xs: [-3, 0, 3], beams: 2, width: 8 },
+  pair: { xs: [-1.5, 1.5], width: 4 },
+  triple: { xs: [-3, 0, 3], width: 8 },
 };
 
 /**
@@ -84,19 +87,9 @@ export function generateEndlessLevel(round, seed = round) {
 
   // The narrow base for the opening rounds, the wide one afterwards.
   const base = round < 4 ? BASES.pair : BASES.triple;
-  const deckY = PEDESTAL_HEIGHT;
-  const topY = deckY + 1;
-
-  // The deck across the plinths.
-  const beamWidth = 4;
-  const deckSpan = base.beams * beamWidth;
-  for (let i = 0; i < base.beams; i += 1) {
-    pieces.push({
-      piece: 'B03_LONG_BEAM',
-      x: round1(-deckSpan / 2 + beamWidth / 2 + i * beamWidth),
-      y: round1(deckY),
-    });
-  }
+  // The deck is fixed scenery placed by the game, so the structure simply starts on top
+  // of it. Nothing here places a deck piece.
+  const topY = PEDESTAL_HEIGHT + DECK_THICKNESS;
 
   // Rows on top. Grows for the first dozen rounds, then stops growing and gets denser,
   // so round 40 is harder than round 20 without being twice as big.

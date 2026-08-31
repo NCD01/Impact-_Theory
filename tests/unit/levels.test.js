@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 
 import { validateLevel, assertValidLevel, summariseLevel, LEVEL_SCHEMA_VERSION } from '../../src/game/level.js';
 import { LEVEL } from '../../src/core/constants.js';
-import { PEDESTAL_HEIGHT, PEDESTAL_CAP_RADIUS } from '../../src/game/pedestal.js';
+import { PEDESTAL_HEIGHT, DECK_THICKNESS, PLATFORM_TOP } from '../../src/game/pedestal.js';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const LEVELS_DIR = path.join(REPO_ROOT, 'levels');
@@ -210,18 +210,23 @@ describe('level support', () => {
     };
   };
 
-  /** A pedestal, as a solid block from the sand up to its cap. */
-  const pedestalBox = (x) => ({
-    x0: x - PEDESTAL_CAP_RADIUS,
-    x1: x + PEDESTAL_CAP_RADIUS,
+  /**
+   * The platform, as one solid block from the sand up to the deck surface.
+   * Plinths and their deck are a single piece of fixed scenery as far as support goes.
+   */
+  const DECK_OVERHANG = 1;
+  const platformBox = (xs) => ({
+    x0: Math.min(...xs) - DECK_OVERHANG,
+    x1: Math.max(...xs) + DECK_OVERHANG,
     bottom: 0,
-    top: PEDESTAL_HEIGHT,
+    top: PLATFORM_TOP,
   });
 
   it.each(levels)('$file places nothing in mid air', ({ file, data }) => {
     const boxes = data.pieces.map(extents);
     // Pedestals count as ground: they are fixed scenery, not pieces.
-    const carriers = [...boxes, ...(data.pedestals ?? []).map(pedestalBox)];
+    const carriers = [...boxes];
+    if (data.pedestals?.length) carriers.push(platformBox(data.pedestals));
     const problems = [];
 
     data.pieces.forEach((spec, i) => {
@@ -267,10 +272,14 @@ describe('level support', () => {
     // author-levels.mjs and verify-level-support.mjs both restate PEDESTAL_HEIGHT rather
     // than importing it, because they run in plain Node and importing the game module
     // would pull in three.js. This is the test that stops the two drifting apart.
-    const authoring = fs.readFileSync(
-      path.join(REPO_ROOT, 'scripts', 'author-levels.mjs'), 'utf8',
-    ).match(/const PEDESTAL_HEIGHT = ([\d.]+)/);
-    expect(authoring, 'author-levels.mjs no longer declares PEDESTAL_HEIGHT').not.toBeNull();
-    expect(Number(authoring[1])).toBe(PEDESTAL_HEIGHT);
+    const src = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'author-levels.mjs'), 'utf8');
+    const height = src.match(/const PEDESTAL_HEIGHT = ([\d.]+)/);
+    const deck = src.match(/const DECK_THICKNESS = ([\d.]+)/);
+    expect(height, 'author-levels.mjs no longer declares PEDESTAL_HEIGHT').not.toBeNull();
+    expect(deck, 'author-levels.mjs no longer declares DECK_THICKNESS').not.toBeNull();
+    expect(Number(height[1])).toBe(PEDESTAL_HEIGHT);
+    expect(Number(deck[1])).toBe(DECK_THICKNESS);
+    // And the surface a structure stands on is the sum of the two.
+    expect(PLATFORM_TOP).toBe(PEDESTAL_HEIGHT + DECK_THICKNESS);
   });
 });

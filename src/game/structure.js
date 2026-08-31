@@ -24,7 +24,9 @@
  * up any more, which is the physics engine's answer and not this module's.
  */
 
-import { BoxGeometry, Mesh, MeshStandardMaterial } from 'three';
+import {
+  BoxGeometry, Mesh, MeshStandardMaterial, Quaternion, Vector3,
+} from 'three';
 
 import { DESTRUCTION, PLAYFIELD } from '../core/constants.js';
 import { createDamageState, applyImpact } from '../physics/damage.js';
@@ -57,14 +59,13 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
 
   let destroyedCount = 0;
   let targetCount = 0;
+
+  /** Reused by the centre of volume calculation, so the per frame check allocates none. */
+  const centreOffset = new Vector3();
+  const bodyRotation = new Quaternion();
   /** Where this level's pieces are placed, SU. Set per level before placing. */
   let origin = [...PLAYFIELD.STRUCTURE_ORIGIN];
-  /**
-   * World height of the platform surface this level's structure stands on.
-   * A piece whose centre falls REST_BELOW_PLATFORM under this has left the platform and
-   * counts as down. Set per level, before any piece is placed.
-   */
-  let platformTop = 0;
+
 
   /**
    * @typedef {object} PieceEntry
@@ -128,6 +129,10 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
       piece,
       family,
       damage: createDamageState(family.hitPoints * currentHitPointScale),
+      // Where the piece's centre of volume started. A piece counts as knocked down when
+      // it has fallen most of a unit from here, which is the only test that matches what
+      // a player sees; see PLAYFIELD.FALL_TO_COUNT_DOWN.
+      startCentreY: position.y + piece.collider.pivotLift,
       counted: false,
     };
     pieces.set(handle, entry);
@@ -147,18 +152,6 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
    */
   function setOrigin(next) {
     origin = [...next];
-  }
-
-  /**
-   * Sets the height of the surface the structure stands on, SU.
-   *
-   * Everything above this counts as standing; anything that falls below it by
-   * PLAYFIELD.REST_BELOW_PLATFORM has been knocked off and counts as down.
-   *
-   * @param {number} y
-   */
-  function setPlatformTop(y) {
-    platformTop = y;
   }
 
   /** Difficulty's hit point multiplier. Set before a level is built. */
@@ -373,10 +366,23 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
    * @param {number} dt Seconds.
    */
   function update(dt) {
-    for (const entry of pieces.values()) {
+    for (const entry of [...pieces.values()]) {
       const rec = physics.getRecord(entry.handle);
       if (!rec) continue;
       const t = rec.body.translation();
+
+      // A piece that has left the world is removed rather than simulated for ever.
+      // Pieces have no continuous collision detection, so one launched hard enough can
+      // tunnel through the ground and fall without end. It already counts as down; this
+      // stops it costing solver time and keeps the world settling.
+      if (t.y < PLAYFIELD.KILL_BELOW_Y) {
+        physics.removeBody(entry.handle);
+        root.remove(entry.mesh);
+        pieces.delete(entry.handle);
+        destroyedCount += 1;
+        continue;
+      }
+
       const r = rec.body.rotation();
       entry.mesh.position.set(t.x, t.y, t.z);
       entry.mesh.quaternion.set(r.x, r.y, r.z, r.w);
@@ -390,7 +396,14 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
       frag.mesh.position.set(t.x, t.y, t.z);
       frag.mesh.quaternion.set(r.x, r.y, r.z, r.w);
 
-      // Only age a fragment once it has settled, so nothing disappears mid flight.
+      // Only age a fragment once it has settled, so nothing disappears mid flight. A
+      // fragment that has fallen out of the world goes immediately.
+      if (t.y < PLAYFIELD.KILL_BELOW_Y) {
+        physics.removeBody(frag.handle);
+        root.remove(frag.mesh);
+        fragments.delete(frag.handle);
+        continue;
+      }
       if (rec.body.isSleeping() || t.y < PLAYFIELD.GROUND_Y - 2) {
         frag.timer -= dt;
         if (frag.timer <= 0) {
@@ -400,6 +413,30 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
         }
       }
     }
+  }
+
+  /**
+   * The world height of a piece's centre of volume.
+   *
+   * The pivot offset has to be **rotated by the body** before it is added, and getting
+   * that wrong is subtle. Thirteen of the fifteen pieces are authored with the origin on
+   * their base, so the centre sits half a height above the origin *in the piece's own
+   * frame*. Add that offset without rotating it and a toppled piece is still treated as
+   * standing upright: a 3 SU column lying flat on the sand read as having its centre 1.5
+   * SU up, so it registered as having fallen only 0.6 SU and never counted as down. That
+   * was one unclearable piece surviving 120 shots.
+   *
+   * @param {PieceEntry} entry
+   * @param {object} rec Physics body record.
+   * @returns {number}
+   */
+  function worldCentreY(entry, rec) {
+    const lift = entry.piece.collider.pivotLift;
+    if (lift === 0) return rec.body.translation().y;
+    const r = rec.body.rotation();
+    bodyRotation.set(r.x, r.y, r.z, r.w);
+    centreOffset.set(0, lift, 0).applyQuaternion(bodyRotation);
+    return rec.body.translation().y + centreOffset.y;
   }
 
   /**
@@ -422,8 +459,9 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     const rec = physics.getRecord(entry.handle);
     if (!rec) return true;
     const t = rec.body.translation();
-    const centreY = t.y + entry.piece.collider.pivotLift;
-    if (centreY < platformTop - PLAYFIELD.REST_BELOW_PLATFORM) return true;
+    if (entry.startCentreY - worldCentreY(entry, rec) > PLAYFIELD.FALL_TO_COUNT_DOWN) {
+      return true;
+    }
     const dx = t.x - origin[0];
     const dz = t.z - origin[2];
     return Math.hypot(dx, dz) > PLAYFIELD.OUT_OF_PLAY_RADIUS;
@@ -477,7 +515,8 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
   return {
     place,
     setOrigin,
-    setPlatformTop,
+    /** Whether one piece counts as knocked down. Exposed for the browser diagnostics. */
+    isPieceDown: isDown,
     setDifficultyTuning,
     handleImpact,
     familyOfImpact,

@@ -284,8 +284,6 @@ async function start() {
       xs: level.pedestals ?? [0],
       origin,
     });
-    // Everything is judged standing or down relative to the plinth tops, not the sand.
-    structure.setPlatformTop(origin[1] + pedestals.top);
     session = createSession({
       level,
       difficultyId: save.state.difficulty,
@@ -542,7 +540,15 @@ async function start() {
     globalThis.__IT_PIECES__ = [...structure._pieces.values()].map((e) => {
       const rec = physics.getRecord(e.handle);
       const t = rec ? rec.body.translation() : { x: 0, y: 0, z: 0 };
-      return { id: e.handle, piece: e.piece.id, x: t.x, y: t.y, z: t.z };
+      return {
+        id: e.handle,
+        piece: e.piece.id,
+        x: t.x,
+        y: t.y,
+        z: t.z,
+        startCentreY: e.startCentreY,
+        down: structure.isPieceDown(e),
+      };
     });
 
     requestAnimationFrame(frame);

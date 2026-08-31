@@ -29,6 +29,7 @@
  */
 
 import {
+  BoxGeometry,
   CylinderGeometry,
   Group,
   Mesh,
@@ -45,14 +46,40 @@ import {
  */
 export const PEDESTAL_HEIGHT = 1.6;
 
-/** Radius of the cap, SU. Wide enough for a beam to sit on without teetering. */
+/** Radius of the cap, SU. */
 export const PEDESTAL_CAP_RADIUS = 0.5;
+
+/**
+ * Thickness of the deck slab laid across the plinths, SU.
+ *
+ * The deck is part of the platform and is fixed, exactly like the plinths under it. That
+ * is what the owner meant by "a different platform with a top that does not move".
+ *
+ * It used to be a kit beam placed as an ordinary piece, and that was a design defect
+ * rather than a cosmetic one: a 4 SU painted steel beam weighs 1880 kg and sits flat on
+ * three plinths, so it is effectively immovable. Every level ended with two of them and
+ * whatever was still balanced on top as unclearable survivors. Making the deck scenery
+ * removes the problem at the root: the player knocks the structure off the platform, and
+ * the platform is not part of the structure.
+ */
+export const DECK_THICKNESS = 0.5;
+
+/** How far the deck overhangs the outermost plinth on each side, SU. */
+const DECK_OVERHANG = 1;
+
+/** Depth of the deck, SU. Matches the one unit depth of every kit piece. */
+const DECK_DEPTH = 1.2;
+
+/** Total height from the sand to the surface a structure stands on, SU. */
+export const PLATFORM_TOP = PEDESTAL_HEIGHT + DECK_THICKNESS;
 
 const COLORS = {
   copper: 0xc26a2c,
   copperDark: 0x9c4f1d,
   band: 0x2a9fd4,
   trim: 0xe8a13c,
+  deck: 0xb8763a,
+  deckTop: 0xd08c48,
 };
 
 /** One material set shared by every pedestal in a level. */
@@ -62,6 +89,8 @@ function createMaterials() {
     copperDark: new MeshStandardMaterial({ color: COLORS.copperDark, roughness: 0.6, metalness: 0 }),
     band: new MeshStandardMaterial({ color: COLORS.band, roughness: 0.5, metalness: 0 }),
     trim: new MeshStandardMaterial({ color: COLORS.trim, roughness: 0.45, metalness: 0 }),
+    deck: new MeshStandardMaterial({ color: COLORS.deck, roughness: 0.75, metalness: 0 }),
+    deckTop: new MeshStandardMaterial({ color: COLORS.deckTop, roughness: 0.7, metalness: 0 }),
   };
 }
 
@@ -140,6 +169,57 @@ export function placePedestals({ physics, root, xs, origin }) {
   const handles = [];
   const meshes = [];
 
+  // ---- The deck ----------------------------------------------------------
+  // A single fixed slab across the plinths, so a structure has continuous ground and the
+  // player never has to shift the platform itself.
+  const minX = Math.min(...xs) - DECK_OVERHANG;
+  const maxX = Math.max(...xs) + DECK_OVERHANG;
+  const deckWidth = Math.max(1.4, maxX - minX);
+  const deckCentreX = (minX + maxX) / 2;
+
+  const deckHandle = physics.addBody({
+    collider: {
+      kind: 'cuboid',
+      pivotLift: DECK_THICKNESS / 2,
+      halfExtents: { x: deckWidth / 2, y: DECK_THICKNESS / 2, z: DECK_DEPTH / 2 },
+    },
+    family: { density: 1000, friction: 0.9, restitution: 0.02 },
+    position: {
+      x: origin[0] + deckCentreX,
+      y: origin[1] + PEDESTAL_HEIGHT,
+      z: origin[2],
+    },
+    fixed: true,
+    kind: 'platform',
+    userData: { platform: true },
+  });
+  handles.push(deckHandle);
+
+  const deckGroup = new Group();
+  const deckSlab = new Mesh(
+    new BoxGeometry(deckWidth, DECK_THICKNESS * 0.82, DECK_DEPTH),
+    materials.deck,
+  );
+  deckSlab.position.y = DECK_THICKNESS * 0.41;
+  deckSlab.castShadow = true;
+  deckSlab.receiveShadow = true;
+  deckGroup.add(deckSlab);
+
+  // A slightly wider lip on top, so the deck reads as a made object rather than a slab.
+  const deckLip = new Mesh(
+    new BoxGeometry(deckWidth + 0.14, DECK_THICKNESS * 0.18, DECK_DEPTH + 0.14),
+    materials.deckTop,
+  );
+  deckLip.position.y = DECK_THICKNESS * 0.91;
+  deckLip.castShadow = true;
+  deckLip.receiveShadow = true;
+  deckGroup.add(deckLip);
+
+  deckGroup.position.set(origin[0] + deckCentreX, origin[1] + PEDESTAL_HEIGHT, origin[2]);
+  root.add(deckGroup);
+  meshes.push(deckGroup);
+
+  // ---- The plinths -------------------------------------------------------
   for (const x of xs) {
     const position = { x: origin[0] + x, y: origin[1], z: origin[2] };
 
@@ -175,5 +255,5 @@ export function placePedestals({ physics, root, xs, origin }) {
     for (const m of Object.values(materials)) m.dispose();
   }
 
-  return { top: PEDESTAL_HEIGHT, count: xs.length, clear };
+  return { top: PLATFORM_TOP, count: xs.length, width: deckWidth, clear };
 }

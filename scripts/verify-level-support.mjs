@@ -37,7 +37,9 @@ const DIM = Object.fromEntries(MANIFEST.pieces.map((p) => [p.id, p]));
 
 /** Must match src/game/pedestal.js. A unit test asserts they agree. */
 const PEDESTAL_HEIGHT = 1.6;
-const PEDESTAL_CAP_RADIUS = 0.5;
+const DECK_THICKNESS = 0.5;
+const DECK_OVERHANG = 1;
+const PLATFORM_TOP = PEDESTAL_HEIGHT + DECK_THICKNESS;
 
 /** The horizontal extent and vertical span a piece occupies. */
 function extents(spec) {
@@ -51,13 +53,18 @@ function extents(spec) {
   };
 }
 
-/** A pedestal, as a solid block from the ground to its cap. */
-function pedestalExtents(x) {
+/**
+ * The platform, as one solid block from the sand up to the deck surface.
+ *
+ * The plinths and their deck are a single piece of fixed scenery as far as support goes,
+ * so a structure standing anywhere along the deck is carried.
+ */
+function platformExtents(xs) {
   return {
-    x0: x - PEDESTAL_CAP_RADIUS,
-    x1: x + PEDESTAL_CAP_RADIUS,
+    x0: Math.min(...xs) - DECK_OVERHANG,
+    x1: Math.max(...xs) + DECK_OVERHANG,
     bottom: 0,
-    top: PEDESTAL_HEIGHT,
+    top: PLATFORM_TOP,
   };
 }
 
@@ -67,10 +74,8 @@ for (const file of fs.readdirSync(LEVELS).filter((n) => n.endsWith('.json')).sor
   const level = JSON.parse(fs.readFileSync(path.join(LEVELS, file), 'utf8'));
   const pieceBoxes = level.pieces.map(extents);
   // Everything a piece could be standing on: other pieces, and the pedestals.
-  const carriers = [
-    ...pieceBoxes,
-    ...(level.pedestals ?? []).map(pedestalExtents),
-  ];
+  const carriers = [...pieceBoxes];
+  if (level.pedestals?.length) carriers.push(platformExtents(level.pedestals));
 
   const bad = [];
   level.pieces.forEach((spec, i) => {

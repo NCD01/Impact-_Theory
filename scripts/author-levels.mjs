@@ -59,6 +59,15 @@ const DIM = Object.fromEntries(MANIFEST.pieces.map((p) => [p.id, p]));
  */
 const PEDESTAL_HEIGHT = 1.6;
 
+/**
+ * Thickness of the fixed deck slab across the plinths. Must match DECK_THICKNESS in
+ * src/game/pedestal.js. A unit test asserts they agree.
+ */
+const DECK_THICKNESS = 0.5;
+
+/** The surface a structure stands on: plinths plus their deck. */
+const PLATFORM_TOP = PEDESTAL_HEIGHT + DECK_THICKNESS;
+
 // ---------------------------------------------------------------------------
 // Carpentry helpers
 // ---------------------------------------------------------------------------
@@ -104,38 +113,26 @@ function stack(piece, x, y, count, extra = {}) {
 }
 
 /**
- * A pedestal arrangement, plus the deck that sits on it.
+ * A platform for a structure to stand on: where the plinths go, and how wide the deck is.
  *
- * Three arrangements, and they are the only three, because each has pedestals under both
- * sides of every deck beam's centre. That is what stops a beam teetering on a single
- * plinth, which is the defect that shipped in the first two attempts at these levels.
+ * The deck is a fixed slab the game places, not a piece, so `deck` is always empty and is
+ * kept only so the `on()` helper reads the same as it did. That change fixed a real
+ * design defect: as pieces, the deck beams weighed 1880 kg each and sat flat on three
+ * plinths, so they were effectively immovable and every level ended with two unclearable
+ * survivors and whatever was still balanced on them.
  *
- *   single  one plinth and nothing else. Narrow and precarious, which is what the
- *           reference clip's opening frame shows.
- *   pair    two plinths 3 SU apart carrying one 4 SU beam. Usable width 4.
- *   triple  three plinths 6 SU apart carrying two beams. Usable width 8.
+ *   single  one plinth. Narrow and precarious, like the reference clip's opening frame.
+ *   pair    two plinths 3 SU apart. Usable width 4.
+ *   triple  three plinths 6 SU apart. Usable width 8.
  *
  * @param {'single'|'pair'|'triple'} kind
  */
 function base(kind) {
-  if (kind === 'single') {
-    // The cap is 1.1 SU across, so only a one unit wide piece belongs directly on it.
-    return { xs: [0], deck: [], top: PEDESTAL_HEIGHT, width: 1 };
-  }
-  if (kind === 'pair') {
-    return {
-      xs: [-1.5, 1.5],
-      deck: row('B03_LONG_BEAM', PEDESTAL_HEIGHT, 1, 4),
-      top: PEDESTAL_HEIGHT + 1,
-      width: 4,
-    };
-  }
-  return {
-    xs: [-3, 0, 3],
-    deck: row('B03_LONG_BEAM', PEDESTAL_HEIGHT, 2, 8),
-    top: PEDESTAL_HEIGHT + 1,
-    width: 8,
-  };
+  // The deck is scenery placed by the game, not pieces, so a base contributes no pieces at
+  // all now. It only says where the plinths go and how much room there is on top.
+  if (kind === 'single') return { xs: [0], deck: [], top: PLATFORM_TOP, width: 1 };
+  if (kind === 'pair') return { xs: [-1.5, 1.5], deck: [], top: PLATFORM_TOP, width: 4 };
+  return { xs: [-3, 0, 3], deck: [], top: PLATFORM_TOP, width: 8 };
 }
 
 /** Shorthand for a design: pedestals, plus the deck, plus everything stacked on it. */
