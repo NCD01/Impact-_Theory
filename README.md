@@ -5,7 +5,7 @@ playfield fires balls at a structure built from a fifteen piece block kit standi
 supports. The structure is a real rigid body assembly, so it leans, buckles and falls the
 way its geometry says it should, and clearing it clears the level.
 
-Current version **1.12.2+18**. The version scheme is defined in
+Current version **1.13.0+19**. The version scheme is defined in
 [docs/VERSIONING.md](docs/VERSIONING.md), which is the only file that states it.
 
 ## Requirements
@@ -44,10 +44,14 @@ One gesture does everything, on touch and with a mouse alike.
 
 | Action | Touch and mouse |
 |---|---|
-| Aim | Drag anywhere on the screen. Horizontal drag turns the cannon, vertical drag raises and lowers it. |
-| Fire one ball | Tap, or click. A drag that moved a long way does not fire, so lining up a shot cannot fire by accident. |
+| Aim | **Touch where you want to hit.** The cannon aims at that spot. Slide your finger and the aim follows it. On a desktop the cannon follows the mouse with no button held. |
+| Fire one ball | Lift your finger, or click. |
 | Fire a stream | Press and hold. Shots leave at a capped rate. |
 | Pause | The button in the top right. |
+
+The aim is **absolute, not relative**: the barrel goes where your finger is, with no
+memory of where it was. It also compensates for the drop over the flight, so pointing at a
+block aims to land on that block rather than merely pointing the barrel at it.
 
 ## Difficulty
 
@@ -76,7 +80,7 @@ tuning values only; there is one code path through the game.
 ## Tests
 
     npm run lint       # ESLint over src, scripts and tests
-    npm test           # Vitest, 147 unit tests
+    npm test           # Vitest, 178 unit tests
     npm run verify     # lint and unit tests together
     npm run e2e        # Playwright, 12 browser tests across two viewports
 

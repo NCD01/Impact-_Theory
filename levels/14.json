@@ -6,25 +6,46 @@
   "pieces": [
     {
       "piece": "S01_ROUND_COLUMN",
-      "x": -2.6,
+      "x": -3.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "S01_ROUND_COLUMN",
-      "x": 2.6,
+      "x": 0,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 3.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "B03_LONG_BEAM",
-      "x": 0,
+      "x": -2,
+      "y": 3
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 2,
       "y": 3
     },
     {
       "piece": "A03_CROSS_BEAM",
-      "x": 0,
+      "x": -1.5,
       "y": 5.5
+    },
+    {
+      "piece": "A03_CROSS_BEAM",
+      "x": 1.5,
+      "y": 5.5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 7
     },
     {
       "piece": "B01_SMALL_BLOCK",
@@ -34,6 +55,11 @@
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
+      "y": 7
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
       "y": 7
     }
   ]

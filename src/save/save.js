@@ -47,6 +47,8 @@ export function createEmptySave() {
     levels: {},
     /** Best score in endless mode. */
     endlessBest: 0,
+    /** Whether the how to play hint has been shown. It is shown once, ever. */
+    seenHint: false,
   };
 }
 
@@ -141,6 +143,7 @@ function normalise(save) {
   clean.unlocked = Number.isInteger(save.unlocked) && save.unlocked >= 1 ? save.unlocked : 1;
   clean.endlessBest = Number.isFinite(save.endlessBest) && save.endlessBest >= 0
     ? save.endlessBest : 0;
+  clean.seenHint = save.seenHint === true;
 
   if (typeof save.levels === 'object' && save.levels !== null) {
     for (const [key, value] of Object.entries(save.levels)) {
@@ -255,6 +258,12 @@ export function createSaveStore(storage = safeStorage()) {
     return true;
   }
 
+  /** Records that the how to play hint has been shown, so it is not shown again. */
+  function setSeenHint() {
+    state.seenHint = true;
+    persist();
+  }
+
   function setMuted(muted) {
     state.muted = muted === true;
     persist();
@@ -290,6 +299,7 @@ export function createSaveStore(storage = safeStorage()) {
     getLevelRecord,
     setDifficulty,
     setMuted,
+    setSeenHint,
     setEndlessBest,
     totalStars,
     reset,

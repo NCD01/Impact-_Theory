@@ -6,55 +6,102 @@
   "pieces": [
     {
       "piece": "S01_ROUND_COLUMN",
-      "x": -4,
+      "x": -5.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "S01_ROUND_COLUMN",
-      "x": 4,
+      "x": -2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 5.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "B03_LONG_BEAM",
-      "x": -2,
+      "x": -4,
       "y": 3
     },
     {
       "piece": "B03_LONG_BEAM",
-      "x": 2,
+      "x": 0,
+      "y": 3
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 4,
       "y": 3
     },
     {
       "piece": "A01_T_BLOCK",
-      "x": -2.5,
+      "x": -4.5,
       "y": 4
     },
     {
       "piece": "A01_T_BLOCK",
-      "x": 2.5,
+      "x": -1.5,
       "y": 4
     },
     {
-      "piece": "A05_MECHANICAL_STABILIZER",
-      "x": 0,
+      "piece": "A01_T_BLOCK",
+      "x": 1.5,
+      "y": 4
+    },
+    {
+      "piece": "A01_T_BLOCK",
+      "x": 4.5,
       "y": 4
     },
     {
       "piece": "B05_LARGE_BLOCK",
-      "x": -2,
+      "x": -5,
       "y": 6
     },
     {
       "piece": "B05_LARGE_BLOCK",
-      "x": 0,
+      "x": -3,
       "y": 6
     },
     {
       "piece": "B05_LARGE_BLOCK",
-      "x": 2,
+      "x": -1,
       "y": 6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 1,
+      "y": 6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 3,
+      "y": 6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 5,
+      "y": 6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -3.5,
+      "y": 8
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -2.5,
+      "y": 8
     },
     {
       "piece": "B01_SMALL_BLOCK",
@@ -74,6 +121,16 @@
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
+      "y": 8
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 2.5,
+      "y": 8
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 3.5,
       "y": 8
     }
   ]

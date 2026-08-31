@@ -72,8 +72,6 @@ export function createAudio() {
   /** Last start time per family, so the same family cannot machine gun. */
   const lastImpactAt = new Map();
 
-  let musicNodes = null;
-
   /**
    * Creates the context on first use.
    *
@@ -341,58 +339,18 @@ export function createAudio() {
     osc.stop(now + 0.13);
   }
 
-  /**
-   * Starts the background track: a slow two chord pad that loops indefinitely.
+  /*
+   * There is deliberately no background music.
    *
-   * Deliberately sparse. A repeating melody becomes unbearable on the twentieth replay
-   * of a level, and this game is meant to be replayed.
+   * A slow two chord pad was written and shipped in v1.9.0, and the owner's first words
+   * on hearing it were "there is a humming sound stop it". He was right: a sustained pad
+   * under a game whose whole point is percussive impacts fights the thing the player is
+   * listening for, and on a level replayed twenty times it becomes a drone.
+   *
+   * If music is ever wanted it belongs as a short loop that ducks under impacts, not a
+   * continuous pad. Removed rather than muted, so there is no dead code pretending to be
+   * a feature.
    */
-  function startMusic() {
-    const c = ensure();
-    if (!c || musicNodes) return;
-    const gain = c.createGain();
-    gain.gain.value = muted ? 0 : AUDIO.MUSIC_GAIN;
-    gain.connect(master);
-
-    const lp = c.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.value = 900;
-    lp.connect(gain);
-
-    // Two detuned oscillators per note give the pad movement without a sample.
-    const voices = [110, 164.81, 220].flatMap((f) => [f, f * 1.004].map((freq) => {
-      const osc = c.createOscillator();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      const g = c.createGain();
-      g.gain.value = 0.12;
-      osc.connect(g).connect(lp);
-      osc.start();
-      return { osc, g };
-    }));
-
-    // A slow filter sweep, so the pad breathes rather than sitting still.
-    const lfo = c.createOscillator();
-    lfo.frequency.value = 0.05;
-    const lfoGain = c.createGain();
-    lfoGain.gain.value = 340;
-    lfo.connect(lfoGain).connect(lp.frequency);
-    lfo.start();
-
-    musicNodes = { gain, voices, lfo };
-  }
-
-  function stopMusic() {
-    if (!musicNodes || !ctx) return;
-    const now = ctx.currentTime;
-    musicNodes.gain.gain.setTargetAtTime(0, now, 0.3);
-    const nodes = musicNodes;
-    musicNodes = null;
-    setTimeout(() => {
-      for (const v of nodes.voices) { try { v.osc.stop(); } catch { /* already stopped */ } }
-      try { nodes.lfo.stop(); } catch { /* already stopped */ }
-    }, 1200);
-  }
 
   return {
     resume,
@@ -405,8 +363,6 @@ export function createAudio() {
     levelClear,
     levelFailed,
     uiTap,
-    startMusic,
-    stopMusic,
     get available() { return available; },
     get muted() { return muted; },
   };

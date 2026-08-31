@@ -5,6 +5,58 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.13.0+19 - 2026-08-31 - Fix
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The owner played the build and reported five things. All five were right and
+all five are fixed here.
+
+**1. "there is a humming sound stop it".** The background pad is gone, not muted. A
+sustained drone under a game built on percussive impacts fights the thing the player is
+listening for, and on a replayed level it becomes noise. Removed rather than disabled, so
+there is no dead code pretending to be a feature. Every impact, fracture and interface
+sound is unchanged.
+
+**2. "look at the org images its always on a platform that is missing".** He spotted this
+in the first screenshot he looked at. A support check across the thirty levels found **26
+pieces either floating in mid air or balanced on one edge of a pedestal**. The cause was an
+authoring helper that placed two pedestals and left whatever sat above them to line up by
+luck. Replaced by `platform()`, which lays a continuous deck and puts a pedestal under
+every joint in it, including both ends, which is what the reference clip shows. All thirty
+levels rebuilt on platforms. `scripts/verify-level-support.mjs` now reports zero, and the
+same check runs in the unit suite so it cannot come back.
+
+**3. "when you click play just start".** Play now opens the first level the player has not
+cleared, rather than a menu. Level select moved to its own button on the title and is still
+reachable from pause.
+
+**4. "there is no instructions on how to play".** A how to play list on the title screen,
+and a one line hint over the game the first time anyone opens a level, shown once ever and
+pointer transparent so it cannot eat the touch it is asking for.
+
+**5. "i should just point and it should move and if i drag right it goes left".** Both
+correct, and the second was a real sign error. Aiming is now **absolute**: touch a spot and
+the cannon aims there, with no memory of where it was. It also solves the launch angle so a
+ball *lands* on the point rather than the barrel merely pointing at it, because at 27 SU/s
+a shot across the playfield drops well over a metre. On a desktop the cannon follows the
+mouse with no button held.
+
+**Changes:** `src/input/controls.js` rewritten. `aimAt()` added to `src/game/cannon.js`.
+`eventToDepthPlanePoint()` added to `src/core/projection.js`, so the new maths still lives
+in the one projection helper. `scripts/author-levels.mjs` rewritten around `platform()`.
+`scripts/verify-level-support.mjs` added. Music removed from `src/audio/audio.js`. Title,
+hint and instructions in `src/ui/ui.js` and `index.html`. `seenHint` added to the save.
+README, GAMEPLAY and ASSET_MANIFEST updated.
+
+**Validation Evidence:** Played in a real browser at a 390 x 844 portrait viewport. Play
+now lands in level 1 directly. Touching the far left of the screen gives a cannon yaw of
++0.252 rad and the far right gives -0.252 rad, which is the correct sign and confirms the
+inversion is gone; the previous build gave the opposite. Ten shots cleared level 1 with no
+console errors. `node scripts/verify-level-support.mjs` reports zero floating or teetering
+pieces, down from 26. `npx vitest run` reports 178 of 178 passing, up from 147, including
+31 new per level support tests. `npx eslint .` exits 0. The rebuilt level 1 was
+photographed and shows two pedestals carrying a continuous deck with the crate on top.
+
 ## v1.12.2+18 - 2026-08-31 - Documentation
 
 **Author:** Claude Opus 5, unattended build session

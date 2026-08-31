@@ -117,6 +117,8 @@ async function start() {
   let lastResult = null;
   /** Where the last piece was destroyed, so a score popup can be anchored to it. */
   let lastDestroyedAt = { x: 0, y: 0, z: 0 };
+  /** World Z of the plane the player aims within. Set per level with the structure. */
+  let currentAimDepth = PLAYFIELD.STRUCTURE_ORIGIN[2];
 
   const structure = createStructure({
     physics,
@@ -131,7 +133,11 @@ async function start() {
 
   const ui = createUI(uiRoot, projection, {
     onAnyPress: () => { audio.resume(); audio.uiTap(); },
-    onPlay: () => openSelect(),
+    // Play starts playing. The owner's words were "when you click play just start", and
+    // he is right: a child pressing Play wants a cannon, not a menu. The level select is
+    // still one press away from the title and from the pause screen.
+    onPlay: () => startLevel(nextUnplayedLevelId()),
+    onChooseLevel: () => openSelect(),
     onEndless: () => startEndless(1),
     onSelectLevel: (id) => startLevel(id),
     onPause: () => pause(),
@@ -146,7 +152,6 @@ async function start() {
     onToggleMute: () => {
       save.setMuted(!save.state.muted);
       audio.setMuted(save.state.muted);
-      if (save.state.muted) audio.stopMusic(); else audio.startMusic();
       ui.syncSettings(save.state);
     },
     onResetProgress: () => {
@@ -197,6 +202,22 @@ async function start() {
     return [base[0], base[1], CAMERA.POSITION[2] - distance];
   }
 
+  /**
+   * The level to open when the player presses Play.
+   *
+   * The first level they have not cleared, so Play resumes rather than restarting. Falls
+   * back to the last level once every one is cleared, because sending someone who has
+   * finished the game back to level 1 is worse than letting them replay the hardest.
+   *
+   * @returns {number}
+   */
+  function nextUnplayedLevelId() {
+    for (const level of levels) {
+      if (!save.getLevelRecord(level.id)?.cleared) return level.id;
+    }
+    return levels[levels.length - 1].id;
+  }
+
   // ---- Screen transitions -------------------------------------------------
 
   function clearWorld() {
@@ -240,7 +261,9 @@ async function start() {
     // level fills the screen rather than sitting as a speck under an empty sky. Both
     // are set once here and then stay fixed for the whole level.
     const shape = summariseLevel(level);
-    structure.setOrigin(originForSize(shape.height, shape.width));
+    const origin = originForSize(shape.height, shape.width);
+    structure.setOrigin(origin);
+    currentAimDepth = origin[2];
     rig.frameLevel(shape.height);
     session = createSession({
       level,
@@ -253,7 +276,13 @@ async function start() {
     ui.show('none');
     ui.updateHud(session.hud());
     controls.setEnabled(true);
-    audio.startMusic();
+    // Show the how to play hint the first time anyone opens a level, and never again.
+    if (!save.state.seenHint) {
+      ui.showHint();
+      save.setSeenHint();
+    } else {
+      ui.hideHint();
+    }
   }
 
   function startLevel(id) {
@@ -337,7 +366,10 @@ async function start() {
 
   // ---- Input --------------------------------------------------------------
   const controls = createControls(canvas, projection, {
-    onAim: (dYaw, dPitch) => cannon.aimBy(dYaw, dPitch),
+    onAimAt: (target) => cannon.aimAt(target),
+    // The plane the player points within is the structure's own depth, so pointing at a
+    // block on screen resolves to that block's position in the world.
+    getAimDepth: () => currentAimDepth,
     onFire: () => {
       audio.resume();
       if (stressMode) {
@@ -473,6 +505,10 @@ async function start() {
       getImpactLog: () => impactLog.slice(),
       resetImpactLog: () => { impactLog.length = 0; },
     };
+
+    // Aim state, exposed for the browser tests. Read only; the tests assert the sign of
+    // the yaw, because a sign error here is what made dragging right aim left.
+    globalThis.__IT_CANNON__ = { yaw: cannon.yaw, pitch: cannon.pitch };
 
     requestAnimationFrame(frame);
   }

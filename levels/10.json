@@ -6,13 +6,19 @@
   "pieces": [
     {
       "piece": "S02_SHORT_COLUMN",
-      "x": -3,
+      "x": -3.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "S02_SHORT_COLUMN",
-      "x": 3,
+      "x": 0,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": 3.5,
       "y": 0,
       "support": true
     },
@@ -28,8 +34,18 @@
     },
     {
       "piece": "A01_T_BLOCK",
-      "x": 0,
+      "x": -1.5,
       "y": 3
+    },
+    {
+      "piece": "A01_T_BLOCK",
+      "x": 1.5,
+      "y": 3
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 5
     },
     {
       "piece": "B01_SMALL_BLOCK",
@@ -39,6 +55,11 @@
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
+      "y": 5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
       "y": 5
     }
   ]

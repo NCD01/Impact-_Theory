@@ -6,31 +6,47 @@
   "pieces": [
     {
       "piece": "S01_ROUND_COLUMN",
-      "x": -3.5,
+      "x": -5.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "S01_ROUND_COLUMN",
-      "x": 0,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S01_ROUND_COLUMN",
-      "x": 3.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "B03_LONG_BEAM",
       "x": -2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 5.5,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": -4,
       "y": 3
     },
     {
       "piece": "B03_LONG_BEAM",
-      "x": 2,
+      "x": 0,
       "y": 3
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 4,
+      "y": 3
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -5,
+      "y": 4
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
@@ -51,6 +67,16 @@
       "piece": "B02_MEDIUM_BLOCK",
       "x": 3,
       "y": 4
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -3.5,
+      "y": 5
     },
     {
       "piece": "B01_SMALL_BLOCK",
@@ -80,6 +106,11 @@
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 2.5,
+      "y": 5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 3.5,
       "y": 5
     }
   ]

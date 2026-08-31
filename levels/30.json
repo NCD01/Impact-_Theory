@@ -7,109 +7,198 @@
   "pieces": [
     {
       "piece": "S01_ROUND_COLUMN",
-      "x": -4.4,
+      "x": -5.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "S01_ROUND_COLUMN",
-      "x": 4.4,
+      "x": -2,
       "y": 0,
       "support": true
     },
     {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 0,
+      "piece": "S01_ROUND_COLUMN",
+      "x": 2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 5.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "B03_LONG_BEAM",
-      "x": -2,
+      "x": -4,
       "y": 3
     },
     {
       "piece": "B03_LONG_BEAM",
-      "x": 2,
+      "x": 0,
+      "y": 3
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 4,
       "y": 3
     },
     {
       "piece": "B05_LARGE_BLOCK",
-      "x": -2,
+      "x": -5,
       "y": 4,
       "family": "stone"
     },
     {
       "piece": "B05_LARGE_BLOCK",
-      "x": 0,
+      "x": -3,
       "y": 4,
       "family": "stone"
     },
     {
       "piece": "B05_LARGE_BLOCK",
-      "x": 2,
+      "x": -1,
       "y": 4,
       "family": "stone"
     },
     {
-      "piece": "A03_CROSS_BEAM",
+      "piece": "B05_LARGE_BLOCK",
+      "x": 1,
+      "y": 4,
+      "family": "stone"
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 3,
+      "y": 4,
+      "family": "stone"
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 5,
+      "y": 4,
+      "family": "stone"
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": -4.5,
+      "y": 6
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": -3.5,
+      "y": 6
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
       "x": -2.5,
-      "y": 7.5
+      "y": 6
     },
     {
-      "piece": "A03_CROSS_BEAM",
+      "piece": "B04_TALL_BLOCK",
+      "x": -1.5,
+      "y": 6
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": -0.5,
+      "y": 6
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": 0.5,
+      "y": 6
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": 1.5,
+      "y": 6
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
       "x": 2.5,
-      "y": 7.5
+      "y": 6
     },
     {
-      "piece": "B03_LONG_BEAM",
-      "x": -2,
-      "y": 9
+      "piece": "B04_TALL_BLOCK",
+      "x": 3.5,
+      "y": 6
     },
     {
-      "piece": "B03_LONG_BEAM",
-      "x": 2,
+      "piece": "B04_TALL_BLOCK",
+      "x": 4.5,
+      "y": 6
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -5,
       "y": 9
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": -3,
-      "y": 10
+      "y": 9
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": -1,
-      "y": 10
+      "y": 9
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": 1,
-      "y": 10
+      "y": 9
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": 3,
+      "y": 9
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 5,
+      "y": 9
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -3.5,
+      "y": 10
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -2.5,
       "y": 10
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 11
+      "y": 10
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 11
+      "y": 10
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 11
+      "y": 10
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 11
+      "y": 10
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 2.5,
+      "y": 10
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 3.5,
+      "y": 10
     }
   ]
 }

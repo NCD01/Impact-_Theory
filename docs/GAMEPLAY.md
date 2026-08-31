@@ -18,18 +18,27 @@ nearer the cannon and a large one further back.
 
 | Action | Gesture |
 |---|---|
-| Aim | Drag anywhere. Horizontal is yaw, vertical is pitch. |
-| Fire one | Tap or click. |
-| Fire a stream | Press and hold for 0.22 s, then shots leave every 0.17 s. |
+| Aim | Touch where you want to hit. The cannon aims there. |
+| Fire one | Lift your finger, or click. |
+| Fire a stream | Press and hold for 0.28 s, then shots leave every 0.17 s. |
 
-Aim sensitivity is 620 pixels of drag per radian, measured against the smaller viewport
-dimension so a drag means the same fraction of the screen on every device.
+**Aiming is absolute, not relative.** The pointer position is resolved through the single
+projection helper onto a vertical plane at the structure's own depth, which gives the world
+point the player is pointing at. The cannon is then aimed to *land a ball* on that point,
+not merely to point at it: at 27 SU/s a shot across the playfield drops well over a metre,
+so the launch angle comes from the standard projectile solve
+
+    tan(theta) = (v² - sqrt(v⁴ - g(g d² + 2 h v²))) / (g d)
+
+taking the flatter of the two roots. Out of range, the barrel goes to 45 degrees, which
+reaches furthest.
 
 Yaw is clamped to plus or minus 0.62 rad, pitch to between -0.02 and 0.58 rad. The barrel
 can neither point at the sky, which wastes a shot, nor back at the player.
 
-A drag that travelled more than 2 percent of the viewport does not fire on release, so
-lining up a shot cannot fire by accident.
+A relative drag scheme shipped first and was replaced. It required the player to work out
+where the barrel would end up rather than simply pointing at a target, and its yaw sign was
+inverted so that dragging right aimed left.
 
 ## Destruction
 
@@ -110,6 +119,15 @@ how long a collapse takes to propagate down a stack, so one good shot that bring
 down reads as one large combo rather than five unrelated hits.
 
 **End of level:** 250 points per unused ball, on a difficulty that limits them.
+
+## Structures
+
+Every level stands on a **platform**: a pair or more of pedestals carrying a continuous
+deck. Pedestals sit under every joint in that deck, so the deck is properly carried and
+everything above it has continuous ground. A beam spanning two pedestals is still a span,
+which is correct and is what the reference clip shows; what never happens is a piece with
+nothing beneath it. `scripts/verify-level-support.mjs` checks this and the unit suite runs
+the same check, so it cannot regress.
 
 ## Stars
 

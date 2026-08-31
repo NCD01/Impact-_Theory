@@ -6,13 +6,13 @@
   "pieces": [
     {
       "piece": "S02_SHORT_COLUMN",
-      "x": -1.6,
+      "x": -1.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "S02_SHORT_COLUMN",
-      "x": 1.6,
+      "x": 1.5,
       "y": 0,
       "support": true
     },
@@ -23,13 +23,23 @@
     },
     {
       "piece": "B01_SMALL_BLOCK",
-      "x": -0.5,
+      "x": -1,
       "y": 3
     },
     {
       "piece": "B01_SMALL_BLOCK",
-      "x": 0.5,
+      "x": 0,
       "y": 3
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1,
+      "y": 3
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 0,
+      "y": 4
     }
   ]
 }

@@ -28,7 +28,10 @@ import {
   Vector3,
 } from 'three';
 
-import { CANNON } from '../core/constants.js';
+import { CANNON, WORLD } from '../core/constants.js';
+
+/** Gravity as a positive magnitude, which is the form the ballistic solve wants. */
+const GRAVITY = Math.abs(WORLD.GRAVITY_Y);
 
 /** Original palette for the cannon. Not sampled from the reference clip. */
 const COLORS = {
@@ -128,6 +131,67 @@ export function createCannon(parent) {
     applyAim();
   }
 
+  /**
+   * Aims the barrel so that a ball fired now would land on `target`.
+   *
+   * This is what makes "point at the block you want to hit" work, rather than "point the
+   * barrel at the block", which are different things because a ball falls on the way. At
+   * this muzzle speed a shot across the playfield drops well over a metre, so a barrel
+   * pointed straight at a target lands short every time.
+   *
+   * The solve is the standard projectile launch angle for a target at horizontal distance
+   * d and height difference h, fired at speed v under gravity g:
+   *
+   *     tan(theta) = (v^2 - sqrt(v^4 - g*(g*d^2 + 2*h*v^2))) / (g*d)
+   *
+   * The minus root is the flat trajectory rather than the lobbed one, which is the shot a
+   * player expects from a cannon. If the discriminant is negative the target is out of
+   * range at this speed, and the barrel goes to 45 degrees, which is the angle that
+   * reaches furthest.
+   *
+   * Runs twice because the muzzle moves when the aim changes: the launch point is at the
+   * end of a 1.9 SU barrel, so solving from the old muzzle position and then re-solving
+   * from the new one converges immediately.
+   *
+   * Assumes `target` is in world space, in SU. Clamps to the aim limits afterwards, so a
+   * target behind the player or straight overhead produces the nearest legal aim rather
+   * than a wild one.
+   *
+   * @param {{x: number, y: number, z: number}} target
+   */
+  function aimAt(target) {
+    for (let pass = 0; pass < 2; pass += 1) {
+      const from = muzzle().position;
+
+      const dx = target.x - from.x;
+      const dz = target.z - from.z;
+      const d = Math.hypot(dx, dz);
+      const h = target.y - from.y;
+
+      // Barrel points along local -Z at zero yaw, and a positive rotation about +Y swings
+      // it toward -X. So the yaw that points at (dx, dz) is atan2(-dx, -dz). Getting this
+      // sign wrong is what made dragging right aim left in v1.9.0.
+      const wantYaw = Math.atan2(-dx, -dz);
+
+      let wantPitch;
+      if (d < 1e-3) {
+        wantPitch = CANNON.PITCH_MAX_RAD;
+      } else {
+        const v2 = CANNON.MUZZLE_SPEED * CANNON.MUZZLE_SPEED;
+        const g = GRAVITY;
+        const disc = v2 * v2 - g * (g * d * d + 2 * h * v2);
+        wantPitch = disc < 0
+          // Out of range. 45 degrees reaches furthest, so it is the best available answer.
+          ? Math.PI / 4
+          : Math.atan((v2 - Math.sqrt(disc)) / (g * d));
+      }
+
+      yaw = clamp(wantYaw, -CANNON.YAW_LIMIT_RAD, CANNON.YAW_LIMIT_RAD);
+      pitch = clamp(wantPitch, CANNON.PITCH_MIN_RAD, CANNON.PITCH_MAX_RAD);
+      applyAim();
+    }
+  }
+
   /** Sets aim absolutely. Used when a level starts, to face straight ahead. */
   function setAim(newYaw, newPitch) {
     yaw = clamp(newYaw, -CANNON.YAW_LIMIT_RAD, CANNON.YAW_LIMIT_RAD);
@@ -187,6 +251,7 @@ export function createCannon(parent) {
   return {
     root,
     aimBy,
+    aimAt,
     setAim,
     muzzle,
     flash,

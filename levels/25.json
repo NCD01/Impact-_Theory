@@ -5,102 +5,155 @@
   "par": 10,
   "pieces": [
     {
+      "piece": "S02_SHORT_COLUMN",
+      "x": -5.5,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": -2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": 2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": 5.5,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": -4,
+      "y": 2
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 4,
+      "y": 2
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -5,
+      "y": 3,
+      "family": "concrete"
+    },
+    {
       "piece": "B05_LARGE_BLOCK",
       "x": -3,
-      "y": 0,
+      "y": 3,
       "family": "concrete"
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": -1,
-      "y": 0,
+      "y": 3,
       "family": "concrete"
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 1,
-      "y": 0,
+      "y": 3,
       "family": "concrete"
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 3,
-      "y": 0,
+      "y": 3,
+      "family": "concrete"
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 5,
+      "y": 3,
       "family": "concrete"
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
-      "x": -3,
-      "y": 2,
-      "family": "stone"
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": -1,
-      "y": 2,
-      "family": "stone"
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 1,
-      "y": 2,
-      "family": "stone"
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 3,
-      "y": 2,
+      "x": -5,
+      "y": 5,
       "family": "stone"
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": -3,
-      "y": 3
+      "y": 5,
+      "family": "stone"
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": -1,
-      "y": 3
+      "y": 5,
+      "family": "stone"
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": 1,
-      "y": 3
+      "y": 5,
+      "family": "stone"
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": 3,
-      "y": 3
+      "y": 5,
+      "family": "stone"
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 5,
+      "y": 5,
+      "family": "stone"
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -3.5,
+      "y": 6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -2.5,
-      "y": 4
+      "y": 6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 4
+      "y": 6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 4
+      "y": 6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 4
+      "y": 6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 4
+      "y": 6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 2.5,
-      "y": 4
+      "y": 6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 3.5,
+      "y": 6
     }
   ]
 }

@@ -140,6 +140,29 @@ export function createProjection(canvas, camera) {
   }
 
   /**
+   * Intersects a pointer event's ray with a vertical plane at a given depth.
+   *
+   * This is how "point at the block you want to hit" works: the plane sits at the
+   * structure's own Z, so the point returned is where the player's finger is pointing, in
+   * the structure's plane, and the cannon can be aimed straight at it.
+   *
+   * Returns null when the ray is parallel to the plane or points away from it. Callers
+   * must handle null rather than assuming a hit.
+   *
+   * @param {{clientX: number, clientY: number}} event
+   * @param {number} z World depth of the plane, SU.
+   * @returns {Vector3|null} A reused vector. Copy it if you need to keep it.
+   */
+  function eventToDepthPlanePoint(event, z) {
+    const { ray } = rayFromEvent(event);
+    const denom = ray.direction.z;
+    if (Math.abs(denom) < 1e-6) return null;
+    const t = (z - ray.origin.z) / denom;
+    if (t <= 0) return null;
+    return scratch.copy(ray.direction).multiplyScalar(t).add(ray.origin);
+  }
+
+  /**
    * Projects a world position to CSS pixel coordinates within the canvas.
    *
    * Used for HUD anchoring and the debug overlay. `behind` is true when the point is
@@ -165,6 +188,7 @@ export function createProjection(canvas, camera) {
     pixelsToViewportFraction,
     rayFromEvent,
     eventToGroundPoint,
+    eventToDepthPlanePoint,
     worldToScreen,
   };
 }

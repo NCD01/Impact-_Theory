@@ -6,13 +6,19 @@
   "pieces": [
     {
       "piece": "S02_SHORT_COLUMN",
-      "x": -3,
+      "x": -3.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "S02_SHORT_COLUMN",
-      "x": 3,
+      "x": 0,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": 3.5,
       "y": 0,
       "support": true
     },
@@ -28,6 +34,11 @@
     },
     {
       "piece": "B05_LARGE_BLOCK",
+      "x": -3,
+      "y": 3
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
       "x": -1,
       "y": 3
     },
@@ -37,6 +48,16 @@
       "y": 3
     },
     {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 3,
+      "y": 3
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -3,
+      "y": 5
+    },
+    {
       "piece": "B02_MEDIUM_BLOCK",
       "x": -1,
       "y": 5
@@ -44,6 +65,11 @@
     {
       "piece": "B02_MEDIUM_BLOCK",
       "x": 1,
+      "y": 5
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 3,
       "y": 5
     }
   ]

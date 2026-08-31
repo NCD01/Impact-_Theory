@@ -38,9 +38,14 @@ The FBX originals are never modified. `scripts/convert-blocks.mjs` reads them an
 | The ball, with baked stripe vertex colours | `src/game/balls.js` | MIT with this project | Ammunition |
 | Ground plane, sky dome, fog, lighting | `src/render/scene.js` | MIT with this project | Every level |
 | Dust particles | `src/render/dust.js` | MIT with this project | Every fracture |
-| Every sound: impacts per family, cannon, fracture, rumble, level clear, fail, interface tap, background pad | `src/audio/audio.js`, Web Audio synthesis | MIT with this project | Throughout |
+| Every sound: impacts per family, cannon, fracture, rumble, level clear, fail, interface tap | `src/audio/audio.js`, Web Audio synthesis | MIT with this project | Throughout |
 | Star glyphs and interface icons | Unicode characters in `src/ui/ui.js` | Not applicable | Interface |
 | All 30 level layouts and their names | `scripts/author-levels.mjs` | MIT with this project | The game |
+
+**There is deliberately no background music.** A slow pad shipped in v1.9.0 and was removed
+in v1.13.0. A sustained drone under a game built on percussive impacts fights the thing the
+player is listening for, and on a level replayed twenty times it becomes noise. If music is
+ever wanted it belongs as a short loop that ducks under impacts, not a continuous pad.
 
 **Why the material textures are generated rather than exported.** The V2 FBX files carry
 material names and per face assignment but no appearance: every material reads back as

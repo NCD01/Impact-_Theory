@@ -177,3 +177,77 @@ describe('level validator', () => {
     expect(() => assertValidLevel(validLevel({ par: 0, name: '' }))).toThrow(/Invalid level/);
   });
 });
+
+describe('level support', () => {
+  /**
+   * Every piece must have something under it.
+   *
+   * A beam resting on two pedestals is only a quarter covered and is correct: that is a
+   * span. Two things are not correct, and both shipped in the first version of the levels
+   * before the owner spotted them in the first screenshot he looked at:
+   *
+   *   floating   nothing at all beneath the piece
+   *   teetering  support on only one side of the piece's centre, so it topples on contact
+   *
+   * `scripts/verify-level-support.mjs` runs the same check from the command line.
+   */
+  const dim = Object.fromEntries(
+    JSON.parse(fs.readFileSync(
+      path.join(REPO_ROOT, 'Assets', 'Art', 'Blocks', 'block_asset_manifest.json'), 'utf8',
+    )).pieces.map((p) => [p.id, p]),
+  );
+
+  const extents = (spec) => {
+    const d = dim[spec.piece];
+    const bottom = spec.y + (d.pivot === 'geometric-center' ? -d.height / 2 : 0);
+    return {
+      x0: spec.x - d.width / 2,
+      x1: spec.x + d.width / 2,
+      bottom,
+      top: bottom + d.height,
+    };
+  };
+
+  it.each(levels)('$file places nothing in mid air', ({ file, data }) => {
+    const boxes = data.pieces.map(extents);
+    const problems = [];
+
+    data.pieces.forEach((spec, i) => {
+      const e = boxes[i];
+      if (e.bottom <= 0.01) return; // resting on the ground
+
+      let covered = 0;
+      let leftOfCentre = false;
+      let rightOfCentre = false;
+      boxes.forEach((o, j) => {
+        if (i === j) return;
+        if (Math.abs(o.top - e.bottom) > 0.06) return; // not directly beneath
+        const lo = Math.max(e.x0, o.x0);
+        const hi = Math.min(e.x1, o.x1);
+        if (hi - lo <= 0.02) return;
+        covered += hi - lo;
+        if (lo < spec.x - 0.02) leftOfCentre = true;
+        if (hi > spec.x + 0.02) rightOfCentre = true;
+      });
+
+      const fraction = covered / (e.x1 - e.x0);
+      if (fraction < 0.02) {
+        problems.push(`${spec.piece} at x=${spec.x} y=${spec.y} is floating`);
+      } else if (!(leftOfCentre && rightOfCentre) && fraction < 0.5) {
+        problems.push(
+          `${spec.piece} at x=${spec.x} y=${spec.y} is supported on one side only `
+          + `(${Math.round(fraction * 100)}%)`,
+        );
+      }
+    });
+
+    expect(problems, `${file} has badly placed pieces`).toEqual([]);
+  });
+
+  it('gives every level a platform of supports to stand on', () => {
+    for (const { file, data } of levels) {
+      const supports = data.pieces.filter((p) => p.support === true);
+      expect(supports.length, `${file} has no supports`).toBeGreaterThanOrEqual(2);
+    }
+  });
+});

@@ -6,35 +6,40 @@
   "pieces": [
     {
       "piece": "S02_SHORT_COLUMN",
-      "x": -2.2,
+      "x": -1.5,
       "y": 0,
       "support": true
     },
     {
       "piece": "S02_SHORT_COLUMN",
-      "x": 2.2,
+      "x": 1.5,
       "y": 0,
       "support": true
     },
     {
-      "piece": "S05_ARCH",
+      "piece": "B03_LONG_BEAM",
       "x": 0,
       "y": 2
     },
     {
+      "piece": "S05_ARCH",
+      "x": 0,
+      "y": 3
+    },
+    {
       "piece": "B01_SMALL_BLOCK",
       "x": -1,
-      "y": 4
+      "y": 5
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0,
-      "y": 4
+      "y": 5
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1,
-      "y": 4
+      "y": 5
     }
   ]
 }

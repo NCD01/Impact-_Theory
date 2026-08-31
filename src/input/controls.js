@@ -3,111 +3,111 @@
  *
  * OWNS: turning pointer events into two game intentions, aim and fire. Nothing else.
  *
- * MUST NOT OWN: any screen to world arithmetic. Every pixel measurement here goes
- * through the projection helper, because standard 4 requires exactly one place that
- * knows about viewport size and this is the handler most likely to break that rule.
- * If you find yourself reaching for window.innerWidth in this file, the answer is in
+ * MUST NOT OWN: any screen to world arithmetic. Every pixel measurement here goes through
+ * the projection helper, because standard 4 requires exactly one place that knows about
+ * viewport size and this is the handler most likely to break that rule. If you find
+ * yourself reaching for window.innerWidth in this file, the answer is in
  * src/core/projection.js.
  *
  * One code path serves touch and mouse. Pointer events unify them, so there is no
  * separate desktop path to keep in step.
  *
- * The control scheme, which matches the reference clip's single thumb interaction:
- *   Drag anywhere    aims the cannon. Horizontal drag is yaw, vertical drag is pitch.
- *   Release          fires, if the drag was short enough to count as a tap.
- *   Hold             streams shots at a capped rate.
+ * THE CONTROL SCHEME, AND WHY IT CHANGED.
  *
- * Dragging to aim and tapping to fire share the same gesture on purpose. A drag that
- * moved a long way is treated as aiming only, so a player lining up a shot does not
- * fire by accident when they lift their thumb.
+ * It is now **point to aim**: touch or move over a spot and the cannon aims at that spot
+ * directly. Lift to fire. Hold to keep firing.
+ *
+ * The first version was a relative drag, where the aim moved by however far the finger
+ * travelled. The owner's verdict after playing it was that he had to "hold my finger in
+ * the screen and drag it to move the cannon", when he should "just point and it should
+ * move", and that dragging right moved the cannon left. Both complaints were right. The
+ * inversion was a genuine sign error in the yaw, and relative drag is the wrong scheme
+ * for a game where the whole screen is the target: it makes the player do arithmetic to
+ * work out where the barrel will end up.
+ *
+ * Point to aim means the barrel goes where the finger is, every time, with no memory of
+ * where it was before. A child can play it without being told how.
+ *
+ * On a desktop the same handler also tracks the mouse with no button held, so the cannon
+ * follows the cursor and a click fires where it is pointing.
  */
 
 import { CANNON } from '../core/constants.js';
 
-/**
- * Movement in viewport fractions beyond which a gesture is aiming rather than tapping.
- * 0.02 is about 8 px on a 400 px wide phone, which is under the width of a fingertip,
- * so a deliberate tap still fires while a real aim drag does not.
- */
-const TAP_MOVEMENT_THRESHOLD = 0.02;
-
 /** Seconds a pointer must be held before hold-to-stream starts. */
-const HOLD_TO_STREAM_DELAY_S = 0.22;
+const HOLD_TO_STREAM_DELAY_S = 0.28;
 
 /**
  * Attaches pointer handling to the canvas.
  *
- * Assumes `projection.resize()` has been called at least once, and that the caller
- * calls `update(dt)` every frame so hold-to-stream can fire. Returns a controller with
- * a `dispose()` that removes every listener; a level teardown that forgets to call it
- * leaks a listener per level.
+ * Assumes `projection.resize()` has been called at least once, and that the caller calls
+ * `update(dt)` every frame so hold-to-stream can fire. `onAimAt` receives a world space
+ * point the player is pointing at, already resolved through the projection helper, or is
+ * not called at all when the pointer is somewhere that does not resolve to a point, such
+ * as above the horizon.
+ *
+ * Returns a controller with a `dispose()` that removes every listener; a teardown that
+ * forgets to call it leaks a listener per level.
  *
  * @param {HTMLCanvasElement} canvas
  * @param {import('../core/projection.js').Projection} projection
  * @param {object} handlers
- * @param {(dYaw: number, dPitch: number) => void} handlers.onAim
- * @param {() => void} handlers.onFire  Called once per shot the player asks for.
+ * @param {(target: {x: number, y: number, z: number}) => void} handlers.onAimAt
+ * @param {() => void} handlers.onFire
+ * @param {() => number} handlers.getAimDepth  World Z of the plane to aim within, SU.
  */
-export function createControls(canvas, projection, { onAim, onFire }) {
+export function createControls(canvas, projection, { onAimAt, onFire, getAimDepth }) {
   let pointerId = null;
-  let lastX = 0;
-  let lastY = 0;
-  let travelled = 0;
   let heldFor = 0;
   let streamCooldown = 0;
   let streaming = false;
   let enabled = true;
 
   /**
-   * Converts a pixel movement to an aim change in radians.
+   * Resolves a pointer position to a world point and reports it.
    *
-   * The conversion runs through the projection helper's viewport fraction, then through
-   * a pixels-per-radian constant, so sensitivity is the same fraction of a screen on
-   * every device rather than the same number of physical pixels.
+   * The point is taken on a vertical plane at the structure's own depth, so pointing at a
+   * block on screen produces that block's position in the world and the cannon can be
+   * aimed straight at it. Height is clamped at the ground, because pointing at the sand in
+   * front of the structure should aim at the sand, not below it.
    */
-  function applyDrag(dxPixels, dyPixels) {
-    const frac = projection.pixelsToViewportFraction(dxPixels, dyPixels);
-    const { width, height } = projection.metrics();
-    // Convert back to a device independent pixel count using the reference dimension,
-    // so that DRAG_PIXELS_PER_RADIAN means the same thing in portrait and landscape.
-    const reference = Math.min(width, height);
-    const dYaw = (frac.x * reference) / CANNON.DRAG_PIXELS_PER_RADIAN;
-    // Dragging down aims up, which is how a touch camera behaves everywhere else.
-    const dPitch = -(frac.y * reference) / CANNON.DRAG_PIXELS_PER_RADIAN;
-    onAim(dYaw, dPitch);
+  function aimFromEvent(event) {
+    const point = projection.eventToDepthPlanePoint(event, getAimDepth());
+    if (!point) return;
+    onAimAt({ x: point.x, y: Math.max(0, point.y), z: point.z });
   }
 
   function onPointerDown(event) {
-    if (!enabled || pointerId !== null) return;
+    if (!enabled) return;
     pointerId = event.pointerId;
-    lastX = event.clientX;
-    lastY = event.clientY;
-    travelled = 0;
     heldFor = 0;
     streaming = false;
     streamCooldown = 0;
+    // Aim immediately on touch down, so the first thing a finger does is move the cannon
+    // rather than nothing.
+    aimFromEvent(event);
     canvas.setPointerCapture?.(event.pointerId);
   }
 
   function onPointerMove(event) {
-    if (!enabled || event.pointerId !== pointerId) return;
-    const dx = event.clientX - lastX;
-    const dy = event.clientY - lastY;
-    lastX = event.clientX;
-    lastY = event.clientY;
-
-    const frac = projection.pixelsToViewportFraction(dx, dy);
-    travelled += Math.hypot(frac.x, frac.y);
-    applyDrag(dx, dy);
+    if (!enabled) return;
+    // With a pointer down this is a drag, and the aim follows the finger. With no pointer
+    // down it is a mouse moving over the canvas, and the aim follows the cursor, which is
+    // what a desktop player expects. A touch screen sends no move events without contact,
+    // so this costs nothing there.
+    if (pointerId !== null && event.pointerId !== pointerId) return;
+    aimFromEvent(event);
   }
 
   function onPointerUp(event) {
     if (event.pointerId !== pointerId) return;
     canvas.releasePointerCapture?.(event.pointerId);
     pointerId = null;
-    // A tap fires. A drag does not, so lining up a shot cannot fire by accident. A
-    // gesture that already streamed does not fire again on release either.
-    if (enabled && !streaming && travelled < TAP_MOVEMENT_THRESHOLD) onFire();
+    // Every release fires, unless the hold already started streaming, in which case the
+    // shots have been going out all along and one more on release would be a surprise.
+    // There is no drag threshold any more: with point to aim, a drag is aiming and the
+    // release is still the shot the player asked for.
+    if (enabled && !streaming) onFire();
     streaming = false;
   }
 
@@ -120,8 +120,8 @@ export function createControls(canvas, projection, { onAim, onFire }) {
   /**
    * Drives hold-to-stream. Must be called once per frame.
    *
-   * Streaming is rate limited by CANNON.FIRE_INTERVAL_S rather than by frame rate, so a
-   * phone running at 40 fps and a desktop at 144 fps fire at the same rate.
+   * Rate limited by CANNON.FIRE_INTERVAL_S rather than by frame rate, so a phone at 40 fps
+   * and a desktop at 144 fps fire at the same rate.
    *
    * @param {number} dt Seconds since the last frame.
    */
@@ -134,8 +134,8 @@ export function createControls(canvas, projection, { onAim, onFire }) {
 
     if (!streaming) {
       streaming = true;
-      // The first streamed shot goes immediately, so holding feels responsive rather
-      // than delayed by a full interval on top of the hold delay.
+      // The first streamed shot goes immediately, so holding feels responsive rather than
+      // delayed by a full interval on top of the hold delay.
       streamCooldown = 0;
     }
     if (streamCooldown <= 0) {

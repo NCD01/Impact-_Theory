@@ -63,6 +63,7 @@ export function createUI(root, projection, handlers = {}) {
     difficultyButtons: root.querySelectorAll('[data-difficulty]'),
     muteButton: el('mute-button'),
     debug: el('debug'),
+    hint: el('hint'),
     version: el('version-label'),
   };
 
@@ -77,6 +78,7 @@ export function createUI(root, projection, handlers = {}) {
   });
 
   on('title-play', () => handlers.onPlay?.());
+  on('title-levels', () => handlers.onChooseLevel?.());
   on('title-endless', () => handlers.onEndless?.());
   on('title-settings', () => show('settings'));
   on('select-back', () => show('title'));
@@ -263,6 +265,32 @@ export function createUI(root, projection, handlers = {}) {
     nodes.muteButton.setAttribute('aria-pressed', String(muted));
   }
 
+  /**
+   * Shows the how to play hint over the game, for a few seconds.
+   *
+   * Shown on the first level a player ever opens and not again, because a hint that
+   * reappears every level is an obstacle rather than help. It is pointer transparent, so
+   * it never eats the first touch it is telling the player to make.
+   *
+   * @param {number} seconds
+   */
+  function showHint(seconds = 4) {
+    nodes.hint.hidden = false;
+    nodes.hint.classList.remove('fading');
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => {
+      nodes.hint.classList.add('fading');
+      hintTimer = setTimeout(() => { nodes.hint.hidden = true; }, 600);
+    }, seconds * 1000);
+  }
+
+  let hintTimer = 0;
+
+  function hideHint() {
+    clearTimeout(hintTimer);
+    nodes.hint.hidden = true;
+  }
+
   /** Writes the debug overlay, or hides it. */
   function setDebug(text) {
     if (!text) { nodes.debug.hidden = true; return; }
@@ -282,6 +310,8 @@ export function createUI(root, projection, handlers = {}) {
     renderLevelSelect,
     showResults,
     syncSettings,
+    showHint,
+    hideHint,
     setDebug,
     setVersion,
     get screen() { return root.dataset.screen; },
@@ -338,8 +368,15 @@ const TEMPLATE = `
     <h1>Impact Theory</h1>
     <p class="tagline">Point the cannon. Bring it down.</p>
     <button id="title-play" class="primary" type="button">Play</button>
+    <button id="title-levels" type="button">Choose a level</button>
     <button id="title-endless" type="button">Endless</button>
     <button id="title-settings" type="button">Settings</button>
+    <ul class="howto">
+      <li><b>Touch where you want to hit.</b> The cannon aims there.</li>
+      <li><b>Lift your finger to fire.</b></li>
+      <li><b>Hold to keep firing.</b></li>
+      <li>Knock everything down to finish the level.</li>
+    </ul>
     <p class="version" id="version-label"></p>
   </div>
 </section>
@@ -387,6 +424,10 @@ const TEMPLATE = `
     <button id="settings-back" class="primary" type="button">Back</button>
   </div>
 </section>
+
+<div id="hint" class="hint" hidden>
+  <p>Touch where you want to hit, then lift your finger to fire.</p>
+</div>
 
 <pre id="debug" class="debug" hidden></pre>
 `;
