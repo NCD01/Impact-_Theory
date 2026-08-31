@@ -49,6 +49,16 @@ const FBX_UNITS_PER_SU = 100;
  */
 const DIMENSION_TOLERANCE_SU = 0.001;
 
+/**
+ * How many times a material texture repeats across one Structural Unit of surface.
+ *
+ * 0.5 means one full texture per 2 SU, so a 1 SU crate shows half the wood grain sheet
+ * and the brick texture's eight courses spread over 2 SU, giving four courses per SU.
+ * Chosen by rendering the kit and comparing against the V2 preview images, where the
+ * blocks show a handful of coarse divisions rather than fine masonry.
+ */
+const UV_REPEATS_PER_SU = 0.5;
+
 const REPO_ROOT = path.resolve(import.meta.dirname, '..');
 const BLOCKS_DIR = path.join(REPO_ROOT, 'Assets', 'Art', 'Blocks');
 const MANIFEST_PATH = path.join(BLOCKS_DIR, 'block_asset_manifest.json');
@@ -201,6 +211,16 @@ async function convertPiece(piece, variant, exporter) {
     // between 261 draw calls per column and 2.
     if (geom.groups && geom.groups.length > 1) mergeGroups(geom);
 
+    // Every mesh gets fresh box projected UVs. Two reasons, both measured.
+    // First, several authored meshes carry no uv attribute at all, so any texture
+    // applied to them samples nothing and the piece renders as flat averaged colour.
+    // S05_ARCH was the piece that showed this: a brick arch rendering pale pink.
+    // Second, the authored UVs that do exist have no consistent texel density, so a
+    // brick course would be a different size on a 1 SU block and a 4 SU beam. Box
+    // projection in Structural Units gives every piece in the kit the same surface
+    // scale, which is what makes a wall of mixed pieces read as one material.
+    generateBoxUVs(geom);
+
     const mats = Array.isArray(o.material) ? o.material : [o.material];
     const converted = mats.map((m) => toStandardMaterial(m, materialNames));
     o.material = converted.length === 1 ? converted[0] : converted;
@@ -259,6 +279,45 @@ async function convertPiece(piece, variant, exporter) {
     materials: [...materialNames],
     errors,
   };
+}
+
+/**
+ * Replaces a geometry's UVs with a box projection in Structural Units.
+ *
+ * Each vertex is projected on the plane its normal points most strongly along, so a
+ * face pointing up is mapped from its X and Z, and a face pointing sideways from the
+ * other two axes. That is the standard box or triplanar projection, and it suits a kit
+ * of axis aligned blocks exactly.
+ *
+ * Assumes the geometry is already scaled to SU and carries a normal attribute; a mesh
+ * with no normals is left alone rather than given nonsense UVs. Mutates the geometry.
+ *
+ * @param {import('three').BufferGeometry} geom
+ */
+function generateBoxUVs(geom) {
+  const pos = geom.attributes.position;
+  const nor = geom.attributes.normal;
+  if (!pos || !nor) return;
+
+  const uv = new Float32Array(pos.count * 2);
+  for (let i = 0; i < pos.count; i += 1) {
+    const nx = Math.abs(nor.getX(i));
+    const ny = Math.abs(nor.getY(i));
+    const nz = Math.abs(nor.getZ(i));
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+    const z = pos.getZ(i);
+
+    let u;
+    let v;
+    if (ny >= nx && ny >= nz) { u = x; v = z; } // facing up or down
+    else if (nx >= nz) { u = z; v = y; } // facing left or right
+    else { u = x; v = y; } // facing front or back
+
+    uv[i * 2] = u * UV_REPEATS_PER_SU;
+    uv[i * 2 + 1] = v * UV_REPEATS_PER_SU;
+  }
+  geom.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
 }
 
 function checkDimension(errors, label, measured, expected) {

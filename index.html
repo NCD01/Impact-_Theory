@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- viewport-fit=cover so the canvas reaches under a phone's rounded corners and
+         notch; the interface keeps clear of them with env(safe-area-inset-*) below. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#3f9fd8" />
+    <meta
+      name="description"
+      content="Impact Theory. Fire balls from a cannon and bring the structure down."
+    />
+    <title>Impact Theory</title>
+    <style>
+      /* Layout only. The game draws itself; this stylesheet exists to make the canvas
+         fill a phone screen without scrolling and to place the thin interface over it. */
+      :root {
+        --ink: #16303f;
+        --panel: rgba(255, 253, 247, 0.94);
+        --accent: #e2503f;
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+        color-scheme: light;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #b9e4f2;
+        font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+        color: var(--ink);
+        /* Stops a phone treating a drag on the canvas as a page scroll or a pull to
+           refresh, which would otherwise swallow the aim gesture. */
+        overscroll-behavior: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      #app { position: fixed; inset: 0; }
+
+      #game-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+
+      /* Loading and error states are plain DOM so they appear before any WebGL or
+         WebAssembly has loaded, which is exactly when they are needed. */
+      #boot {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-content: center;
+        gap: 0.6rem;
+        text-align: center;
+        background: linear-gradient(#b9e4f2, #e6c98f);
+        padding: 2rem;
+      }
+
+      #boot h1 { margin: 0; font-size: 1.9rem; letter-spacing: 0.02em; }
+      #boot p { margin: 0; opacity: 0.8; }
+
+      #boot.hidden { display: none; }
+
+      #boot-error {
+        max-width: 34rem;
+        text-align: left;
+        background: var(--panel);
+        border-left: 4px solid var(--accent);
+        border-radius: 6px;
+        padding: 0.9rem 1.1rem;
+        font-size: 0.9rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      #boot-error:empty { display: none; }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game-canvas"></canvas>
+      <div id="boot">
+        <h1>Impact Theory</h1>
+        <p id="boot-status">Loading</p>
+        <pre id="boot-error"></pre>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

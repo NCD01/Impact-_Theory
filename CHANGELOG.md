@@ -5,6 +5,62 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.6.0+10 - 2026-08-30 - Feature
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Phase 4, the vertical slice. A cannon, drag to aim, fire, a structure
+standing on supports, a real collapse, and level clear detection, playable end to end in
+a phone sized viewport.
+
+**Changes:**
+- `src/physics/world.js`. The Rapier world, body creation from collider descriptions,
+  the fixed 60 Hz timestep, and the conversion of contact events into impact energy in
+  joules using pre-step velocities and reduced mass.
+- `src/physics/damage.js`. The energy to damage rule, kept pure so it can be tested
+  without a physics world.
+- `src/render/scene.js`. Renderer, fixed camera, lighting, ground, sky, and camera
+  shake scaled to impact energy.
+- `src/render/dust.js`. A pooled particle system for fracture dust.
+- `src/render/materials.js`. The V2 material appearance, rebuilt in code.
+- `src/game/structure.js`. Piece placement, damage routing, fracture into real rigid
+  body fragments, and the single level clear rule.
+- `src/game/balls.js`, `src/game/cannon.js`, `src/input/controls.js`,
+  `src/blocks/loader.js`, `src/main.js`, `index.html`.
+
+**A finding that changed the plan.** The V2 materialized FBX files carry material names
+and per face material assignment, but no appearance at all. All twelve materials across
+all fifteen files read back as `MeshPhongMaterial` with colour `#cccccc`, no texture map
+and no useful specular. The V2 look was authored as procedural Blender node materials,
+which FBX cannot carry, which is why `V2_MATERIAL_LIBRARY.blend` exists. Baking them
+would need Blender, which is not installed on this machine. So appearance is rebuilt in
+code, keyed to the same twelve authored material names, with colours read off the V2
+preview renders. The per face assignment the FBX did preserve is what makes it work.
+This is an approximation of the approved art direction, not the direction itself.
+
+**Two rendering defects found by looking at the output rather than by reasoning:**
+- The steel columns rendered solid black. three.js shades a metallic surface almost
+  entirely from reflected environment light, and this scene has no environment map by
+  design, so any metalness above zero renders black. Metalness is now zero everywhere
+  and metal is carried by colour and a brushed texture.
+- The brick arch rendered pale pink. Several authored meshes carry no `uv` attribute at
+  all, so any texture applied to them sampled nothing. The conversion step now generates
+  box projected UVs in Structural Units for every mesh, which also gives the whole kit
+  one consistent surface scale.
+
+**Validation Evidence:** The game was run in a real browser at a 390 x 844 portrait
+viewport under Playwright, not merely built. It reported `ready`, 15 of 15 models
+loaded, 0 failed, and no console errors of any kind across three runs. Firing eighteen
+shots brought the structure from 9 standing pieces to 0, with 11 pieces destroyed and 41
+fragments created, and `cleared` became true. Screenshots of the standing structure and
+of the resulting rubble field are in `.agent_temp/screenshots`. After the UV fix, a
+reload of all fifteen converted models confirmed 28 of 28 meshes carry a `uv` attribute
+and 15 of 15 still conform to the manifest. `npx eslint .` exits 0.
+
+**Not yet true:** there is no interface, no scoring, no level file format and no audio.
+Difficulty constants exist and are applied but are not selectable. Frame rate measured
+under headless Playwright is software rendered and is not a valid measurement of the
+target device; the body budget spike has not been run.
+
 ## v1.5.1+9 - 2026-08-30 - Fix
 
 **Author:** Claude Opus 5, unattended build session
