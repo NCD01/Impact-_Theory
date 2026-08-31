@@ -55,6 +55,35 @@ export const WORLD = {
   GROUND_HALF_EXTENT: 60,
 
   /**
+   * Damping applied to every piece and fragment, per second.
+   *
+   * Small on purpose. Damping is not friction: it bleeds energy out of a body regardless
+   * of what it is touching, so a large value makes a collapse look like it is happening
+   * underwater. These values exist only to stop the very small residual jitter that keeps
+   * a settled stack awake and costing solver time forever.
+   */
+  PIECE_LINEAR_DAMPING: 0.06,
+  PIECE_ANGULAR_DAMPING: 0.12,
+
+  /**
+   * Damping for a ball, lower still. A ball is meant to carry its energy to the target,
+   * so almost nothing is taken out of it in flight.
+   */
+  BALL_LINEAR_DAMPING: 0.01,
+  BALL_ANGULAR_DAMPING: 0.05,
+
+  /** Ground surface. High friction so debris stops rather than skating across the sand. */
+  GROUND_FRICTION: 0.9,
+  GROUND_RESTITUTION: 0.05,
+
+  /**
+   * Contact force below which Rapier raises no event, newtons. A settled structure
+   * presses on itself constantly, and without a floor the event queue fills with the
+   * weight of the structure standing still.
+   */
+  CONTACT_FORCE_EVENT_THRESHOLD_N: 60,
+
+  /**
    * A body slower than this in SU/s and rad/s for SLEEP_TIME_S is put to sleep by
    * Rapier and stops costing solver time. Rubble at rest is the majority of bodies
    * late in a level, so this matters more than it looks.
@@ -231,6 +260,21 @@ export const DESTRUCTION = {
    * and keeps it inside the measured ceiling with the collapse still going.
    */
   MAX_FRAGMENTS: 36,
+
+  /**
+   * How far a piece must be through its hit points before it starts to darken, and how
+   * much darker it gets at the point of breaking. Below the threshold nothing shows,
+   * because tinting on the first graze makes every structure look damaged at a glance.
+   */
+  DAMAGE_TINT_THRESHOLD: 0.25,
+  DAMAGE_TINT_DEPTH: 0.45,
+
+  /**
+   * How far across the parent piece a fragment may spawn, as a fraction of the parent's
+   * own size. Below 1 so debris appears from inside the piece that broke rather than
+   * from a shell around it.
+   */
+  FRAGMENT_SPAWN_SPREAD: 0.7,
 
   /** Dust particles per fracture, and how long they live. */
   DUST_PARTICLES: 14,

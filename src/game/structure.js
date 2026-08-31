@@ -195,7 +195,7 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
    * once.
    */
   function tintDamage(entry, fraction) {
-    if (fraction < 0.25) return;
+    if (fraction < DESTRUCTION.DAMAGE_TINT_THRESHOLD) return;
     if (!entry.tinted) {
       entry.mesh.traverse((o) => {
         if (o.isMesh) o.material = Array.isArray(o.material)
@@ -206,7 +206,7 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     }
     // Multiply toward a dark, slightly warm value so damage reads as scorching and
     // cracking rather than as the piece simply changing colour.
-    const k = 1 - fraction * 0.45;
+    const k = 1 - fraction * DESTRUCTION.DAMAGE_TINT_DEPTH;
     entry.mesh.traverse((o) => {
       if (!o.isMesh) return;
       const mats = Array.isArray(o.material) ? o.material : [o.material];
@@ -281,9 +281,9 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
       const half = (edge * jitter) / 2;
 
       const position = {
-        x: centre.x + (Math.random() - 0.5) * piece.width * 0.7,
-        y: centre.y + (Math.random() - 0.5) * piece.height * 0.7,
-        z: centre.z + (Math.random() - 0.5) * piece.depth * 0.7,
+        x: centre.x + (Math.random() - 0.5) * piece.width * DESTRUCTION.FRAGMENT_SPAWN_SPREAD,
+        y: centre.y + (Math.random() - 0.5) * piece.height * DESTRUCTION.FRAGMENT_SPAWN_SPREAD,
+        z: centre.z + (Math.random() - 0.5) * piece.depth * DESTRUCTION.FRAGMENT_SPAWN_SPREAD,
       };
 
       const handle = physics.addBody({

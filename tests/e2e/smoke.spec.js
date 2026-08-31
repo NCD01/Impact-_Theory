@@ -38,9 +38,14 @@ async function boot(page) {
   try {
     await page.waitForFunction(() => globalThis.__IMPACT_THEORY__?.ready === true, null,
       { timeout: 60000 });
-  } catch (err) {
+  } catch (cause) {
+    // The page writes a startup failure into #boot-error, which says far more than a
+    // bare timeout. The original error is attached as the cause rather than dropped.
     const shown = await page.locator('#boot-error').textContent().catch(() => '');
-    throw new Error(`Game never became ready.\nOn page error: ${shown}\nConsole: ${errors.join('\n')}`);
+    throw new Error(
+      `Game never became ready.\nOn page error: ${shown}\nConsole: ${errors.join('\n')}`,
+      { cause },
+    );
   }
   return errors;
 }
@@ -51,16 +56,11 @@ async function fireShots(page, n, gapMs = 420) {
   const x = Math.round(box.width / 2);
   const y = Math.round(box.height * 0.62);
   for (let i = 0; i < n; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
     const screen = await page.evaluate(() => globalThis.__IMPACT_THEORY__.screen);
     if (screen !== 'playing') return;
-    // eslint-disable-next-line no-await-in-loop
     await page.mouse.move(x, y);
-    // eslint-disable-next-line no-await-in-loop
     await page.mouse.down();
-    // eslint-disable-next-line no-await-in-loop
     await page.mouse.up();
-    // eslint-disable-next-line no-await-in-loop
     await page.waitForTimeout(gapMs);
   }
 }
@@ -213,4 +213,35 @@ test('visual gate: four screenshot classes', async ({ page }, testInfo) => {
   await expect(page.locator('#results-stars')).toBeVisible();
   await expect(page.locator('#results-score')).not.toBeEmpty();
   await page.screenshot({ path: path.join(SHOTS, `gate-${tag}-04-results.png`) });
+});
+
+test('carries on to the next level from the results screen', async ({ page }) => {
+  const errors = await boot(page);
+
+  await page.click('#title-play');
+  await page.click('[data-level-id="1"]');
+  await page.waitForFunction(() => globalThis.__IMPACT_THEORY__.screen === 'playing');
+  await fireShots(page, 30);
+  await page.waitForFunction(
+    () => globalThis.__IMPACT_THEORY__.screen === 'results', null, { timeout: 60000 },
+  );
+
+  // The whole point of the button: it should load level 2, not return to the menu.
+  await expect(page.locator('#results-next')).toBeVisible();
+  await page.click('#results-next');
+  await page.waitForFunction(() => globalThis.__IMPACT_THEORY__.screen === 'playing');
+
+  const second = await state(page);
+  expect(second.levelId, 'Next level loads level 2').toBe(2);
+  expect(second.bodies, 'level 2 places its pieces').toBeGreaterThan(0);
+  expect(second.score, 'the score starts again for a new level').toBe(0);
+
+  // And back out to the level select, which should now show two levels open.
+  await page.click('#pause-button');
+  await page.click('#pause-quit');
+  await expect(page.locator('#screen-select')).toBeVisible();
+  const enabled = await page.locator('.level-cell:not([disabled])').count();
+  expect(enabled, 'levels 1 and 2 are both open').toBeGreaterThanOrEqual(2);
+
+  expect(errors, 'console errors across two levels').toEqual([]);
 });

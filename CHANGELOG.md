@@ -5,6 +5,38 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.12.1+17 - 2026-08-31 - Refactor
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Phase 15 verification. A sweep for unwaived numeric literals in gameplay code
+found a handful of genuine tuning values sitting inline rather than named, which is the
+standard about centralising tunables.
+
+**Changes:**
+- Moved into `src/core/constants.js` with units and reasons: piece and ball linear and
+  angular damping, ground friction and restitution, the contact force event threshold,
+  the damage tint threshold and depth, and the fragment spawn spread.
+- `tests/unit/version.test.js`, eight tests asserting that `package.json`,
+  `src/core/version.js`, the changelog head and the README all state the same version,
+  that build numbers strictly decrease down the changelog, and that every changelog entry
+  carries an author, a type and a Validation Evidence line.
+- A browser test for continuing to the next level from the results screen.
+
+**Why the version test matters more than it looks.** `docs/VERSIONING.md` already promised
+that the test suite asserts every version location agrees, and that promise was false: no
+such test existed. A document claiming a test that does not exist is worse than no claim.
+
+**What the sweep left alone, deliberately:** mesh construction parameters such as cylinder
+segment counts and bevel radii in `cannon.js` and `balls.js`. Those are geometry, not
+gameplay tuning, and hoisting them would move art into a physics file.
+
+**Validation Evidence:** `npx eslint .` exits 0 and `npx vitest run` reports 147 of 147
+passing, up from 139. The version test was confirmed to be meaningful rather than vacuous
+by the fact that it immediately held all fifteen existing changelog entries to the
+evidence line rule and passed. Rerunning the literal sweep over `src/game`, `src/physics`
+and `src/input` after the change leaves only constant definitions, mesh parameters and
+values of 0, 1 and 2.
+
 ## v1.12.0+16 - 2026-08-31 - Documentation
 
 **Author:** Claude Opus 5, unattended build session

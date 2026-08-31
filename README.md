@@ -5,7 +5,7 @@ playfield fires balls at a structure built from a fifteen piece block kit standi
 supports. The structure is a real rigid body assembly, so it leans, buckles and falls the
 way its geometry says it should, and clearing it clears the level.
 
-Current version **1.12.0+16**. The version scheme is defined in
+Current version **1.12.1+17**. The version scheme is defined in
 [docs/VERSIONING.md](docs/VERSIONING.md), which is the only file that states it.
 
 ## Requirements

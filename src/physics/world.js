@@ -35,11 +35,6 @@
 import * as RAPIER from '@dimforge/rapier3d';
 import { WORLD } from '../core/constants.js';
 
-/** Contact force below which Rapier does not raise an event, newtons. Resting stacks
- *  press on each other constantly; without a floor the event queue fills with the
- *  weight of the structure standing still. */
-const CONTACT_FORCE_EVENT_THRESHOLD_N = 60;
-
 let rapierReady = null;
 
 /**
@@ -91,8 +86,8 @@ export function createPhysicsWorld() {
   const groundCollider = world.createCollider(
     RAPIER.ColliderDesc
       .cuboid(WORLD.GROUND_HALF_EXTENT, 0.5, WORLD.GROUND_HALF_EXTENT)
-      .setFriction(0.9)
-      .setRestitution(0.05),
+      .setFriction(WORLD.GROUND_FRICTION)
+      .setRestitution(WORLD.GROUND_RESTITUTION),
     groundBody,
   );
   colliderToBody.set(groundCollider.handle, null);
@@ -167,8 +162,8 @@ export function createPhysicsWorld() {
     bodyDesc.setTranslation(position.x, position.y, position.z);
     if (rotation) bodyDesc.setRotation(rotation);
     bodyDesc
-      .setLinearDamping(0.06)
-      .setAngularDamping(0.12)
+      .setLinearDamping(WORLD.PIECE_LINEAR_DAMPING)
+      .setAngularDamping(WORLD.PIECE_ANGULAR_DAMPING)
       .setCanSleep(true);
     const body = world.createRigidBody(bodyDesc);
 
@@ -177,7 +172,7 @@ export function createPhysicsWorld() {
         .setFriction(family.friction)
         .setRestitution(family.restitution)
         .setActiveEvents(RAPIER.ActiveEvents.CONTACT_FORCE_EVENTS)
-        .setContactForceEventThreshold(CONTACT_FORCE_EVENT_THRESHOLD_N);
+        .setContactForceEventThreshold(WORLD.CONTACT_FORCE_EVENT_THRESHOLD_N);
       const c = world.createCollider(cd, body);
       colliderToBody.set(c.handle, body.handle);
     }
@@ -208,8 +203,8 @@ export function createPhysicsWorld() {
         .setTranslation(position.x, position.y, position.z)
         .setLinvel(velocity.x, velocity.y, velocity.z)
         .setCcdEnabled(true)
-        .setLinearDamping(0.01)
-        .setAngularDamping(0.05),
+        .setLinearDamping(WORLD.BALL_LINEAR_DAMPING)
+        .setAngularDamping(WORLD.BALL_ANGULAR_DAMPING),
     );
     const c = world.createCollider(
       RAPIER.ColliderDesc.ball(radius)
@@ -217,7 +212,7 @@ export function createPhysicsWorld() {
         .setRestitution(restitution)
         .setFriction(friction)
         .setActiveEvents(RAPIER.ActiveEvents.CONTACT_FORCE_EVENTS)
-        .setContactForceEventThreshold(CONTACT_FORCE_EVENT_THRESHOLD_N),
+        .setContactForceEventThreshold(WORLD.CONTACT_FORCE_EVENT_THRESHOLD_N),
       body,
     );
     colliderToBody.set(c.handle, body.handle);
