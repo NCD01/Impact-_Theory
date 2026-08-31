@@ -1,0 +1,33 @@
+{
+  "name": "impact-theory",
+  "private": true,
+  "version": "1.0.0+1",
+  "type": "module",
+  "description": "A physics demolition game. Fire balls from a cannon at structures built from a fifteen piece block kit and bring them down.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "e2e": "playwright test",
+    "convert:blocks": "node scripts/convert-blocks.mjs",
+    "verify": "npm run lint && npm run test"
+  },
+  "dependencies": {
+    "@dimforge/rapier3d-compat": "^0.20.0",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "eslint": "^10.9.1",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
+  }
+}

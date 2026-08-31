@@ -5,6 +5,37 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.3.0+6 - 2026-08-30 - Documentation
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Decisions taken alone in an unattended session are worthless to the owner
+unless they are written down with their alternatives and their rollback cost. Phase 0
+also produced three findings that contradict the build brief, and those need to be on
+record before any later phase relies on the brief's version.
+
+**Changes:**
+- `docs/DECISIONS.md` with D-001 through D-005.
+- `docs/PROGRESS.md` with a row for all sixteen phases and the phase 0 findings.
+- `package.json` at version `1.0.0+1` pinning three, Rapier, Vite, Vitest, Playwright
+  and ESLint to the versions currently published on the npm registry.
+
+**The three findings, in short:**
+1. The folder the brief calls `Games\Impact` is actually `Games\IT`.
+2. The V2 materialized block library is already under version control and already on
+   GitHub in that project. The brief's claim that two commit messages are false is
+   itself incorrect.
+3. That project's working tree carries 162 uncommitted staged deletions, which is why
+   its `git ls-files` appears to show the library missing.
+
+**Validation Evidence:** Versions read from the npm registry with `npm view <pkg>
+version` rather than from memory: three 0.185.1, @dimforge/rapier3d-compat 0.20.0,
+vite 8.2.2, vitest 4.1.11, @playwright/test 1.62.1, eslint 10.9.1. Finding 2 verified
+with `git ls-tree -r origin/main --name-only` in `Games\IT`, which returned 18 paths
+under `Assets/Art/Blocks/MaterialVariants`. Finding 3 verified with
+`git status --short` there, which returned 162 lines beginning with `D `. Only read
+only git commands were run in that repository and no fetch was performed, because a
+fetch writes to `.git`.
+
 ## v1.2.2+5 - 2026-08-30 - Structural
 
 **Author:** Claude Opus 5, unattended build session
