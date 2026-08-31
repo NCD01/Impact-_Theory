@@ -5,6 +5,28 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.2.0+3 - 2026-08-30 - Asset
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The reference material describes the target this game is modelled on. It
+sits outside `Assets\` so it was not part of the asset backup commit, and it needs its
+own place in history.
+
+**Changes:**
+- Committed `Reference\`: the 4.6 second reference clip as H.264 at 540 px wide, the
+  original HEVC phone recording at 1320 x 2868, nine stills pulled at 2 fps, the
+  reference README, and the build brief this session is working from.
+
+**Note on rights:** The clip is another studio's commercial game. It is reference, not
+a licence. No name, art, sound, icon, interface text or level layout from it appears in
+this project. See standard 9 in the build brief and `docs/DECISIONS.md` decision D-003.
+
+**Validation Evidence:** Read `Reference/README.md` and opened `frames/frame_01.jpg`
+and `frames/frame_05.jpg` directly. Frame 1 shows a wooden structure on one central
+pedestal, frame 5 a dark stone structure on two pedestals mid collapse with visible
+rubble fragments, which matches the description in the brief. No interface elements
+appear in either frame. File sizes confirmed with `find -printf`.
+
 ## v1.1.0+2 - 2026-08-30 - Asset
 
 **Author:** Claude Opus 5, unattended build session
