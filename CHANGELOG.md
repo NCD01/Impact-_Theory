@@ -5,6 +5,42 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.4.0+7 - 2026-08-30 - Feature
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The game renders glTF, the art is authored as FBX, and an art update has to
+be one command rather than an afternoon. A conversion that silently shifts a pivot
+would turn every level into a leaning tower, so the conversion checks itself.
+
+**Changes:**
+- `scripts/convert-blocks.mjs`. Loads each of the fifteen V2 materialized FBX files,
+  scales centimetres to Structural Units, merges per face material groups, converts
+  Phong materials to MeshStandard, exports `.glb`, and measures the result against
+  `block_asset_manifest.json`. Exits non-zero if any piece fails.
+- Writes `public/models/blocks/conversion-report.json` with per piece measured size,
+  pivot offset, triangle count, draw calls before and after merging, and materials.
+- `public/models/` added to `.gitignore`, because it is generated. `predev`,
+  `prebuild` and `pretest` run the conversion, so no command can run against stale
+  models and the deploy workflow regenerates them from the FBX originals.
+
+**Two findings worth recording:**
+- The FBX kit is authored in centimetres. A 1 SU cube measures 100 FBX units. The
+  scale factor is applied at conversion, so every `.glb` is in Structural Units and no
+  runtime code needs to know about centimetres.
+- The authored meshes assign materials face by face. `S01_ROUND_COLUMN` and
+  `A04_ROLLER` carry 261 geometry groups each, and every group becomes its own glTF
+  primitive and its own draw call. Merging groups by material brings the worst piece
+  down from 261 draw calls to 2.
+
+**Validation Evidence:** `node scripts/convert-blocks.mjs` reported 15 of 15 pieces
+conforming. Every measured width, height and depth matched the manifest within the
+1 mm tolerance, and both geometric-center pivots (`A03_CROSS_BEAM` at min y -1.5 SU
+and `A04_ROLLER` at min y -0.5 SU) measured where the manifest says they should be,
+as did the thirteen center-bottom pivots at min y 0. Triangle counts run from 80 on
+`S04_WEDGE` to 3028 on `A05_MECHANICAL_STABILIZER`. Draw calls after merging are 1 to
+5 per piece. A round trip through GLTFLoader was checked separately on
+`A03_CROSS_BEAM` and returned the same bounding box the FBX had.
+
 ## v1.3.0+6 - 2026-08-30 - Documentation
 
 **Author:** Claude Opus 5, unattended build session
