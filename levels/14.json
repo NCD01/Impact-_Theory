@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": 14,
+  "name": "Crosswise",
+  "par": 7,
+  "pieces": [
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": -2.6,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 2.6,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 0,
+      "y": 3
+    },
+    {
+      "piece": "A03_CROSS_BEAM",
+      "x": 0,
+      "y": 5.5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 7
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 7
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": 17,
+  "name": "Twin Arches",
+  "par": 8,
+  "pieces": [
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": -4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": 4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S05_ARCH",
+      "x": -2.4,
+      "y": 2
+    },
+    {
+      "piece": "S05_ARCH",
+      "x": 2.4,
+      "y": 2
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": -2,
+      "y": 4
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 2,
+      "y": 4
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -2,
+      "y": 5
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 0,
+      "y": 5
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 2,
+      "y": 5
+    }
+  ]
+}

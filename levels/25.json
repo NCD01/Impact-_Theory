@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": 25,
+  "name": "Hardstanding",
+  "par": 10,
+  "pieces": [
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -3,
+      "y": 0,
+      "family": "concrete"
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -1,
+      "y": 0,
+      "family": "concrete"
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 1,
+      "y": 0,
+      "family": "concrete"
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 3,
+      "y": 0,
+      "family": "concrete"
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -3,
+      "y": 2,
+      "family": "stone"
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 2,
+      "family": "stone"
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 2,
+      "family": "stone"
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 3,
+      "y": 2,
+      "family": "stone"
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -3,
+      "y": 3
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 3
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 3
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 3,
+      "y": 3
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -2.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 2.5,
+      "y": 4
+    }
+  ]
+}

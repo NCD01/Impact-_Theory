@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": 11,
+  "name": "Quarry Steps",
+  "par": 7,
+  "pieces": [
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -3,
+      "y": 0
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -1,
+      "y": 0
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 1,
+      "y": 0
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -2,
+      "y": 2
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 3
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 3
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": 5,
+  "name": "Gatehouse",
+  "par": 5,
+  "pieces": [
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": -2.2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": 2.2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S05_ARCH",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1,
+      "y": 4
+    }
+  ]
+}

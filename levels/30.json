@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "id": 30,
+  "name": "Last Stand",
+  "par": 12,
+  "note": "Steel legs, a stone core and a wooden crown. Everything the kit does, at once.",
+  "pieces": [
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": -4.4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 4.4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": 0,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": -2,
+      "y": 3
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 2,
+      "y": 3
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -2,
+      "y": 4,
+      "family": "stone"
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 0,
+      "y": 4,
+      "family": "stone"
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 2,
+      "y": 4,
+      "family": "stone"
+    },
+    {
+      "piece": "A03_CROSS_BEAM",
+      "x": -2.5,
+      "y": 7.5
+    },
+    {
+      "piece": "A03_CROSS_BEAM",
+      "x": 2.5,
+      "y": 7.5
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": -2,
+      "y": 9
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 2,
+      "y": 9
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -3,
+      "y": 10
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 10
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 10
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 3,
+      "y": 10
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 11
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 11
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 11
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 11
+    }
+  ]
+}

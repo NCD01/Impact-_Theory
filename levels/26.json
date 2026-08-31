@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": 26,
+  "name": "Cantilever",
+  "par": 10,
+  "note": "Load hanging past its support. Hitting the overhang is cheaper than the column.",
+  "pieces": [
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": -1.5,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 1.5,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": -3,
+      "y": 3
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 1,
+      "y": 3
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 5,
+      "y": 3
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -4.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -3.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -2.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 2.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 3.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 4.5,
+      "y": 4
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -3,
+      "y": 5
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 5
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 5
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 3,
+      "y": 5
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": 8,
+  "name": "Low Wall",
+  "par": 6,
+  "pieces": [
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -3,
+      "y": 0
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 0
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 0
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 3,
+      "y": 0
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -3,
+      "y": 1
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 1
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 3,
+      "y": 1
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -2.5,
+      "y": 2
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 2
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 2
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 2
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 2
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 2.5,
+      "y": 2
+    }
+  ]
+}

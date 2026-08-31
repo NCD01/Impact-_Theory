@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "id": 15,
+  "name": "The Yard",
+  "par": 8,
+  "pieces": [
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -4,
+      "y": 0
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -2,
+      "y": 0
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 2,
+      "y": 0
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 4,
+      "y": 0
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": -1.5,
+      "y": 1
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": -0.5,
+      "y": 1
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": 0.5,
+      "y": 1
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": 1.5,
+      "y": 1
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": -2,
+      "y": 4
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 2,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 5
+    }
+  ]
+}

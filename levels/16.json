@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": 16,
+  "name": "Breakwater",
+  "par": 8,
+  "pieces": [
+    {
+      "piece": "S04_WEDGE",
+      "x": -3,
+      "y": 0
+    },
+    {
+      "piece": "S04_WEDGE",
+      "x": -1,
+      "y": 0
+    },
+    {
+      "piece": "S04_WEDGE",
+      "x": 1,
+      "y": 0
+    },
+    {
+      "piece": "S04_WEDGE",
+      "x": 3,
+      "y": 0
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -3,
+      "y": 1
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 1
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 3,
+      "y": 1
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -1,
+      "y": 2
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 1,
+      "y": 2
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 4
+    }
+  ]
+}

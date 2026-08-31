@@ -5,6 +5,44 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.8.0+12 - 2026-08-30 - Feature
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Phases 6 and 7. Levels are data, not code, so that a level can be changed
+without touching the game, endless mode can emit the same format, and a malformed level
+fails the test suite instead of loading into an empty playfield.
+
+**Changes:**
+- `src/game/level.js`. The schema, a validator that reports every problem rather than
+  the first, a level summary for the level select, and a loader that bundles levels at
+  build time so a broken level is a build error rather than a blank screen.
+- `levels/01.json` to `levels/30.json`, thirty levels.
+- `scripts/author-levels.mjs`, the authoring source for those thirty designs.
+- `src/save/save.js`. Versioned save with a migration chain, defensive reads, and best
+  result tracking that never lowers a score on a worse replay.
+- `src/game/scoring.js`. Piece values weighted by material family, a combo multiplier on
+  a chain reaction from one shot, the saved ball bonus, and three star bands per
+  difficulty.
+- `tests/unit/levels.test.js`, `save.test.js`, `scoring.test.js`.
+
+**On the level designs.** Each of the thirty is designed individually: its shape, its
+piece choices, its material overrides and its par. The authoring script's helpers are
+carpentry rather than generation, placing a row at a height or a pair of legs at a span,
+so a design reads as the shape it is and so a piece height changing in the manifest does
+not silently leave every level floating. Piece counts run from 3 on level 1 to 26 on
+level 29, and par from 3 to 12.
+
+**Validation Evidence:** `npx vitest run` reports 126 of 126 passing, up from 34. All
+thirty shipped levels are run through the validator individually and all pass. The
+validator's own rules are each tested by feeding it a level that breaks exactly that rule,
+because a validator that passes everything would let all thirty pass while a piece id typo
+shipped: unknown piece id, unknown family, an illegal support, a level of only supports, a
+bad schema, an empty name, a non integer par, a piece below the ground, a non finite
+coordinate, and a level over the 45 piece budget are each rejected. The save suite loads a
+genuine schema version 1 save of the shape that version actually wrote and confirms all
+five cleared levels and the unlock survive, and confirms the store survives non JSON text,
+hostile field types and a storage that throws on write. `npx eslint .` exits 0.
+
 ## v1.7.0+11 - 2026-08-30 - Feature
 
 **Author:** Claude Opus 5, unattended build session

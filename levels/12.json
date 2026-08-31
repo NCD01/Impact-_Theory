@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": 12,
+  "name": "The Roller",
+  "par": 6,
+  "note": "Introduces A04. A ball off rubber goes somewhere else, which is the lesson.",
+  "pieces": [
+    {
+      "piece": "S03_WIDE_FOOTING",
+      "x": -2.4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S03_WIDE_FOOTING",
+      "x": 2.4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 0,
+      "y": 0.5
+    },
+    {
+      "piece": "A04_ROLLER",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1,
+      "y": 2.5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0,
+      "y": 2.5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1,
+      "y": 2.5
+    }
+  ]
+}

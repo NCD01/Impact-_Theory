@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": 9,
+  "name": "Stilts",
+  "par": 6,
+  "pieces": [
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": -2.4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 2.4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 0,
+      "y": 3
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 4
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 4
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 5
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 5
+    }
+  ]
+}

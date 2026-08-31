@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": 6,
+  "name": "Driftwood",
+  "par": 5,
+  "pieces": [
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": -2.6,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": 2.6,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 3
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 3
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 0,
+      "y": 4
+    }
+  ]
+}

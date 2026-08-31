@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "id": 28,
+  "name": "Ironworks",
+  "par": 11,
+  "pieces": [
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": -4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S01_ROUND_COLUMN",
+      "x": 4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": -2,
+      "y": 3
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 2,
+      "y": 3
+    },
+    {
+      "piece": "A01_T_BLOCK",
+      "x": -2.5,
+      "y": 4
+    },
+    {
+      "piece": "A01_T_BLOCK",
+      "x": 2.5,
+      "y": 4
+    },
+    {
+      "piece": "A05_MECHANICAL_STABILIZER",
+      "x": 0,
+      "y": 4
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -2,
+      "y": 6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 0,
+      "y": 6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 2,
+      "y": 6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 8
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 8
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 8
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 8
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": 3,
+  "name": "Sandbar",
+  "par": 4,
+  "pieces": [
+    {
+      "piece": "S03_WIDE_FOOTING",
+      "x": -2.2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S03_WIDE_FOOTING",
+      "x": 2.2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 0.5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 0.5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 0.5
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 0.5
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 1.5
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 1.5
+    }
+  ]
+}

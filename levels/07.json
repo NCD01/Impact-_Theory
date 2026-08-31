@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": 7,
+  "name": "Kiln",
+  "par": 6,
+  "note": "First brick. A player who has only met wood learns that some things take two hits.",
+  "pieces": [
+    {
+      "piece": "S03_WIDE_FOOTING",
+      "x": -2.4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S03_WIDE_FOOTING",
+      "x": 2.4,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 0,
+      "y": 0.5
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": -1,
+      "y": 1.5
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": 0,
+      "y": 1.5
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": 1,
+      "y": 1.5
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": 1,
+  "name": "First Light",
+  "par": 3,
+  "note": "One crate on two short columns. Teaches that knocking a support drops the load.",
+  "pieces": [
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": -1.2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "S02_SHORT_COLUMN",
+      "x": 1.2,
+      "y": 0,
+      "support": true
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 0,
+      "y": 2
+    }
+  ]
+}
