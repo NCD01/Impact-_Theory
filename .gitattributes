@@ -1,0 +1,43 @@
+# Line endings and binary safety.
+#
+# The master working copy lives on a Windows machine with core.autocrlf=true set
+# globally, and CI runs on Linux. Without the rules below git would rewrite line
+# endings inside files it guessed were text, which corrupts binary art.
+# Every binary format used by this project is declared explicitly rather than
+# left to git's heuristic.
+
+# Text files: normalise to LF in the repository, check out native on Windows.
+* text=auto
+
+# 3D and image source. Never touched by end-of-line conversion.
+*.fbx    binary
+*.glb    binary
+*.gltf   binary
+*.blend  binary
+*.blend1 binary
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.tga    binary
+*.psd    binary
+
+# Audio and video.
+*.mp3    binary
+*.ogg    binary
+*.wav    binary
+*.mp4    binary
+*.mov    binary
+*.MOV    binary
+
+# Fonts and archives.
+*.ttf    binary
+*.otf    binary
+*.woff   binary
+*.woff2  binary
+*.zip    binary
+
+# Windows thumbnail caches. Binary, and never merged.
+*.db     binary
+
+# Shell scripts must keep LF even when checked out on Windows.
+*.sh     text eol=lf
