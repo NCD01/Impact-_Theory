@@ -12,7 +12,7 @@
  */
 
 /** Full version including build metadata. Format: MAJOR.MINOR.PATCH+BUILD. */
-export const VERSION = '1.6.0+10';
+export const VERSION = '1.7.0+11';
 
 /** Human readable name, used in the title and the about panel. */
 export const GAME_NAME = 'Impact Theory';

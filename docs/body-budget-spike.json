@@ -1,0 +1,114 @@
+{
+  "frameRateByLiveBodyCount": [
+    {
+      "bodies": "0-24",
+      "samples": 14,
+      "meanFps": 60,
+      "p95WorstFps": 60
+    },
+    {
+      "bodies": "25-49",
+      "samples": 48,
+      "meanFps": 58.8,
+      "p95WorstFps": 53.3
+    },
+    {
+      "bodies": "50-74",
+      "samples": 54,
+      "meanFps": 59,
+      "p95WorstFps": 52.5
+    },
+    {
+      "bodies": "75-99",
+      "samples": 51,
+      "meanFps": 55.9,
+      "p95WorstFps": 46.7
+    },
+    {
+      "bodies": "100-124",
+      "samples": 31,
+      "meanFps": 52.3,
+      "p95WorstFps": 41.2
+    },
+    {
+      "bodies": "125-149",
+      "samples": 27,
+      "meanFps": 43.8,
+      "p95WorstFps": 31.8
+    },
+    {
+      "bodies": "150-199",
+      "samples": 24,
+      "meanFps": 32.4,
+      "p95WorstFps": 20
+    },
+    {
+      "bodies": "200-299",
+      "samples": 15,
+      "meanFps": 19.6,
+      "p95WorstFps": 12.6
+    }
+  ],
+  "measuredAt": "2026-08-31T03:28:32.072Z",
+  "renderer": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x00009A49) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "cpuThrottleRate": 4,
+  "viewport": "390x844 CSS px at device pixel ratio 2, Chromium mobile emulation",
+  "method": "settle, knock down with 8 shots, then sample frame time and body count every 250 ms for 11 s; only samples taken while bodies were at or above 60 percent of peak are counted",
+  "criterion": "sustained mean fps while the world is loaded, target 45",
+  "results": [
+    {
+      "requestedPieces": 40,
+      "settledBodies": 42,
+      "peakBodies": 55,
+      "samples": 44,
+      "frozenSamples": 0,
+      "errors": 0,
+      "errorText": []
+    },
+    {
+      "requestedPieces": 70,
+      "settledBodies": 72,
+      "peakBodies": 89,
+      "samples": 44,
+      "frozenSamples": 0,
+      "errors": 0,
+      "errorText": []
+    },
+    {
+      "requestedPieces": 100,
+      "settledBodies": 113,
+      "peakBodies": 132,
+      "samples": 44,
+      "frozenSamples": 0,
+      "errors": 0,
+      "errorText": []
+    },
+    {
+      "requestedPieces": 140,
+      "settledBodies": 148,
+      "peakBodies": 171,
+      "samples": 44,
+      "frozenSamples": 0,
+      "errors": 0,
+      "errorText": []
+    },
+    {
+      "requestedPieces": 190,
+      "settledBodies": 207,
+      "peakBodies": 229,
+      "samples": 44,
+      "frozenSamples": 0,
+      "errors": 0,
+      "errorText": []
+    },
+    {
+      "requestedPieces": 250,
+      "settledBodies": 265,
+      "peakBodies": 292,
+      "samples": 44,
+      "frozenSamples": 0,
+      "errors": 0,
+      "errorText": []
+    }
+  ]
+}

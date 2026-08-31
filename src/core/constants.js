@@ -41,9 +41,13 @@ export const WORLD = {
   MAX_STEPS_PER_FRAME: 3,
 
   /**
-   * Rapier solver iterations. Settled in the phase 3 body budget spike. Four is
-   * Rapier's own default and held stacks of the size this game builds without visible
-   * sinking; raising it cost frame rate for no visible gain.
+   * Rapier solver iterations, left at Rapier's own default of 4.
+   *
+   * Honest scope note: the phase 3 spike varied body count only. This value was not
+   * varied, so there is no measurement here saying 4 is better than 8. What was
+   * observed is that stacks of the size this game builds stand without visible sinking
+   * or jitter at 4. Raising it would cost solver time per step and is the first thing
+   * to try if a tall stack is ever seen to sag.
    */
   SOLVER_ITERATIONS: 4,
 
@@ -194,8 +198,14 @@ export const DESTRUCTION = {
    * Impacts below this energy do no damage at all. Without a floor, a settling stack
    * grinds itself to death from its own contact forces while nobody is shooting.
    * Joules.
+   *
+   * Set from measurement rather than taste. Logging every impact in a standing forty
+   * piece wall over two and a half seconds gave 4613 contacts, all of them under 10 J
+   * and the largest 5 J. 25 J is five times the worst settling contact observed and far
+   * below the few hundred joules of even a glancing ball hit, so it separates the two
+   * cleanly with room to spare for a larger structure.
    */
-  MIN_DAMAGE_ENERGY_J: 8,
+  MIN_DAMAGE_ENERGY_J: 25,
 
   /**
    * Fragments produced when a piece fractures. Kept low deliberately: fragments are
@@ -211,8 +221,16 @@ export const DESTRUCTION = {
   FRAGMENT_SCATTER_SPEED: 2.6,
   /** Seconds before a resting fragment despawns. Fragments never accumulate. */
   FRAGMENT_LIFETIME_S: 6,
-  /** Hard cap on fragments alive at once. The budget's headroom lives here. */
-  MAX_FRAGMENTS: 46,
+  /**
+   * Hard cap on fragments alive at once.
+   *
+   * Set from the phase 3 body budget spike (docs/DECISIONS.md D-006). The measured
+   * ceiling is about 120 concurrent dynamic bodies before the frame rate falls under
+   * 45. A level is capped at 45 pieces, and at most 20 balls can be in flight, so
+   * capping fragments at 36 bounds the absolute worst instant at roughly 100 bodies
+   * and keeps it inside the measured ceiling with the collapse still going.
+   */
+  MAX_FRAGMENTS: 36,
 
   /** Dust particles per fracture, and how long they live. */
   DUST_PARTICLES: 14,
@@ -319,6 +337,18 @@ export const AUDIO = {
 export const LEVEL = {
   /** Hand designed level count. The scope fence in the brief caps this at thirty. */
   COUNT: 30,
+
+  /**
+   * Most pieces a single level may place, supports included. Enforced by the level
+   * validator, so an over budget level fails the test suite rather than shipping and
+   * stuttering on the target phone.
+   *
+   * From the phase 3 spike: a 40 piece wall peaked at 55 concurrent bodies mid
+   * collapse, and a 100 piece wall peaked at 132, which is past the measured 120 body
+   * ceiling for 45 fps. 45 pieces sits comfortably inside the budget with the fragment
+   * and ball caps applied. See docs/DECISIONS.md D-006.
+   */
+  MAX_PIECES: 45,
   /**
    * Seconds the world must be settled before a level is judged cleared or failed.
    * Without a settle delay, a structure that is mid collapse reads as cleared for one

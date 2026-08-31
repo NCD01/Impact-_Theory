@@ -12,6 +12,27 @@
  * Hit points are joules of accumulated impact energy needed to destroy a piece.
  * Restitution and friction are Rapier's dimensionless coefficients, 0 to 1 and up.
  *
+ * HOW THE HIT POINT NUMBERS WERE CHOSEN, because the first set was wrong by two orders
+ * of magnitude and the way it was wrong is worth not repeating.
+ *
+ * They were first guessed, at 900 J for wood up to 4200 for steel. Every structure then
+ * vaporised on contact: a forty piece wall went from standing to nothing in about a
+ * second, because a ball hit turned out to deliver far more energy than any of those
+ * numbers. So the real distribution was measured instead, by logging every impact the
+ * simulation reported during a settle and during a collapse:
+ *
+ *   Structure standing, no shots     4613 impacts, 100 percent under 10 J, max 5 J
+ *   Six shots and the collapse       8144 impacts, 92.6 percent under 10 J,
+ *                                    p99 417 J, and a tail of 32 impacts above 2000 J
+ *                                    reaching a maximum of 54057 J
+ *
+ * So a square ball hit is worth roughly 5000 to 50000 J, a glancing hit a few hundred,
+ * and a piece settling against its neighbour under 10 J. The values below are set
+ * against that measured scale, so that a square hit destroys wood outright, brick takes
+ * two, and steel takes a sustained beating, while the jostling of a collapse chips
+ * pieces without dissolving the structure. That is what produces the reference clip's
+ * behaviour, where blocks mostly tumble and some of them break.
+ *
  * On the density values. These are not the real densities of the materials they are
  * named after. Real steel is 7850 kg/m^3, which makes a 1 SU steel cube weigh nearly
  * eight tonnes and immovable by any ball a child would believe in. The values below
@@ -48,7 +69,8 @@ export const FAMILIES = {
     friction: 0.62,
     // Breaks in roughly one square hit from a full speed ball, which carries about
     // 37 kJ, minus what the ball keeps after the collision.
-    hitPoints: 900,
+    // One square ball hit. A crate is the piece a player expects to explode.
+    hitPoints: 8000,
     scoreWeight: 1.0,
     colorHint: 0xc98b45,
   },
@@ -60,7 +82,8 @@ export const FAMILIES = {
     restitution: 0.1,
     friction: 0.78,
     // Brick is the first family that needs a second hit.
-    hitPoints: 1750,
+    // Two solid hits, or one hit and a heavy piece landing on it.
+    hitPoints: 18000,
     scoreWeight: 1.4,
     colorHint: 0xa8452f,
   },
@@ -71,7 +94,7 @@ export const FAMILIES = {
     density: 900,
     restitution: 0.08,
     friction: 0.84,
-    hitPoints: 2600,
+    hitPoints: 30000,
     scoreWeight: 1.8,
     colorHint: 0x6f7480,
   },
@@ -82,7 +105,7 @@ export const FAMILIES = {
     density: 820,
     restitution: 0.09,
     friction: 0.8,
-    hitPoints: 2300,
+    hitPoints: 24000,
     scoreWeight: 1.6,
     colorHint: 0x9a9a92,
   },
@@ -94,7 +117,10 @@ export const FAMILIES = {
     density: 1150,
     restitution: 0.22,
     friction: 0.5,
-    hitPoints: 4200,
+    // The toughest family. A steel column is meant to survive being shot and to be
+    // beaten only by repeated direct hits, so that it reads as the thing holding the
+    // structure up rather than as one more block.
+    hitPoints: 60000,
     scoreWeight: 2.4,
     colorHint: 0x8d949c,
   },
@@ -107,7 +133,7 @@ export const FAMILIES = {
     density: 1050,
     restitution: 0.2,
     friction: 0.54,
-    hitPoints: 3600,
+    hitPoints: 40000,
     scoreWeight: 2.1,
     colorHint: 0xd4762e,
   },
@@ -121,7 +147,7 @@ export const FAMILIES = {
     restitution: 0.72,
     friction: 0.9,
     // Rubber absorbs rather than breaks, so it takes a lot and is worth little.
-    hitPoints: 3000,
+    hitPoints: 35000,
     scoreWeight: 1.2,
     colorHint: 0x3c3a3d,
   },

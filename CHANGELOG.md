@@ -5,6 +5,51 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.7.0+11 - 2026-08-30 - Feature
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Phase 3, the early decision. How many dynamic rigid bodies hold a playable
+frame rate decides every level layout, every fragment count and every particle budget,
+and discovering it late means re-authoring thirty levels.
+
+**Changes:**
+- `src/game/stress.js`, a generator that builds a wall of N pieces from the real kit.
+- `?stress=N` in `src/main.js`, which replaces the level with that wall. A measurement
+  affordance using the same `place()` call, colliders and materials a real level uses.
+- `scripts/spike-body-budget.mjs`, the repeatable harness.
+- Frame time and impact energy logs on the debug object, so the harness measures the
+  running game rather than inferring from it.
+- `docs/DECISIONS.md` D-006 and D-007. `docs/body-budget-spike.json`, raw output.
+- `DESTRUCTION.MAX_FRAGMENTS` lowered from 46 to 36 and `LEVEL.MAX_PIECES` added at 45,
+  both from the measurement.
+- Per family hit points raised by one to two orders of magnitude, and the damage floor
+  raised from 8 J to 25 J. See D-007.
+
+**The measurement.** 264 samples across six runs, bucketed by the number of bodies live
+at the moment of the sample: 60.0 fps at up to 24 bodies, 59.0 at 50 to 74, 55.9 at 75 to
+99, 52.3 at 100 to 124, 43.8 at 125 to 149, 32.4 at 150 to 199, 19.6 at 200 to 299.
+Ceiling for the 45 fps criterion is about 120 bodies, giving 84 after the required 30
+percent headroom, and a 45 piece cap per level.
+
+**A defect this uncovered.** Structures were destroying themselves. Hit points had been
+guessed without measuring what an impact in this game is worth. Logging every impact gave
+the answer: a standing structure produces 4613 contacts all under 10 J, while a collapse
+produces a tail reaching 54057 J. The guessed values sat one to two orders of magnitude
+below a real hit, so everything died to everything, which is one of the cheap fakes the
+brief names by name. Recalibrated against the measured scale.
+
+**Validation Evidence:** Numbers above are from `docs/body-budget-spike.json`, written by
+the harness, not transcribed by hand. The renderer was confirmed to be real hardware,
+`ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x00009A49) Direct3D11 vs_5_0 ps_5_0,
+D3D11)`, because the same harness without GPU flags reports SwiftShader and every number
+under software rendering was meaningless. `npx vitest run` reports 34 of 34 passing and
+`npx eslint .` exits 0.
+
+**UNVERIFIED:** the number did not come from the target phone. It came from Chromium
+mobile emulation at 390 x 844 and device pixel ratio 2 on an Intel Iris Xe, with CPU
+throttling at 4x. Resolving question: on the son's actual phone, opening the deployed link
+with `?stress=120`, does the frame counter hold at or above 45 fps through the collapse?
+
 ## v1.6.0+10 - 2026-08-30 - Feature
 
 **Author:** Claude Opus 5, unattended build session
