@@ -33,6 +33,17 @@ export default defineConfig(({ command }) => ({
   server: {
     host: true,
     port: 5173,
+    watch: {
+      // The master working copy lives on an SMB network share. Windows cannot deliver
+      // native change notifications across it, and chokidar's default watcher dies with
+      // "UNKNOWN: unknown error, watch" the moment the server starts. Polling is the
+      // documented fallback for network filesystems. The interval is loose on purpose:
+      // this project has a few dozen source files and nothing needs sub-second reload.
+      usePolling: true,
+      interval: 600,
+      binaryInterval: 1500,
+      ignored: ['**/node_modules/**', '**/.git/**', '**/_source/**', '**/Assets/**', '**/.agent_temp/**'],
+    },
   },
   test: {
     // Node environment. The unit suite covers scoring, save migration, level schema

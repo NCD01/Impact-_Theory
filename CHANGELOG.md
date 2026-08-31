@@ -5,6 +5,30 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.5.1+9 - 2026-08-30 - Fix
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The dev server could not start at all. The master working copy is on an SMB
+network share, and Windows cannot deliver native filesystem change notifications across
+one, so chokidar's watcher threw `UNKNOWN: unknown error, watch` and took the whole
+process down within a second of `vite` starting.
+
+**Changes:**
+- `vite.config.js` `server.watch` set to polling, which is the documented fallback for
+  network filesystems, at a 600 ms interval with `node_modules`, `.git`, `_source`,
+  `Assets` and `.agent_temp` excluded from the walk.
+
+**Alternative rejected:** moving the working copy to local disk. A junction from the
+share to local disk was tried first and failed, because Windows cannot create a reparse
+point on an SMB share. A second working copy on `C:` was rejected because that is the
+exact arrangement that has already cost this owner once, when a duplicate tree was found
+pointing at another project's remote. See `docs/DECISIONS.md` D-005.
+
+**Validation Evidence:** `npx vite --port 5173` previously exited within a second with
+the watcher error. After the change the server stayed up and `curl -s -o /dev/null -w
+"%{http_code}" http://localhost:5173/` returned 200. A full Playwright run against it
+loaded the page, ran the game and reported no console errors.
+
 ## v1.5.0+8 - 2026-08-30 - Feature
 
 **Author:** Claude Opus 5, unattended build session
