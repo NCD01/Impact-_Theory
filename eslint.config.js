@@ -31,7 +31,11 @@ export default [
   {
     files: ['**/*.js', '**/*.mjs'],
     languageOptions: {
-      ecmaVersion: 2023,
+      // 'latest' rather than a pinned year, because src/blocks/manifest.js uses an
+      // import attribute (`with { type: 'json' }`) so the same file can be loaded by
+      // Vite, Vitest and plain Node. Import attributes are newer than ES2023 and the
+      // parser rejects them at a pinned older version.
+      ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
         ...globals.browser,

@@ -15,7 +15,9 @@
  * than a blank screen.
  */
 
-import manifestJson from '../../Assets/Art/Blocks/block_asset_manifest.json';
+// The import attribute is required by plain Node, which the documentation generator
+// under scripts/ runs under. Vite and Vitest accept it too, so one form serves all three.
+import manifestJson from '../../Assets/Art/Blocks/block_asset_manifest.json' with { type: 'json' };
 import { colliderFor, colliderVolume } from './colliders.js';
 import { defaultFamilyFor, getFamily } from './families.js';
 
