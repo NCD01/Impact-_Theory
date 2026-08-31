@@ -40,6 +40,22 @@ A relative drag scheme shipped first and was replaced. It required the player to
 where the barrel would end up rather than simply pointing at a target, and its yaw sign was
 inverted so that dragging right aimed left.
 
+## Knocking pieces off, which is the point
+
+**The game is about knocking pieces off their platform, not about breaking them.** A hit
+sends a piece flying; a level is cleared once everything has come off. Keep hitting the
+same piece and it eventually breaks apart, but that is the slow way.
+
+That ordering is deliberate and it took a real defect to find. Pieces used to be destroyed
+by a single square hit, and because a piece is fractured inside the contact event, in the
+same physics step as the impact, it was removed from the world before the collision
+impulse had been integrated. A ball punched a clean hole through a wall and nothing else
+moved at all. Measured: one shot into a fourteen piece wall moved nothing. With destruction
+disabled the same shot moved twelve of them, the furthest by 4.09 SU.
+
+So pieces are tough enough to survive a hit and get pushed instead. Roughly four square
+hits on the same piece destroy it on Normal, two on Easy.
+
 ## Destruction
 
 **Damage is impact energy, not hit count.** On every contact the physics layer computes
@@ -64,7 +80,8 @@ spend the body budget on rubble.
 
 What makes a hit read as heavy, all scaled by the same energy number:
 
-- a camera shake, with a floor at 12 J so grazes stay still
+- a camera shake, with a floor at 400 J so only a real collapse registers, and a switch in
+  settings for players who want none of it
 - an impact sound voiced by the material family and scaled in loudness and pitch
 - dust and real debris
 - momentum carried through the stack, which is the physics engine's answer and not a
@@ -77,16 +94,17 @@ holding them up.
 
 | Family | Density (kg/SU³) | Restitution | Friction | Hit points (J) | Score weight |
 |---|---|---|---|---|---|
-| Wood | 340 | 0.16 | 0.62 | 8,000 | 1.0 |
-| Brick | 720 | 0.10 | 0.78 | 18,000 | 1.4 |
-| Stone | 900 | 0.08 | 0.84 | 30,000 | 1.8 |
-| Concrete | 820 | 0.09 | 0.80 | 24,000 | 1.6 |
-| Steel | 1150 | 0.22 | 0.50 | 60,000 | 2.4 |
-| Painted Steel | 1050 | 0.20 | 0.54 | 40,000 | 2.1 |
-| Rubber | 420 | 0.72 | 0.90 | 35,000 | 1.2 |
+| Wood | 150 | 0.16 | 0.62 | 280,000 | 1.0 |
+| Brick | 300 | 0.10 | 0.78 | 400,000 | 1.4 |
+| Stone | 400 | 0.08 | 0.84 | 620,000 | 1.8 |
+| Concrete | 350 | 0.09 | 0.80 | 500,000 | 1.6 |
+| Steel | 520 | 0.22 | 0.50 | 1,100,000 | 2.4 |
+| Painted Steel | 470 | 0.20 | 0.54 | 800,000 | 2.1 |
+| Rubber | 190 | 0.72 | 0.90 | 700,000 | 1.2 |
 
-Roughly: a square ball hit is worth 5,000 to 50,000 J, a glancing hit a few hundred. So
-wood goes in one good hit, brick takes two, and a steel column has to be beaten down.
+A square ball hit is worth 60,000 to 90,000 J, so four of them on the same wooden crate
+break it and one simply sends it flying. The ball weighs about 283 kg on Normal and 776 on
+Easy against a 150 kg crate: the ball wins, which is the point.
 
 Rubber is the one family that genuinely bounces, which is why a ball off a roller goes
 somewhere else, and why placing a roller in a structure is a decision.
@@ -99,8 +117,9 @@ Stated once, in one function, in `src/game/structure.js`:
 > with its centre below 0.62 SU, or has been knocked more than 34 SU from the structure
 > origin.
 
-Supports are excluded, which is what lets a level be cleared by knocking the load off a
-pair of pedestals while the pedestals survive.
+Pedestals are not pieces and are not in this check. They are fixed scenery, they never
+fall, and they survive every collapse, exactly as in the reference clip where the plinths
+stand untouched in the rubble of the structure they were carrying.
 
 The clear is only declared once the condition holds **and** the world has been quiet for
 1.1 s. Without that, a structure mid collapse satisfies the condition for a single frame
@@ -149,11 +168,11 @@ a number read from a table.
 | | Easy | Normal |
 |---|---|---|
 | Target age | roughly 4 to 7 | roughly 8 to 12 |
-| Balls | unlimited | par |
+| Balls | unlimited | par + 6 |
 | Can fail | never | yes |
 | Ball radius | 0.42 SU | 0.30 SU |
-| Hit points scaled by | 0.55 | 1.0 |
-| Damage scaled by | 1.35 | 1.0 |
+| Hit points scaled by | 0.5 | 1.0 |
+| Damage scaled by | 1.4 | 1.0 |
 | Star bands | wider | standard |
 
 On Easy the heads up display shows a dash rather than a number for balls, so it reads as

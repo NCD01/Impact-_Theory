@@ -1,31 +1,28 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 1,
   "name": "First Light",
-  "par": 3,
-  "note": "One crate on a small platform. The whole game in one shot.",
+  "par": 5,
+  "note": "Two big crates on a wide deck. The largest target in the game, on purpose.",
+  "pedestals": [
+    -1.5,
+    1.5
+  ],
   "pieces": [
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": -1.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 1.5,
-      "y": 0,
-      "support": true
-    },
     {
       "piece": "B03_LONG_BEAM",
       "x": 0,
-      "y": 2
+      "y": 1.6
     },
     {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 0,
-      "y": 3
+      "piece": "B05_LARGE_BLOCK",
+      "x": -1,
+      "y": 2.6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 1,
+      "y": 2.6
     }
   ]
 }

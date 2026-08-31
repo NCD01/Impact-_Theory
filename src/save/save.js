@@ -49,6 +49,8 @@ export function createEmptySave() {
     endlessBest: 0,
     /** Whether the how to play hint has been shown. It is shown once, ever. */
     seenHint: false,
+    /** Whether the camera reacts to impacts. Some players simply do not want it. */
+    shake: true,
   };
 }
 
@@ -144,6 +146,8 @@ function normalise(save) {
   clean.endlessBest = Number.isFinite(save.endlessBest) && save.endlessBest >= 0
     ? save.endlessBest : 0;
   clean.seenHint = save.seenHint === true;
+  // Defaults to on, so only an explicit false turns it off.
+  clean.shake = save.shake !== false;
 
   if (typeof save.levels === 'object' && save.levels !== null) {
     for (const [key, value] of Object.entries(save.levels)) {
@@ -258,6 +262,12 @@ export function createSaveStore(storage = safeStorage()) {
     return true;
   }
 
+  /** Turns the camera shake on or off. */
+  function setShake(on) {
+    state.shake = on === true;
+    persist();
+  }
+
   /** Records that the how to play hint has been shown, so it is not shown again. */
   function setSeenHint() {
     state.seenHint = true;
@@ -299,6 +309,7 @@ export function createSaveStore(storage = safeStorage()) {
     getLevelRecord,
     setDifficulty,
     setMuted,
+    setShake,
     setSeenHint,
     setEndlessBest,
     totalStars,

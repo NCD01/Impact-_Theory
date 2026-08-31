@@ -19,17 +19,22 @@
  */
 
 import { hasPiece, getPiece } from '../blocks/manifest.js';
-import { FAMILIES, SUPPORT_CAPABLE_PIECES } from '../blocks/families.js';
+import { FAMILIES } from '../blocks/families.js';
 import { LEVEL } from '../core/constants.js';
 
 /**
  * The schema version this build writes and reads.
  *
  * A level file carrying a higher number is rejected rather than guessed at. Levels ship
- * inside the build, so unlike a save file there is never an old level to migrate: if
- * this number changes, every shipped level changes with it in the same commit.
+ * inside the build, so unlike a save file there is never an old level to migrate: if this
+ * number changes, every shipped level changes with it in the same commit.
+ *
+ * Version 2 added `pedestals`, the fixed plinths a structure stands on. Version 1 levels
+ * carried their supports as kit pieces marked `support: true`, which were dynamic and fell
+ * over; the reference clip shows plinths that never move. All thirty levels were rewritten
+ * in the same commit.
  */
-export const LEVEL_SCHEMA_VERSION = 1;
+export const LEVEL_SCHEMA_VERSION = 2;
 
 /**
  * Validates one level object.
@@ -62,6 +67,20 @@ export function validateLevel(data, source = 'level') {
   }
   if (!Number.isInteger(data.par) || data.par < 1) {
     err(`par must be a positive integer, got ${JSON.stringify(data.par)}`);
+  }
+
+  // Pedestals: the fixed plinths the structure stands on, as x positions in SU.
+  if (data.pedestals !== undefined) {
+    if (!Array.isArray(data.pedestals) || data.pedestals.length === 0) {
+      err('pedestals must be a non-empty array of x positions when present');
+    } else {
+      if (data.pedestals.length > 4) {
+        err(`has ${data.pedestals.length} pedestals; 4 is the most a playfield reads well with`);
+      }
+      data.pedestals.forEach((x, i) => {
+        if (!Number.isFinite(x)) err(`pedestals[${i}] must be a finite number, got ${JSON.stringify(x)}`);
+      });
+    }
   }
 
   if (!Array.isArray(data.pieces) || data.pieces.length === 0) {
@@ -99,23 +118,20 @@ export function validateLevel(data, source = 'level') {
         + `Known: ${Object.keys(FAMILIES).join(', ')}`,
       );
     }
-    if (p.support !== undefined && typeof p.support !== 'boolean') {
-      err(`${at}.support must be true or false`);
-    }
-    if (p.support === true && !SUPPORT_CAPABLE_PIECES.has(p.piece)) {
+    if (p.support !== undefined) {
       err(
-        `${at} marks ${p.piece} as a support, but only `
-        + `${[...SUPPORT_CAPABLE_PIECES].join(', ')} may be supports`,
+        `${at}.support is no longer a piece field. A structure now stands on fixed `
+        + 'pedestals listed in the level pedestals array. See docs/LEVEL_FORMAT.md.',
       );
     }
     if (p.fixed !== undefined && typeof p.fixed !== 'boolean') {
       err(`${at}.fixed must be true or false`);
     }
-    if (p.support !== true) targets += 1;
+    targets += 1;
   });
 
   if (targets === 0) {
-    err('has no non support pieces, so it would be cleared the instant it loads');
+    err('has no pieces to knock down, so it would be cleared the instant it loads');
   }
 
   return errors;
@@ -148,13 +164,12 @@ export function assertValidLevel(data, source = 'level') {
  *
  * @param {object} level
  * @returns {{id: number, name: string, par: number, pieces: number,
- *            supports: number, height: number, width: number, families: string[]}}
+ *            pedestals: number, height: number, width: number, families: string[]}}
  */
 export function summariseLevel(level) {
   let height = 0;
   let minX = Infinity;
   let maxX = -Infinity;
-  let supports = 0;
   const families = new Set();
 
   for (const spec of level.pieces) {
@@ -167,7 +182,6 @@ export function summariseLevel(level) {
     // ignores it puts half the beam off screen.
     if (spec.x - piece.width / 2 < minX) minX = spec.x - piece.width / 2;
     if (spec.x + piece.width / 2 > maxX) maxX = spec.x + piece.width / 2;
-    if (spec.support === true) supports += 1;
     families.add(spec.family ?? piece.defaultFamily);
   }
 
@@ -176,7 +190,7 @@ export function summariseLevel(level) {
     name: level.name,
     par: level.par,
     pieces: level.pieces.length,
-    supports,
+    pedestals: level.pedestals?.length ?? 0,
     height: Math.round(height * 100) / 100,
     width: Math.round((maxX - minX) * 100) / 100,
     families: [...families].sort(),

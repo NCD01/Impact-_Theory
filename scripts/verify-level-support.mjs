@@ -17,6 +17,9 @@
  *   FLOATING   nothing at all beneath the piece
  *   TEETERING  support on only one side of the piece's centre, so it topples on contact
  *
+ * Pedestals count as ground. They are fixed scenery placed by the game rather than pieces,
+ * so they are modelled here as immovable blocks of cap width standing at each declared x.
+ *
  * Run: node scripts/verify-level-support.mjs
  * Exits non-zero if anything is wrong, so the unit suite and CI can gate on it.
  */
@@ -24,64 +27,92 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-const REPO_ROOT = path.resolve(import.meta.dirname, '..');
-const man = JSON.parse(fs.readFileSync(
-  path.join(REPO_ROOT, 'Assets/Art/Blocks/block_asset_manifest.json'), 'utf8'));
-const D = Object.fromEntries(man.pieces.map(p => [p.id, p]));
 
+const REPO_ROOT = path.resolve(import.meta.dirname, '..');
+const LEVELS = path.join(REPO_ROOT, 'levels');
+const MANIFEST = JSON.parse(fs.readFileSync(
+  path.join(REPO_ROOT, 'Assets', 'Art', 'Blocks', 'block_asset_manifest.json'), 'utf8',
+));
+const DIM = Object.fromEntries(MANIFEST.pieces.map((p) => [p.id, p]));
+
+/** Must match src/game/pedestal.js. A unit test asserts they agree. */
+const PEDESTAL_HEIGHT = 1.6;
+const PEDESTAL_CAP_RADIUS = 0.5;
+
+/** The horizontal extent and vertical span a piece occupies. */
 function extents(spec) {
-  const d = D[spec.piece];
+  const d = DIM[spec.piece];
   const bottom = spec.y + (d.pivot === 'geometric-center' ? -d.height / 2 : 0);
-  return { x0: spec.x - d.width / 2, x1: spec.x + d.width / 2, bottom, top: bottom + d.height };
+  return {
+    x0: spec.x - d.width / 2,
+    x1: spec.x + d.width / 2,
+    bottom,
+    top: bottom + d.height,
+  };
+}
+
+/** A pedestal, as a solid block from the ground to its cap. */
+function pedestalExtents(x) {
+  return {
+    x0: x - PEDESTAL_CAP_RADIUS,
+    x1: x + PEDESTAL_CAP_RADIUS,
+    bottom: 0,
+    top: PEDESTAL_HEIGHT,
+  };
 }
 
 let totalBad = 0;
-const LEVELS = path.join(REPO_ROOT, 'levels');
-for (const f of fs.readdirSync(LEVELS).filter((n) => n.endsWith('.json')).sort()) {
-  const L = JSON.parse(fs.readFileSync(path.join(LEVELS, f), 'utf8'));
-  const E = L.pieces.map(extents);
+
+for (const file of fs.readdirSync(LEVELS).filter((n) => n.endsWith('.json')).sort()) {
+  const level = JSON.parse(fs.readFileSync(path.join(LEVELS, file), 'utf8'));
+  const pieceBoxes = level.pieces.map(extents);
+  // Everything a piece could be standing on: other pieces, and the pedestals.
+  const carriers = [
+    ...pieceBoxes,
+    ...(level.pedestals ?? []).map(pedestalExtents),
+  ];
+
   const bad = [];
-  L.pieces.forEach((spec, i) => {
-    const e = E[i];
-    if (e.bottom <= 0.01) return; // on the ground
-    // Overlap of this piece's footprint with the tops of pieces directly below it.
+  level.pieces.forEach((spec, i) => {
+    const e = pieceBoxes[i];
+    if (e.bottom <= 0.01) return; // resting on the sand
+
     let covered = 0;
-    for (let j = 0; j < E.length; j++) {
-      if (i === j) continue;
-      const o = E[j];
-      if (Math.abs(o.top - e.bottom) > 0.06) continue; // not directly beneath
-      covered += Math.max(0, Math.min(e.x1, o.x1) - Math.max(e.x0, o.x0));
-    }
-    const width = e.x1 - e.x0;
-    const frac = covered / width;
-    // A beam resting on two columns is only 25% covered and is perfectly fine: that is a
-    // span, and it is what the reference clip shows. What is broken is a piece with
-    // nothing under it, or one supported only on one side of its centre, which topples.
     let leftOfCentre = false;
     let rightOfCentre = false;
-    for (let j = 0; j < E.length; j++) {
-      if (i === j) continue;
-      const o = E[j];
-      if (Math.abs(o.top - e.bottom) > 0.06) continue;
+
+    carriers.forEach((o, j) => {
+      if (j === i) return;
+      if (Math.abs(o.top - e.bottom) > 0.06) return; // not directly beneath
       const lo = Math.max(e.x0, o.x0);
       const hi = Math.min(e.x1, o.x1);
-      if (hi - lo <= 0.02) continue;
+      if (hi - lo <= 0.02) return;
+      covered += hi - lo;
       if (lo < spec.x - 0.02) leftOfCentre = true;
       if (hi > spec.x + 0.02) rightOfCentre = true;
+    });
+
+    const fraction = covered / (e.x1 - e.x0);
+    if (fraction < 0.02) {
+      bad.push(`FLOATING  ${spec.piece} at x=${spec.x} y=${spec.y}`);
+    } else if (!(leftOfCentre && rightOfCentre) && fraction < 0.5) {
+      bad.push(
+        `TEETERING ${spec.piece} at x=${spec.x} y=${spec.y} `
+        + `(${Math.round(fraction * 100)}% on one side)`,
+      );
     }
-    const spanned = leftOfCentre && rightOfCentre;
-    if (frac < 0.02) bad.push(`FLOATING  ${spec.piece} at x=${spec.x} y=${spec.y}`);
-    else if (!spanned && frac < 0.5) bad.push(`TEETERING ${spec.piece} at x=${spec.x} y=${spec.y} (${(frac*100).toFixed(0)}% on one side)`);
   });
-  if (bad.length) {
+
+  if (bad.length > 0) {
     totalBad += bad.length;
-    console.log(`${f}  ${L.name}`);
-    bad.forEach(b => console.log('    ' + b));
+    console.log(`${file}  ${level.name}`);
+    for (const b of bad) console.log(`    ${b}`);
   }
 }
+
 if (totalBad === 0) {
   console.log('All levels supported: nothing floating, nothing teetering.');
   process.exit(0);
 }
-console.log('\ntotal badly placed pieces:', totalBad);
+console.log(`\ntotal badly placed pieces: ${totalBad}`);
 process.exit(1);

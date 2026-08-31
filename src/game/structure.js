@@ -59,6 +59,12 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
   let targetCount = 0;
   /** Where this level's pieces are placed, SU. Set per level before placing. */
   let origin = [...PLAYFIELD.STRUCTURE_ORIGIN];
+  /**
+   * World height of the platform surface this level's structure stands on.
+   * A piece whose centre falls REST_BELOW_PLATFORM under this has left the platform and
+   * counts as down. Set per level, before any piece is placed.
+   */
+  let platformTop = 0;
 
   /**
    * @typedef {object} PieceEntry
@@ -86,8 +92,6 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
   function place(spec) {
     const piece = getPiece(spec.piece);
     const family = getFamily(spec.family ?? piece.defaultFamily);
-    const isSupport = spec.support === true;
-
     const position = {
       x: origin[0] + spec.x,
       y: origin[1] + spec.y,
@@ -106,8 +110,8 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
       family,
       position,
       rotation,
-      // A fixed piece is scenery that never moves. Supports are dynamic by default so
-      // that knocking one out drops what stands on it.
+      // A fixed piece is scenery that never moves. Almost nothing uses it now that the
+      // plinths a structure stands on are pedestals rather than pieces.
       fixed: spec.fixed === true,
       kind: 'piece',
       userData: { pieceId: piece.id },
@@ -124,11 +128,10 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
       piece,
       family,
       damage: createDamageState(family.hitPoints * currentHitPointScale),
-      isSupport,
       counted: false,
     };
     pieces.set(handle, entry);
-    if (!isSupport) targetCount += 1;
+    targetCount += 1;
     return entry;
   }
 
@@ -144,6 +147,18 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
    */
   function setOrigin(next) {
     origin = [...next];
+  }
+
+  /**
+   * Sets the height of the surface the structure stands on, SU.
+   *
+   * Everything above this counts as standing; anything that falls below it by
+   * PLAYFIELD.REST_BELOW_PLATFORM has been knocked off and counts as down.
+   *
+   * @param {number} y
+   */
+  function setPlatformTop(y) {
+    platformTop = y;
   }
 
   /** Difficulty's hit point multiplier. Set before a level is built. */
@@ -180,7 +195,7 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
       const result = applyImpact(entry.damage, impact.energy, currentDamageScale);
       applied += result.applied;
       if (result.fractured) {
-        fracture(entry);
+        fracture(entry, impact);
       } else if (result.applied > 0) {
         tintDamage(entry, result.fraction);
       }
@@ -228,7 +243,7 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
    *
    * @param {PieceEntry} entry
    */
-  function fracture(entry) {
+  function fracture(entry, impact = null) {
     const rec = physics.getRecord(entry.handle);
     const at = rec
       ? { ...rec.body.translation() }
@@ -243,7 +258,7 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     const scale = Math.min(entry.piece.width, entry.piece.height, entry.piece.depth);
     dust.burst(centre, Math.max(0.6, scale), DESTRUCTION.DUST_PARTICLES);
 
-    spawnFragments(entry, centre, vel);
+    spawnFragments(entry, centre, vel, impact);
 
     physics.removeBody(entry.handle);
     root.remove(entry.mesh);
@@ -264,7 +279,16 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     return m;
   }
 
-  function spawnFragments(entry, centre, parentVelocity) {
+  /**
+   * Spawns the debris a fractured piece leaves behind.
+   *
+   * Fragments inherit the parent's velocity plus a random scatter, plus a push along the
+   * impact direction when one is given. That last part matters: a piece is fractured
+   * inside the contact event, before the collision impulse has been integrated, so its
+   * velocity at that moment is still nearly zero. Without the impact push, debris from a
+   * ball travelling at 27 SU/s simply dropped where the piece had been standing.
+   */
+  function spawnFragments(entry, centre, parentVelocity, impact = null) {
     const budget = DESTRUCTION.MAX_FRAGMENTS - fragments.size;
     if (budget <= 0) return;
 
@@ -304,10 +328,24 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
       const rec = physics.getRecord(handle);
       if (rec) {
         const s = DESTRUCTION.FRAGMENT_SCATTER_SPEED;
+        // Push along the impact, scaled by its energy and capped, so a hard hit throws
+        // debris away from the shooter rather than dropping it in place.
+        let px = 0;
+        let py = 0;
+        let pz = 0;
+        if (impact) {
+          const push = Math.min(
+            DESTRUCTION.FRAGMENT_IMPACT_PUSH_MAX,
+            Math.sqrt(impact.energy) * DESTRUCTION.FRAGMENT_PUSH_PER_ROOT_JOULE,
+          );
+          px = impact.normal.x * push;
+          py = Math.abs(impact.normal.y) * push * 0.4;
+          pz = impact.normal.z * push;
+        }
         rec.body.setLinvel({
-          x: parentVelocity.x + (Math.random() - 0.5) * s,
-          y: parentVelocity.y + Math.random() * s * 0.7,
-          z: parentVelocity.z + (Math.random() - 0.5) * s,
+          x: parentVelocity.x + px + (Math.random() - 0.5) * s,
+          y: parentVelocity.y + py + Math.random() * s * 0.7,
+          z: parentVelocity.z + pz + (Math.random() - 0.5) * s,
         }, true);
         rec.body.setAngvel({
           x: (Math.random() - 0.5) * 8,
@@ -365,7 +403,7 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
   }
 
   /**
-   * Whether every non support piece has been destroyed or brought down.
+   * Whether every piece has been destroyed or brought down.
    *
    * This is the single place the clear rule lives. A piece counts as down when its
    * centre of volume is below PLAYFIELD.REST_HEIGHT_THRESHOLD, or when it has been
@@ -375,7 +413,6 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
    */
   function isCleared() {
     for (const entry of pieces.values()) {
-      if (entry.isSupport) continue;
       if (!isDown(entry)) return false;
     }
     return true;
@@ -386,17 +423,17 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     if (!rec) return true;
     const t = rec.body.translation();
     const centreY = t.y + entry.piece.collider.pivotLift;
-    if (centreY < PLAYFIELD.REST_HEIGHT_THRESHOLD) return true;
+    if (centreY < platformTop - PLAYFIELD.REST_BELOW_PLATFORM) return true;
     const dx = t.x - origin[0];
     const dz = t.z - origin[2];
     return Math.hypot(dx, dz) > PLAYFIELD.OUT_OF_PLAY_RADIUS;
   }
 
-  /** How many non support pieces are still standing. Drives the progress readout. */
+  /** How many pieces are still standing. Drives the progress readout. */
   function standingCount() {
     let n = 0;
     for (const entry of pieces.values()) {
-      if (!entry.isSupport && !isDown(entry)) n += 1;
+      if (!isDown(entry)) n += 1;
     }
     return n;
   }
@@ -440,6 +477,7 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
   return {
     place,
     setOrigin,
+    setPlatformTop,
     setDifficultyTuning,
     handleImpact,
     familyOfImpact,

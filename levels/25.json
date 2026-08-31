@@ -1,159 +1,83 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 25,
-  "name": "Hardstanding",
-  "par": 10,
+  "name": "The Keep",
+  "par": 15,
+  "pedestals": [
+    -3,
+    0,
+    3
+  ],
   "pieces": [
     {
-      "piece": "S02_SHORT_COLUMN",
-      "x": -5.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
+      "piece": "B03_LONG_BEAM",
       "x": -2,
-      "y": 0,
-      "support": true
+      "y": 1.6
     },
     {
-      "piece": "S02_SHORT_COLUMN",
+      "piece": "B03_LONG_BEAM",
       "x": 2,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 5.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": -4,
-      "y": 2
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 0,
-      "y": 2
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 4,
-      "y": 2
-    },
-    {
-      "piece": "B05_LARGE_BLOCK",
-      "x": -5,
-      "y": 3,
-      "family": "concrete"
+      "y": 1.6
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": -3,
-      "y": 3,
-      "family": "concrete"
+      "y": 2.6
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": -1,
-      "y": 3,
-      "family": "concrete"
+      "y": 2.6
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 1,
-      "y": 3,
-      "family": "concrete"
+      "y": 2.6
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 3,
-      "y": 3,
-      "family": "concrete"
+      "y": 2.6
     },
     {
-      "piece": "B05_LARGE_BLOCK",
-      "x": 5,
-      "y": 3,
-      "family": "concrete"
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": -5,
-      "y": 5,
-      "family": "stone"
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": -3,
-      "y": 5,
-      "family": "stone"
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": -1,
-      "y": 5,
-      "family": "stone"
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 1,
-      "y": 5,
-      "family": "stone"
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 3,
-      "y": 5,
-      "family": "stone"
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 5,
-      "y": 5,
-      "family": "stone"
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -3.5,
-      "y": 6
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
+      "piece": "B04_TALL_BLOCK",
       "x": -2.5,
-      "y": 6
+      "y": 4.6
     },
     {
-      "piece": "B01_SMALL_BLOCK",
+      "piece": "B04_TALL_BLOCK",
       "x": -1.5,
-      "y": 6
+      "y": 4.6
     },
     {
-      "piece": "B01_SMALL_BLOCK",
+      "piece": "B04_TALL_BLOCK",
       "x": -0.5,
-      "y": 6
+      "y": 4.6
     },
     {
-      "piece": "B01_SMALL_BLOCK",
+      "piece": "B04_TALL_BLOCK",
       "x": 0.5,
-      "y": 6
+      "y": 4.6
     },
     {
-      "piece": "B01_SMALL_BLOCK",
+      "piece": "B04_TALL_BLOCK",
       "x": 1.5,
-      "y": 6
+      "y": 4.6
     },
     {
-      "piece": "B01_SMALL_BLOCK",
+      "piece": "B04_TALL_BLOCK",
       "x": 2.5,
-      "y": 6
+      "y": 4.6
     },
     {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 3.5,
-      "y": 6
+      "piece": "S05_ARCH",
+      "x": -1.5,
+      "y": 7.6
+    },
+    {
+      "piece": "S05_ARCH",
+      "x": 1.5,
+      "y": 7.6
     }
   ]
 }

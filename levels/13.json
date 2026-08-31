@@ -1,76 +1,78 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 13,
-  "name": "Cold Store",
-  "par": 7,
+  "name": "Quarry Steps",
+  "par": 14,
+  "pedestals": [
+    -3,
+    0,
+    3
+  ],
   "pieces": [
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": -3.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 0,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 3.5,
-      "y": 0,
-      "support": true
-    },
     {
       "piece": "B03_LONG_BEAM",
       "x": -2,
-      "y": 2
+      "y": 1.6
     },
     {
       "piece": "B03_LONG_BEAM",
       "x": 2,
-      "y": 2
+      "y": 1.6
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": -3,
-      "y": 3
+      "y": 2.6
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": -1,
-      "y": 3
+      "y": 2.6
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 1,
-      "y": 3
+      "y": 2.6
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 3,
-      "y": 3
+      "y": 2.6
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
-      "x": -3,
-      "y": 5
+      "x": -2,
+      "y": 4.6
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
-      "x": -1,
-      "y": 5
+      "x": 0,
+      "y": 4.6
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
-      "x": 1,
-      "y": 5
+      "x": 2,
+      "y": 4.6
     },
     {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 3,
-      "y": 5
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 5.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 5.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 5.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 5.6
     }
   ]
 }

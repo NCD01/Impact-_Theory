@@ -83,13 +83,11 @@ describe('endless generator', () => {
     expect(late.par).toBeGreaterThan(early.par);
   });
 
-  it('always includes at least one support and one target', () => {
+  it('always stands on pedestals and always has something to knock down', () => {
     for (let round = 1; round <= 60; round += 1) {
       const level = generateEndlessLevel(round);
-      const supports = level.pieces.filter((p) => p.support === true);
-      const targets = level.pieces.filter((p) => p.support !== true);
-      expect(supports.length, `round ${round} supports`).toBeGreaterThan(0);
-      expect(targets.length, `round ${round} targets`).toBeGreaterThan(0);
+      expect(level.pedestals.length, `round ${round} pedestals`).toBeGreaterThan(0);
+      expect(level.pieces.length, `round ${round} pieces`).toBeGreaterThan(0);
     }
   });
 

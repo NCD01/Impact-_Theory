@@ -21,31 +21,49 @@ This is `levels/01.json`, complete and unedited:
 
 ```json
 {
-  "schema": 1,
+  "schema": 2,
   "id": 1,
   "name": "First Light",
-  "par": 3,
-  "note": "One crate on two short columns. Teaches that knocking a support drops the load.",
+  "par": 5,
+  "note": "Two big crates on a wide deck. The largest target in the game, on purpose.",
+  "pedestals": [
+    -1.5,
+    1.5
+  ],
   "pieces": [
-    { "piece": "S02_SHORT_COLUMN", "x": -1.2, "y": 0, "support": true },
-    { "piece": "S02_SHORT_COLUMN", "x": 1.2, "y": 0, "support": true },
-    { "piece": "B02_MEDIUM_BLOCK", "x": 0, "y": 2 }
+    {
+      "piece": "B03_LONG_BEAM",
+      "x": 0,
+      "y": 1.6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -1,
+      "y": 2.6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 1,
+      "y": 2.6
+    }
   ]
 }
 ```
 
-Two short columns, each 2 SU tall, marked as supports. A 2 SU wide crate resting across
-them at 2 SU, which is exactly the columns' height. Par is three balls.
+Two plinths 3 SU apart, a 4 SU beam laid across them as a deck, and two large crates on
+top. The plinths are 1.6 SU tall, so the deck sits at `y: 1.6` and the crates at `y: 2.6`.
+The deliberately large target makes this winnable by pointing roughly at it.
 
 ## Top level fields
 
 | Field | Type | Required | Meaning |
 |---|---|---|---|
-| `schema` | integer | yes | Must be `1`. A file with a higher number is rejected rather than guessed at. |
+| `schema` | integer | yes | Must be `2`. A file with a higher number is rejected rather than guessed at. |
 | `id` | integer | yes | Positive, unique across the set, and the order levels are played in. |
 | `name` | string | yes | Shown on the level select and in the heads up display. Must not be empty. |
 | `par` | integer | yes | Positive. The balls a good player needs. Drives stars and, on Normal, the ball allowance. |
 | `note` | string | no | A designer's note. Ignored by the game. |
+| `pedestals` | array | yes | The x positions, in SU, of the fixed plinths the structure stands on. One to four. |
 | `pieces` | array | yes | At least one, at most `LEVEL.MAX_PIECES`, currently 45. |
 
 There is no schema migration for levels. Unlike a save file there is never an old level in
@@ -62,7 +80,6 @@ with it in the same commit.
 | `z` | number | no | `0` | Depth in SU. Negative is away from the camera. Rarely needed. |
 | `rotY` | number | no | `0` | Rotation about the vertical axis, in radians. |
 | `family` | string | no | the piece's own | A material family override. Changes physics, not appearance. |
-| `support` | boolean | no | `false` | Marks the piece as something the structure stands on. |
 | `fixed` | boolean | no | `false` | Makes the piece immovable scenery. Rarely wanted. |
 
 ## What `y` means, and the one thing that catches everyone
@@ -79,20 +96,28 @@ The full table is in [BLOCK_KIT.md](BLOCK_KIT.md). Stacking a geometric-center p
 it were center-bottom leaves it half buried in whatever is beneath it, and it looks like a
 physics bug rather than a placement one.
 
-## Supports
+## Pedestals
 
-Marking a piece `"support": true` excludes it from the level clear check. That is what
-lets a level be cleared by knocking the load off a pair of pedestals while the pedestals
-themselves survive, exactly as in the reference clip.
+`"pedestals": [-3, 0, 3]` places three fixed decorative plinths at those x positions. They
+are **not pieces**. They are scenery placed by the game, they never move, they are never
+scored, and they are not part of the clear condition. The reference clip's frame 9 shows
+exactly this: a collapsed structure with both plinths standing untouched in the rubble.
 
-**Only three pieces may be supports:** `S01_ROUND_COLUMN`, `S02_SHORT_COLUMN` and
-`S03_WIDE_FOOTING`. Marking anything else is rejected by the validator.
+Each plinth is 1.6 SU tall with a 1 SU wide cap, so a structure starts at `y: 1.6`.
 
-Supports are still dynamic bodies. Knocking one out drops what stands on it, and that
-comes from the physics rather than from a scripted trigger.
+Three arrangements are used, and they are the only ones that keep a deck properly carried:
 
-A level made entirely of supports is rejected, because it would be cleared the instant it
-loaded.
+| Arrangement | Pedestals | Deck | Usable width |
+|---|---|---|---|
+| single | `[0]` | none | 1 SU, so only a 1 SU wide piece |
+| pair | `[-1.5, 1.5]` | one 4 SU beam at `y: 1.6` | 4 SU |
+| triple | `[-3, 0, 3]` | two 4 SU beams at `y: 1.6` | 8 SU |
+
+Each has a pedestal on both sides of every deck beam's centre. That is what stops a beam
+teetering on a single plinth.
+
+**`support` is no longer a piece field.** A level carrying one is rejected with a message
+pointing here, so an old schema 1 level fails loudly rather than loading wrong.
 
 ## Material overrides
 
@@ -138,8 +163,9 @@ Problems it catches, each with the offending value named:
 
 - a `piece` that is not in the block manifest
 - a `family` that is not a real material family
-- a `support` on a piece that may not be one
-- a level with no non support pieces
+- a `support` field on a piece, which schema 2 removed
+- a `pedestals` array that is empty or holds something other than numbers
+- a level with no pieces to knock down
 - a wrong `schema`, a missing `name`, a non integer or non positive `par`
 - a piece below the ground plane
 - a non finite coordinate

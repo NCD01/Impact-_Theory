@@ -45,17 +45,28 @@ const ROW_PIECES = [
   { id: 'B03_LONG_BEAM', width: 4 },
 ];
 
-/** Pieces that can carry a structure, with their heights. */
-const SUPPORTS = [
-  { id: 'S02_SHORT_COLUMN', height: 2 },
-  { id: 'S01_ROUND_COLUMN', height: 3 },
-  { id: 'S03_WIDE_FOOTING', height: 0.5 },
-];
+/**
+ * Total height of a pedestal, SU. Must match PEDESTAL_HEIGHT in src/game/pedestal.js.
+ * Restated rather than imported so this module stays free of rendering code and can be
+ * unit tested in Node. A test asserts the two agree.
+ */
+const PEDESTAL_HEIGHT = 1.6;
+
+/**
+ * The two base arrangements the generator uses, matching the hand designed levels.
+ *
+ * Each has pedestals under both sides of every deck beam's centre, which is what stops a
+ * beam teetering on a single plinth.
+ */
+const BASES = {
+  pair: { xs: [-1.5, 1.5], beams: 1, width: 4 },
+  triple: { xs: [-3, 0, 3], beams: 2, width: 8 },
+};
 
 /**
  * Generates one endless round.
  *
- * Difficulty rises with `round`: more rows, wider spans and tougher default families as
+ * Difficulty rises with `round`: more rows, a wider base and tougher default families as
  * the run goes on. Capped at LEVEL.MAX_PIECES so a long run cannot walk past the body
  * budget measured in phase 3.
  *
@@ -71,37 +82,36 @@ export function generateEndlessLevel(round, seed = round) {
   const rnd = seededRandom(seed * 2654435761);
   const pieces = [];
 
-  // The structure grows for the first dozen rounds, then stops growing and starts
-  // getting denser, so that round 40 is harder than round 20 without being twice as big
-  // and walking past the body budget.
-  const rows = Math.min(7, 2 + Math.floor(round / 3));
-  const halfWidth = Math.min(6, 2.5 + round * 0.12);
+  // The narrow base for the opening rounds, the wide one afterwards.
+  const base = round < 4 ? BASES.pair : BASES.triple;
+  const deckY = PEDESTAL_HEIGHT;
+  const topY = deckY + 1;
 
-  const support = SUPPORTS[Math.floor(rnd() * SUPPORTS.length)];
-  const legSpan = Math.max(1.2, halfWidth - 0.6);
-  pieces.push({ piece: support.id, x: -round1(legSpan), y: 0, support: true });
-  pieces.push({ piece: support.id, x: round1(legSpan), y: 0, support: true });
-  const baseY = support.height;
-
-  // A deck across the legs, so the rows above have something to stand on.
-  const deckSpan = legSpan * 2;
-  let deckX = -deckSpan / 2;
-  while (deckX < deckSpan / 2 - 0.01 && pieces.length < LEVEL.MAX_PIECES) {
-    const beam = deckX + 4 <= deckSpan / 2 ? ROW_PIECES[3] : ROW_PIECES[1];
-    if (deckX + beam.width > deckSpan / 2 + 0.01) break;
-    pieces.push({ piece: beam.id, x: round1(deckX + beam.width / 2), y: round1(baseY) });
-    deckX += beam.width;
+  // The deck across the plinths.
+  const beamWidth = 4;
+  const deckSpan = base.beams * beamWidth;
+  for (let i = 0; i < base.beams; i += 1) {
+    pieces.push({
+      piece: 'B03_LONG_BEAM',
+      x: round1(-deckSpan / 2 + beamWidth / 2 + i * beamWidth),
+      y: round1(deckY),
+    });
   }
 
-  for (let row = 0; row < rows && pieces.length < LEVEL.MAX_PIECES; row += 1) {
-    let x = -halfWidth;
-    const y = baseY + 1 + row;
-    while (x < halfWidth - 0.01 && pieces.length < LEVEL.MAX_PIECES) {
+  // Rows on top. Grows for the first dozen rounds, then stops growing and gets denser,
+  // so round 40 is harder than round 20 without being twice as big.
+  const rows = Math.min(6, 1 + Math.floor(round / 3));
+  const half = base.width / 2;
+
+  for (let r = 0; r < rows && pieces.length < LEVEL.MAX_PIECES; r += 1) {
+    const y = topY + r;
+    let x = -half;
+    while (x < half - 0.01 && pieces.length < LEVEL.MAX_PIECES) {
       const choice = ROW_PIECES[Math.floor(rnd() * ROW_PIECES.length)];
-      if (x + choice.width > halfWidth) {
-        // Fall back to the narrowest piece, and give up on the row if even that will
-        // not fit, so the loop always terminates.
-        if (x + 1 > halfWidth) break;
+      if (x + choice.width > half + 0.01) {
+        // Fall back to the narrowest piece, and give up on the row if even that will not
+        // fit, so the loop always terminates.
+        if (x + 1 > half + 0.01) break;
         pieces.push({ piece: ROW_PIECES[0].id, x: round1(x + 0.5), y: round1(y) });
         x += 1;
         continue;
@@ -121,8 +131,10 @@ export function generateEndlessLevel(round, seed = round) {
     schema: LEVEL_SCHEMA_VERSION,
     id: round,
     name: `Round ${round}`,
-    // Par grows more slowly than the structure, so endless mode gets harder.
-    par: Math.max(3, Math.round(4 + round * 0.55)),
+    // Par follows the piece count, the same rule the hand designed levels use, because
+    // the work of clearing a level scales with how many pieces have to come down.
+    par: Math.max(3, Math.round(Math.min(pieces.length, LEVEL.MAX_PIECES) * 0.9) + 2),
+    pedestals: base.xs,
     pieces: pieces.slice(0, LEVEL.MAX_PIECES),
   };
 }

@@ -1,86 +1,93 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 17,
-  "name": "Twin Arches",
-  "par": 8,
+  "name": "Breakwater",
+  "par": 16,
+  "pedestals": [
+    -3,
+    0,
+    3
+  ],
   "pieces": [
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": -3.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 0,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 3.5,
-      "y": 0,
-      "support": true
-    },
     {
       "piece": "B03_LONG_BEAM",
       "x": -2,
-      "y": 2
+      "y": 1.6
     },
     {
       "piece": "B03_LONG_BEAM",
       "x": 2,
-      "y": 2
+      "y": 1.6
     },
     {
-      "piece": "S05_ARCH",
-      "x": -1.5,
-      "y": 3
-    },
-    {
-      "piece": "S05_ARCH",
-      "x": 1.5,
-      "y": 3
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
+      "piece": "S04_WEDGE",
       "x": -3,
-      "y": 5
+      "y": 2.6
     },
     {
-      "piece": "B02_MEDIUM_BLOCK",
+      "piece": "S04_WEDGE",
       "x": -1,
-      "y": 5
+      "y": 2.6
     },
     {
-      "piece": "B02_MEDIUM_BLOCK",
+      "piece": "S04_WEDGE",
       "x": 1,
-      "y": 5
+      "y": 2.6
     },
     {
-      "piece": "B02_MEDIUM_BLOCK",
+      "piece": "S04_WEDGE",
       "x": 3,
-      "y": 5
+      "y": 2.6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -3,
+      "y": 3.6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": -1,
+      "y": 3.6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 1,
+      "y": 3.6
+    },
+    {
+      "piece": "B05_LARGE_BLOCK",
+      "x": 3,
+      "y": 3.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -2.5,
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 6
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 6
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 6
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 6
+      "y": 5.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 2.5,
+      "y": 5.6
     }
   ]
 }

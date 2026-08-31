@@ -27,11 +27,36 @@
  *                                    reaching a maximum of 54057 J
  *
  * So a square ball hit is worth roughly 5000 to 50000 J, a glancing hit a few hundred,
- * and a piece settling against its neighbour under 10 J. The values below are set
- * against that measured scale, so that a square hit destroys wood outright, brick takes
- * two, and steel takes a sustained beating, while the jostling of a collapse chips
- * pieces without dissolving the structure. That is what produces the reference clip's
- * behaviour, where blocks mostly tumble and some of them break.
+ * and a piece settling against its neighbour under 10 J.
+ *
+ * THE SECOND CALIBRATION, AND WHY THE NUMBERS ARE HIGH.
+ *
+ * The first set against that scale destroyed a piece with a single square hit, and that
+ * turned out to be wrong for a different reason. A piece is fractured inside the contact
+ * event, in the same physics step as the impact, so it is removed from the world before
+ * the collision impulse has been integrated. The result was that a ball punched a clean
+ * hole through a wall and **nothing moved**: the pieces either side stayed exactly where
+ * they were, and the owner's words were "you hit blocks and they do not move".
+ *
+ * The reference clip is the other way round. Blocks mostly tumble, and some of them break.
+ *
+ * So hit points are now high enough that a typical hit does not destroy outright. The ball
+ * bounces, its momentum goes into the piece, the piece moves, and the structure topples,
+ * which is the thing worth watching. Destruction is what happens to a piece that takes
+ * repeated punishment, not the normal outcome of being hit once. The owner put it exactly:
+ * the game is "not about hitting a target more than once but knocking them off", with
+ * breaking as the thing that happens if you do keep hitting it.
+ *
+ * Levels are cleared by bringing pieces down off the platform, not by destroying every
+ * one, so tougher pieces do not make a level longer. They make it fall over instead.
+ *
+ * THE MEASUREMENT THAT SETTLED THESE NUMBERS.
+ *
+ * With destruction effectively disabled, one shot into a fourteen piece wall moved twelve
+ * of them, the furthest by 4.09 SU. With the previous hit points the same shot moved
+ * nothing at all, because the two pieces it touched were deleted mid step and the rest
+ * never felt a thing. A square hit is worth 60 to 90 kJ, so these values are set at
+ * roughly four square hits to destroy on Normal and two on Easy.
  *
  * On the density values. These are not the real densities of the materials they are
  * named after. Real steel is 7850 kg/m^3, which makes a 1 SU steel cube weigh nearly
@@ -39,6 +64,12 @@
  * preserve the ordering and the feel of the real materials while compressing the range
  * to roughly three to one, so that every family is movable and heavy things still feel
  * heavy. This is a game value, chosen deliberately, not a mistake about physics.
+ *
+ * They were halved once already. At the first set a 1 SU wooden crate weighed 340 kg
+ * against a 102 kg ball, so a ball fired into a packed wall moved it by five centimetres.
+ * The game is about knocking pieces off their platform, so the ball has to be able to
+ * shift what it hits: a crate now weighs 150 kg against a ball of nearly 300, and a hit
+ * sends it somewhere.
  *
  * The family assigned to each piece is the owner's approved V2 art direction, read from
  * Assets/Art/Blocks/MaterialVariants/V2/material_variant_manifest_v2.json. The art and
@@ -63,14 +94,14 @@ export const FAMILIES = {
     id: 'wood',
     label: 'Wood',
     // Lightest family. Crates should shift when a ball clips them.
-    density: 340,
+    density: 150,
     // Wood knocks rather than bounces.
     restitution: 0.16,
     friction: 0.62,
     // Breaks in roughly one square hit from a full speed ball, which carries about
     // 37 kJ, minus what the ball keeps after the collision.
     // One square ball hit. A crate is the piece a player expects to explode.
-    hitPoints: 8000,
+    hitPoints: 280000,
     scoreWeight: 1.0,
     colorHint: 0xc98b45,
   },
@@ -78,12 +109,12 @@ export const FAMILIES = {
   brick: {
     id: 'brick',
     label: 'Brick',
-    density: 720,
+    density: 300,
     restitution: 0.1,
     friction: 0.78,
     // Brick is the first family that needs a second hit.
     // Two solid hits, or one hit and a heavy piece landing on it.
-    hitPoints: 18000,
+    hitPoints: 400000,
     scoreWeight: 1.4,
     colorHint: 0xa8452f,
   },
@@ -91,10 +122,10 @@ export const FAMILIES = {
   stone: {
     id: 'stone',
     label: 'Stone',
-    density: 900,
+    density: 400,
     restitution: 0.08,
     friction: 0.84,
-    hitPoints: 30000,
+    hitPoints: 620000,
     scoreWeight: 1.8,
     colorHint: 0x6f7480,
   },
@@ -102,10 +133,10 @@ export const FAMILIES = {
   concrete: {
     id: 'concrete',
     label: 'Concrete',
-    density: 820,
+    density: 350,
     restitution: 0.09,
     friction: 0.8,
-    hitPoints: 24000,
+    hitPoints: 500000,
     scoreWeight: 1.6,
     colorHint: 0x9a9a92,
   },
@@ -114,13 +145,13 @@ export const FAMILIES = {
     id: 'steel',
     label: 'Steel',
     // Heaviest family. A steel column anchors a structure and resists being shifted.
-    density: 1150,
+    density: 520,
     restitution: 0.22,
     friction: 0.5,
     // The toughest family. A steel column is meant to survive being shot and to be
     // beaten only by repeated direct hits, so that it reads as the thing holding the
     // structure up rather than as one more block.
-    hitPoints: 60000,
+    hitPoints: 1100000,
     scoreWeight: 2.4,
     colorHint: 0x8d949c,
   },
@@ -130,10 +161,10 @@ export const FAMILIES = {
     label: 'Painted Steel',
     // Slightly lighter and softer than bare steel, so painted beams are the tough
     // structural member a player can still eventually break.
-    density: 1050,
+    density: 470,
     restitution: 0.2,
     friction: 0.54,
-    hitPoints: 40000,
+    hitPoints: 800000,
     scoreWeight: 2.1,
     colorHint: 0xd4762e,
   },
@@ -141,13 +172,13 @@ export const FAMILIES = {
   rubber: {
     id: 'rubber',
     label: 'Rubber',
-    density: 420,
+    density: 190,
     // The one family that genuinely bounces. A ball off a roller goes somewhere else,
     // which is the point of having a roller in a structure.
     restitution: 0.72,
     friction: 0.9,
     // Rubber absorbs rather than breaks, so it takes a lot and is worth little.
-    hitPoints: 35000,
+    hitPoints: 700000,
     scoreWeight: 1.2,
     colorHint: 0x3c3a3d,
   },

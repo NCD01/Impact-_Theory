@@ -1,106 +1,103 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 16,
-  "name": "Breakwater",
-  "par": 8,
+  "name": "The Yard",
+  "par": 18,
+  "pedestals": [
+    -3,
+    0,
+    3
+  ],
   "pieces": [
-    {
-      "piece": "S03_WIDE_FOOTING",
-      "x": -2.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S03_WIDE_FOOTING",
-      "x": 0,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S03_WIDE_FOOTING",
-      "x": 2.5,
-      "y": 0,
-      "support": true
-    },
     {
       "piece": "B03_LONG_BEAM",
       "x": -2,
-      "y": 0.5
+      "y": 1.6
     },
     {
       "piece": "B03_LONG_BEAM",
       "x": 2,
-      "y": 0.5
+      "y": 1.6
     },
     {
-      "piece": "S04_WEDGE",
+      "piece": "B02_MEDIUM_BLOCK",
       "x": -3,
-      "y": 1.5
+      "y": 2.6
     },
     {
-      "piece": "S04_WEDGE",
+      "piece": "B02_MEDIUM_BLOCK",
       "x": -1,
-      "y": 1.5
+      "y": 2.6
     },
     {
-      "piece": "S04_WEDGE",
+      "piece": "B02_MEDIUM_BLOCK",
       "x": 1,
-      "y": 1.5
+      "y": 2.6
     },
     {
-      "piece": "S04_WEDGE",
+      "piece": "B02_MEDIUM_BLOCK",
       "x": 3,
-      "y": 1.5
+      "y": 2.6
     },
     {
-      "piece": "B05_LARGE_BLOCK",
-      "x": -3,
-      "y": 2.5
+      "piece": "B04_TALL_BLOCK",
+      "x": -2.5,
+      "y": 3.6
     },
     {
-      "piece": "B05_LARGE_BLOCK",
-      "x": -1,
-      "y": 2.5
+      "piece": "B04_TALL_BLOCK",
+      "x": -1.5,
+      "y": 3.6
     },
     {
-      "piece": "B05_LARGE_BLOCK",
-      "x": 1,
-      "y": 2.5
+      "piece": "B04_TALL_BLOCK",
+      "x": -0.5,
+      "y": 3.6
     },
     {
-      "piece": "B05_LARGE_BLOCK",
-      "x": 3,
-      "y": 2.5
+      "piece": "B04_TALL_BLOCK",
+      "x": 0.5,
+      "y": 3.6
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": 1.5,
+      "y": 3.6
+    },
+    {
+      "piece": "B04_TALL_BLOCK",
+      "x": 2.5,
+      "y": 3.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -2.5,
-      "y": 4.5
+      "y": 6.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 4.5
+      "y": 6.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 4.5
+      "y": 6.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 4.5
+      "y": 6.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 4.5
+      "y": 6.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 2.5,
-      "y": 4.5
+      "y": 6.6
     }
   ]
 }

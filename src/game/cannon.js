@@ -11,13 +11,17 @@
  * Y, zero pointing straight down the playfield, positive to the player's right. Pitch is
  * elevation above horizontal, zero being level.
  *
- * The barrel is built from primitives rather than a model because the kit contains no
- * cannon, and a stack of cylinders reads correctly at the size it appears on screen.
+ * The cannon is built from primitives rather than a model, because the block kit contains
+ * no cannon and no new modelling was in scope. It is a stack of turned sections: a fat
+ * breech, two gold bands, a tapered barrel, a muzzle ring, a dark bore, trunnions, a
+ * carriage drum and a patterned mat. The owner asked for more detail after the first
+ * version, which was a single plain cone and read as a traffic bollard.
  * Art credit: original to this project.
  */
 
 import {
   CylinderGeometry,
+  DoubleSide,
   Group,
   Mesh,
   MeshBasicMaterial,
@@ -34,10 +38,13 @@ import { CANNON, WORLD } from '../core/constants.js';
 const GRAVITY = Math.abs(WORLD.GRAVITY_Y);
 
 /** Original palette for the cannon. Not sampled from the reference clip. */
+/** Original palette for the cannon. Not sampled from the reference clip. */
 const COLORS = {
-  barrel: 0x2f5fa8,
+  barrel: 0x2f6fc4,
+  barrelDark: 0x1f4a86,
   trim: 0xe8a13c,
   base: 0x8a5a33,
+  mat: 0xb4523a,
   flash: 0xffdf8e,
 };
 
@@ -59,34 +66,101 @@ export function createCannon(parent) {
   const pitchPivot = new Group();
   root.add(pitchPivot);
 
-  const barrel = new Mesh(
-    new CylinderGeometry(CANNON.BARREL_RADIUS * 0.82, CANNON.BARREL_RADIUS, CANNON.BARREL_LENGTH, 20),
-    new MeshStandardMaterial({ color: COLORS.barrel, roughness: 0.55, metalness: 0.2 }),
-  );
-  // The cylinder is authored along Y. A quarter turn about X lays it along -Z, which is
-  // down the playfield, and the offset moves its base to the pivot rather than centring
-  // it, so the pivot is at the breech where a real trunnion would be.
-  barrel.rotation.x = -Math.PI / 2;
-  barrel.position.z = -CANNON.BARREL_LENGTH / 2;
-  barrel.castShadow = true;
-  pitchPivot.add(barrel);
+  // ---- The barrel ---------------------------------------------------------
+  // Built from a stack of parts rather than one cone. The reference cannon is a blue
+  // barrel with gold bands at the muzzle and the breech and a decorated base, and the
+  // owner asked for that detail; a single plain cone read as a traffic bollard.
+  const barrelMat = new MeshStandardMaterial({
+    color: COLORS.barrel, roughness: 0.45, metalness: 0,
+  });
+  const barrelDarkMat = new MeshStandardMaterial({
+    color: COLORS.barrelDark, roughness: 0.5, metalness: 0,
+  });
+  const trimMat = new MeshStandardMaterial({
+    color: COLORS.trim, roughness: 0.35, metalness: 0,
+  });
 
-  const muzzleRing = new Mesh(
-    new TorusGeometry(CANNON.BARREL_RADIUS * 0.86, 0.07, 8, 20),
-    new MeshStandardMaterial({ color: COLORS.trim, roughness: 0.4, metalness: 0.35 }),
-  );
-  muzzleRing.position.z = -CANNON.BARREL_LENGTH;
+  const R = CANNON.BARREL_RADIUS;
+  const L = CANNON.BARREL_LENGTH;
+
+  /**
+   * Adds a barrel section. `from` and `to` are distances from the pivot along the barrel,
+   * so a section reads as "from here to there" rather than as a centre and a length.
+   */
+  const barrelSection = (from, to, rFrom, rTo, material, segments = 22) => {
+    const m = new Mesh(new CylinderGeometry(rTo, rFrom, to - from, segments), material);
+    // Authored along Y; a quarter turn about X lays it along -Z, down the playfield.
+    m.rotation.x = -Math.PI / 2;
+    m.position.z = -(from + to) / 2;
+    m.castShadow = true;
+    pitchPivot.add(m);
+  };
+
+  // Breech, the fat end at the back, with a gold band in front of it.
+  barrelSection(-0.18, 0.16, R * 1.16, R * 1.12, barrelDarkMat);
+  barrelSection(0.16, 0.3, R * 1.12, R * 1.08, trimMat);
+  // The main taper.
+  barrelSection(0.3, L * 0.72, R * 1.06, R * 0.92, barrelMat);
+  // A second gold band two thirds along, which is what gives the barrel its length.
+  barrelSection(L * 0.72, L * 0.79, R * 0.94, R * 0.94, trimMat);
+  // The muzzle run.
+  barrelSection(L * 0.79, L, R * 0.9, R * 0.84, barrelMat);
+
+  // The muzzle ring itself, a fat torus around the mouth.
+  const muzzleRing = new Mesh(new TorusGeometry(R * 0.88, 0.085, 10, 24), trimMat);
+  muzzleRing.position.z = -L;
   muzzleRing.castShadow = true;
   pitchPivot.add(muzzleRing);
 
-  const base = new Mesh(
-    new CylinderGeometry(0.72, 0.92, 0.5, 16),
-    new MeshStandardMaterial({ color: COLORS.base, roughness: 0.9, metalness: 0 }),
+  // A dark bore, so the mouth reads as a hole rather than a flat cap.
+  const bore = new Mesh(
+    new CylinderGeometry(R * 0.62, R * 0.62, 0.5, 18, 1, true),
+    new MeshStandardMaterial({ color: 0x14181f, roughness: 1, side: DoubleSide }),
   );
-  base.position.y = -0.62;
+  bore.rotation.x = -Math.PI / 2;
+  bore.position.z = -L + 0.22;
+  pitchPivot.add(bore);
+
+  // Trunnions, the two stubs the barrel would pivot on. Small, but they are what make it
+  // read as a cannon on a carriage rather than a tube floating in the sand.
+  for (const side of [-1, 1]) {
+    const trunnion = new Mesh(new CylinderGeometry(0.1, 0.1, 0.22, 10), trimMat);
+    trunnion.rotation.z = Math.PI / 2;
+    trunnion.position.set(side * (R * 1.05), 0, -L * 0.3);
+    trunnion.castShadow = true;
+    pitchPivot.add(trunnion);
+  }
+
+  // ---- The base -----------------------------------------------------------
+  // A carriage drum on a patterned mat, matching the decorated base in the reference.
+  const base = new Mesh(
+    new CylinderGeometry(0.66, 0.86, 0.46, 20),
+    new MeshStandardMaterial({ color: COLORS.base, roughness: 0.85, metalness: 0 }),
+  );
+  base.position.y = -0.6;
   base.castShadow = true;
   base.receiveShadow = true;
   root.add(base);
+
+  const baseBand = new Mesh(new TorusGeometry(0.7, 0.06, 8, 22), trimMat);
+  baseBand.rotation.x = Math.PI / 2;
+  baseBand.position.y = -0.42;
+  root.add(baseBand);
+
+  // The mat the cannon stands on, laid flat just above the sand so it does not z-fight.
+  const mat = new Mesh(
+    new CylinderGeometry(1.35, 1.35, 0.05, 26),
+    new MeshStandardMaterial({ color: COLORS.mat, roughness: 0.95, metalness: 0 }),
+  );
+  mat.position.y = -CANNON.POSITION[1] + 0.03;
+  mat.receiveShadow = true;
+  root.add(mat);
+
+  const matRing = new Mesh(new TorusGeometry(1.18, 0.07, 8, 30), trimMat);
+  matRing.rotation.x = Math.PI / 2;
+  matRing.position.y = -CANNON.POSITION[1] + 0.06;
+  matRing.receiveShadow = true;
+  root.add(matRing);
 
   // Muzzle flash: a sphere plus a light, both switched on for a few frames. The light
   // is what puts the bright patch on the sand that the reference clip shows.

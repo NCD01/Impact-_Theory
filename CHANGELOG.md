@@ -5,6 +5,65 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.14.0+20 - 2026-08-31 - Fix
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Four more reports from the owner playing the build, including one that turned
+out to be the central gameplay defect.
+
+**1. "when the bricks fall the screen does not tend to vibrate", then "stop the screen
+shaking its terrible".** Both were right, in sequence. The first was a real defect: shake
+was applied only to impacts that did damage, so a tower landing on the sand moved the
+camera not at all. Removing that gate was the fix. Raising the amplitude at the same time
+was an overcorrection, so the amplitude now sits well below where it started, at 0.00016
+SU per joule with a 0.09 SU ceiling and a 400 J floor. There is also a **Screen shake**
+switch in settings for players who want none of it.
+
+**2. "there was a platform and you dont have that ... frame 1 has 1 and frame 9 has 2 and
+they do not move".** Exactly right, and frame 9 proves it: the structure has collapsed
+into rubble and both plinths stand perfectly upright. Pedestals are no longer block kit
+pieces at all. `src/game/pedestal.js` builds them as fixed decorative plinths with a
+flared foot, a banded collar and a wider cap, they never fall, they are never scored, and
+they are not part of the clear condition. Level schema bumped to 2 with a `pedestals`
+array; all thirty levels and the endless generator rewritten.
+
+**3. "look at the canon it has more detail".** The barrel is now a stack of turned
+sections: a fat breech, two gold bands, a taper, a muzzle ring, a dark bore, trunnions, a
+carriage drum and a patterned mat. The first version was a single plain cone.
+
+**4. "blocks take too long to break or end so the game lags waiting".** Settle time cut
+from 1.1 s to 0.35 s, the settle tolerance widened, fragment lifetime cut from 6 s to
+2.2 s, ball lifetime from 9 s to 4.5 s, and sleep thresholds made more aggressive. The
+clear rule is now measured against the platform rather than the sand, so a piece knocked
+off counts immediately instead of having to roll to a stop on the ground.
+
+**5. "it is not about hitting a target more than once but knocking them off".** This was
+the important one, and it exposed a real defect rather than a tuning problem. A piece was
+fractured inside the contact event, in the same physics step as the impact, so it was
+removed from the world **before the collision impulse had been integrated**. A ball
+punched a clean hole through a wall and nothing else moved.
+
+Measured directly: one shot into a fourteen piece wall moved **nothing at all**. With
+destruction disabled, the same shot moved **twelve of the fourteen, the furthest by 4.09
+SU**. So hit points went up by roughly five times, block densities were halved and the
+ball made far heavier, and debris now carries the impact direction rather than dropping
+where the piece stood. A hit knocks; four square hits on the same piece break it.
+
+Par is now derived from the piece count rather than guessed by eye, and the Normal
+allowance is par plus six rather than exactly par, because giving exactly par made every
+level past the third unwinnable once clearing meant knocking every piece off.
+
+**Validation Evidence:** Measured in a real browser rather than judged by eye. Before:
+one shot moved 0 pieces, biggest movement 0.01 SU. After: 12 of 14 pieces moved on Normal,
+biggest movement 3.22 SU, with 0 destroyed on the first hit, and on Easy 10 moved plus 2
+destroyed. Level clear times on Easy across levels 1, 11, 21 and 30 are 4 to 14 seconds,
+down from one level that never cleared at all in 48 seconds. `node
+scripts/verify-level-support.mjs` reports zero floating or teetering pieces across all
+thirty rebuilt levels. `npx vitest run` reports 181 of 181 passing, `npx eslint .` exits 0,
+and `npx playwright test` passes 6 of 6 on the phone viewport. A screenshot of level 16
+after six shots shows the middle of the structure knocked out onto the sand with nothing
+destroyed and all three plinths standing upright, which is the reference behaviour.
+
 ## v1.13.0+19 - 2026-08-31 - Fix
 
 **Author:** Claude Opus 5, unattended build session

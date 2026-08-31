@@ -62,6 +62,7 @@ export function createUI(root, projection, handlers = {}) {
     settings: el('screen-settings'),
     difficultyButtons: root.querySelectorAll('[data-difficulty]'),
     muteButton: el('mute-button'),
+    shakeButton: el('shake-button'),
     debug: el('debug'),
     hint: el('hint'),
     version: el('version-label'),
@@ -92,6 +93,7 @@ export function createUI(root, projection, handlers = {}) {
   on('settings-back', () => show('title'));
   on('settings-reset', () => handlers.onResetProgress?.());
   on('mute-button', () => handlers.onToggleMute?.());
+  on('shake-button', () => handlers.onToggleShake?.());
 
   for (const button of nodes.difficultyButtons) {
     button.addEventListener('click', (e) => {
@@ -256,13 +258,16 @@ export function createUI(root, projection, handlers = {}) {
   }
 
   /** Reflects the stored difficulty and mute state in settings. */
-  function syncSettings({ difficulty, muted }) {
+  function syncSettings({ difficulty, muted, shake }) {
     for (const button of nodes.difficultyButtons) {
       button.setAttribute('aria-pressed', String(button.dataset.difficulty === difficulty));
       button.classList.toggle('selected', button.dataset.difficulty === difficulty);
     }
     nodes.muteButton.textContent = muted ? 'Sound: off' : 'Sound: on';
     nodes.muteButton.setAttribute('aria-pressed', String(muted));
+    const shakeOn = shake !== false;
+    nodes.shakeButton.textContent = shakeOn ? 'Screen shake: on' : 'Screen shake: off';
+    nodes.shakeButton.setAttribute('aria-pressed', String(shakeOn));
   }
 
   /**
@@ -420,6 +425,7 @@ const TEMPLATE = `
     <p class="subtle small">Easy gives unlimited balls and no way to lose. Normal limits
       your balls to the level's par.</p>
     <button id="mute-button" type="button" aria-pressed="false">Sound: on</button>
+    <button id="shake-button" type="button" aria-pressed="true">Screen shake: on</button>
     <button id="settings-reset" type="button">Erase progress</button>
     <button id="settings-back" class="primary" type="button">Back</button>
   </div>

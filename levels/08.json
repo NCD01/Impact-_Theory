@@ -1,106 +1,37 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 8,
-  "name": "Low Wall",
-  "par": 6,
+  "name": "The Arch",
+  "par": 7,
+  "pedestals": [
+    -1.5,
+    1.5
+  ],
   "pieces": [
     {
-      "piece": "S02_SHORT_COLUMN",
-      "x": -3.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
+      "piece": "B03_LONG_BEAM",
       "x": 0,
-      "y": 0,
-      "support": true
+      "y": 1.6
     },
     {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 3.5,
-      "y": 0,
-      "support": true
+      "piece": "S05_ARCH",
+      "x": 0,
+      "y": 2.6
     },
     {
-      "piece": "B03_LONG_BEAM",
-      "x": -2,
-      "y": 2
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 2,
-      "y": 2
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": -3,
-      "y": 3
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
+      "piece": "B01_SMALL_BLOCK",
       "x": -1,
-      "y": 3
+      "y": 4.6
     },
     {
-      "piece": "B02_MEDIUM_BLOCK",
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0,
+      "y": 4.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
       "x": 1,
-      "y": 3
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 3,
-      "y": 3
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": -3,
-      "y": 4
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": -1,
-      "y": 4
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 1,
-      "y": 4
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 3,
-      "y": 4
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -2.5,
-      "y": 5
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -1.5,
-      "y": 5
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -0.5,
-      "y": 5
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 0.5,
-      "y": 5
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 1.5,
-      "y": 5
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 2.5,
-      "y": 5
+      "y": 4.6
     }
   ]
 }

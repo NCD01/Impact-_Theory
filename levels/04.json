@@ -1,66 +1,37 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 4,
-  "name": "The Lookout",
-  "par": 5,
-  "note": "A tall thin tower. A hit at the base is worth more than one at the top.",
+  "name": "Sandbar",
+  "par": 7,
+  "pedestals": [
+    -1.5,
+    1.5
+  ],
   "pieces": [
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": -1.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 1.5,
-      "y": 0,
-      "support": true
-    },
     {
       "piece": "B03_LONG_BEAM",
       "x": 0,
-      "y": 2
+      "y": 1.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 2.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 3
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -0.5,
-      "y": 4
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -0.5,
-      "y": 5
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -0.5,
-      "y": 6
+      "y": 2.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 3
+      "y": 2.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
-      "x": 0.5,
-      "y": 4
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 0.5,
-      "y": 5
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 0.5,
-      "y": 6
+      "x": 1.5,
+      "y": 2.6
     }
   ]
 }

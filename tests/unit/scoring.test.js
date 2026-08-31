@@ -125,8 +125,11 @@ describe('ball allowance', () => {
     expect(EASY.canFail).toBe(false);
   });
 
-  it('is par on Normal', () => {
-    expect(ballAllowance(NORMAL, 6)).toBe(6);
+  it('is par plus a margin on Normal, and Normal can be failed', () => {
+    // Par is the three star target, not the hard limit. Giving exactly par made every
+    // level past the third unwinnable, because clearing means knocking every piece off.
+    expect(ballAllowance(NORMAL, 6)).toBe(6 + NORMAL.ballLimitFromPar);
+    expect(NORMAL.ballLimitFromPar).toBeGreaterThan(0);
     expect(NORMAL.canFail).toBe(true);
   });
 
@@ -187,11 +190,28 @@ describe('damage model', () => {
   });
 
   it('gives a family with more hit points a longer life against the same impacts', () => {
+    // Both survive a single square hit, which is the whole design: the game is about
+    // knocking pieces off rather than deleting them where they stand. What differs is how
+    // much punishment each has absorbed by then.
     const wood = createDamageState(FAMILIES.wood.hitPoints);
     const steel = createDamageState(FAMILIES.steel.hitPoints);
-    applyImpact(wood, 9000);
-    applyImpact(steel, 9000);
-    expect(wood.destroyed).toBe(true);
+    applyImpact(wood, 80000);
+    applyImpact(steel, 80000);
+    expect(wood.destroyed).toBe(false);
     expect(steel.destroyed).toBe(false);
+    expect(damageFraction(wood)).toBeGreaterThan(damageFraction(steel));
+  });
+
+  it('destroys a piece that is hit repeatedly, which is the other half of the design', () => {
+    const wood = createDamageState(FAMILIES.wood.hitPoints);
+    let hits = 0;
+    while (!wood.destroyed && hits < 20) {
+      applyImpact(wood, 80000);
+      hits += 1;
+    }
+    expect(wood.destroyed).toBe(true);
+    // Several square hits, not one and not twenty. Keep hitting it and it goes.
+    expect(hits).toBeGreaterThanOrEqual(2);
+    expect(hits).toBeLessThanOrEqual(8);
   });
 });

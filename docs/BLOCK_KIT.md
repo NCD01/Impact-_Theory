@@ -13,21 +13,21 @@ adopted unchanged as the game world unit so the project has exactly one scale.
 
 | ID | Name | Category | W x H x D (SU) | Pivot | Family | Collider | Volume (SU³) | Mass (kg) |
 |---|---|---|---|---|---|---|---|---|
-| `B01_SMALL_BLOCK` | Small Block | BASIC | 1 x 1 x 1 | center-bottom | Wood | box | 1.00 | 340 |
-| `B02_MEDIUM_BLOCK` | Medium Block | BASIC | 2 x 1 x 1 | center-bottom | Wood | box | 2.00 | 680 |
-| `B03_LONG_BEAM` | Long Beam | BASIC | 4 x 1 x 1 | center-bottom | Painted Steel | box | 4.00 | 4200 |
-| `B04_TALL_BLOCK` | Tall Block | BASIC | 1 x 3 x 1 | center-bottom | Brick | box | 3.00 | 2160 |
-| `B05_LARGE_BLOCK` | Large Block | BASIC | 2 x 2 x 1 | center-bottom | Concrete | box | 4.00 | 3280 |
-| `S01_ROUND_COLUMN` | Round Column | SUPPORT | 1 x 3 x 1 | center-bottom | Steel | cylinder, Y axis | 2.36 | 2710 |
-| `S02_SHORT_COLUMN` | Short Column | SUPPORT | 1 x 2 x 1 | center-bottom | Concrete | box | 2.00 | 1640 |
-| `S03_WIDE_FOOTING` | Wide Footing | SUPPORT | 3 x 0.5 x 1 | center-bottom | Stone | box | 1.50 | 1350 |
-| `S04_WEDGE` | Wedge | SUPPORT | 2 x 1 x 1 | center-bottom | Stone | compound, 2 boxes | 1.50 | 1350 |
-| `S05_ARCH` | Arch | SUPPORT | 3 x 2 x 1 | center-bottom | Brick | compound, 3 boxes | 4.50 | 3240 |
-| `A01_T_BLOCK` | T-Block | ADVANCED | 3 x 2 x 1 | center-bottom | Painted Steel | compound, 2 boxes | 4.00 | 4200 |
-| `A02_L_BLOCK` | L-Block | ADVANCED | 2 x 2 x 1 | center-bottom | Painted Steel | compound, 2 boxes | 3.00 | 3150 |
-| `A03_CROSS_BEAM` | Cross Beam | ADVANCED | 3 x 3 x 1 | geometric-center | Steel | compound, 2 boxes | 6.00 | 6900 |
-| `A04_ROLLER` | Roller | ADVANCED | 2 x 1 x 1 | geometric-center | Rubber | cylinder, X axis | 1.57 | 660 |
-| `A05_MECHANICAL_STABILIZER` | Mechanical Stabilizer | ADVANCED | 3 x 2 x 1 | center-bottom | Painted Steel | compound, 2 boxes | 5.00 | 5250 |
+| `B01_SMALL_BLOCK` | Small Block | BASIC | 1 x 1 x 1 | center-bottom | Wood | box | 1.00 | 150 |
+| `B02_MEDIUM_BLOCK` | Medium Block | BASIC | 2 x 1 x 1 | center-bottom | Wood | box | 2.00 | 300 |
+| `B03_LONG_BEAM` | Long Beam | BASIC | 4 x 1 x 1 | center-bottom | Painted Steel | box | 4.00 | 1880 |
+| `B04_TALL_BLOCK` | Tall Block | BASIC | 1 x 3 x 1 | center-bottom | Brick | box | 3.00 | 900 |
+| `B05_LARGE_BLOCK` | Large Block | BASIC | 2 x 2 x 1 | center-bottom | Concrete | box | 4.00 | 1400 |
+| `S01_ROUND_COLUMN` | Round Column | SUPPORT | 1 x 3 x 1 | center-bottom | Steel | cylinder, Y axis | 2.36 | 1225 |
+| `S02_SHORT_COLUMN` | Short Column | SUPPORT | 1 x 2 x 1 | center-bottom | Concrete | box | 2.00 | 700 |
+| `S03_WIDE_FOOTING` | Wide Footing | SUPPORT | 3 x 0.5 x 1 | center-bottom | Stone | box | 1.50 | 600 |
+| `S04_WEDGE` | Wedge | SUPPORT | 2 x 1 x 1 | center-bottom | Stone | compound, 2 boxes | 1.50 | 600 |
+| `S05_ARCH` | Arch | SUPPORT | 3 x 2 x 1 | center-bottom | Brick | compound, 3 boxes | 4.50 | 1350 |
+| `A01_T_BLOCK` | T-Block | ADVANCED | 3 x 2 x 1 | center-bottom | Painted Steel | compound, 2 boxes | 4.00 | 1880 |
+| `A02_L_BLOCK` | L-Block | ADVANCED | 2 x 2 x 1 | center-bottom | Painted Steel | compound, 2 boxes | 3.00 | 1410 |
+| `A03_CROSS_BEAM` | Cross Beam | ADVANCED | 3 x 3 x 1 | geometric-center | Steel | compound, 2 boxes | 6.00 | 3120 |
+| `A04_ROLLER` | Roller | ADVANCED | 2 x 1 x 1 | geometric-center | Rubber | cylinder, X axis | 1.57 | 298 |
+| `A05_MECHANICAL_STABILIZER` | Mechanical Stabilizer | ADVANCED | 3 x 2 x 1 | center-bottom | Painted Steel | compound, 2 boxes | 5.00 | 2350 |
 
 Mass is volume times the family density, which is what Rapier computes from the same
 two numbers. Compound colliders sum their parts without subtracting overlaps, so the
@@ -53,13 +53,13 @@ one, which is why the unit suite checks every piece.
 
 | Family | Density (kg/SU³) | Restitution | Friction | Hit points (J) | Score weight |
 |---|---|---|---|---|---|
-| Wood | 340 | 0.16 | 0.62 | 8,000 | 1 |
-| Brick | 720 | 0.1 | 0.78 | 18,000 | 1.4 |
-| Stone | 900 | 0.08 | 0.84 | 30,000 | 1.8 |
-| Concrete | 820 | 0.09 | 0.8 | 24,000 | 1.6 |
-| Steel | 1150 | 0.22 | 0.5 | 60,000 | 2.4 |
-| Painted Steel | 1050 | 0.2 | 0.54 | 40,000 | 2.1 |
-| Rubber | 420 | 0.72 | 0.9 | 35,000 | 1.2 |
+| Wood | 150 | 0.16 | 0.62 | 280,000 | 1 |
+| Brick | 300 | 0.1 | 0.78 | 400,000 | 1.4 |
+| Stone | 400 | 0.08 | 0.84 | 620,000 | 1.8 |
+| Concrete | 350 | 0.09 | 0.8 | 500,000 | 1.6 |
+| Steel | 520 | 0.22 | 0.5 | 1,100,000 | 2.4 |
+| Painted Steel | 470 | 0.2 | 0.54 | 800,000 | 2.1 |
+| Rubber | 190 | 0.72 | 0.9 | 700,000 | 1.2 |
 
 **The densities are not the real densities of the materials they are named after.** Real
 steel is 7850 kg per cubic metre, which makes a 1 SU cube weigh nearly eight tonnes and

@@ -27,6 +27,7 @@ import { createSceneRig } from './render/scene.js';
 import { createDust } from './render/dust.js';
 import { loadAllPieceModels, getLoadFailures } from './blocks/loader.js';
 import { createStructure } from './game/structure.js';
+import { placePedestals, PEDESTAL_HEIGHT } from './game/pedestal.js';
 import { createBalls } from './game/balls.js';
 import { createCannon } from './game/cannon.js';
 import { createControls } from './input/controls.js';
@@ -119,6 +120,8 @@ async function start() {
   let lastDestroyedAt = { x: 0, y: 0, z: 0 };
   /** World Z of the plane the player aims within. Set per level with the structure. */
   let currentAimDepth = PLAYFIELD.STRUCTURE_ORIGIN[2];
+  /** The pedestals the current level stands on, or null between levels. */
+  let pedestals = null;
 
   const structure = createStructure({
     physics,
@@ -147,6 +150,10 @@ async function start() {
     onNext: () => next(),
     onDifficulty: (id) => {
       save.setDifficulty(id);
+      ui.syncSettings(save.state);
+    },
+    onToggleShake: () => {
+      save.setShake(!save.state.shake);
       ui.syncSettings(save.state);
     },
     onToggleMute: () => {
@@ -223,6 +230,8 @@ async function start() {
   function clearWorld() {
     structure.clear();
     balls.clear();
+    pedestals?.clear();
+    pedestals = null;
     session = null;
   }
 
@@ -261,10 +270,22 @@ async function start() {
     // level fills the screen rather than sitting as a speck under an empty sky. Both
     // are set once here and then stay fixed for the whole level.
     const shape = summariseLevel(level);
-    const origin = originForSize(shape.height, shape.width);
+    // Structures stand on the pedestals, so the framing has to account for the plinth
+    // height as well as the structure's own.
+    const origin = originForSize(shape.height + PEDESTAL_HEIGHT, shape.width);
     structure.setOrigin(origin);
     currentAimDepth = origin[2];
-    rig.frameLevel(shape.height);
+    rig.frameLevel(shape.height + PEDESTAL_HEIGHT);
+
+    // Pedestals first: they are fixed scenery and everything else rests on them.
+    pedestals = placePedestals({
+      physics,
+      root: rig.levelRoot,
+      xs: level.pedestals ?? [0],
+      origin,
+    });
+    // Everything is judged standing or down relative to the plinth tops, not the sand.
+    structure.setPlatformTop(origin[1] + pedestals.top);
     session = createSession({
       level,
       difficultyId: save.state.difficulty,
@@ -432,13 +453,19 @@ async function start() {
       physics.step(dt, (impact) => {
         if (impactLog.length < 20000) impactLog.push(Math.round(impact.energy));
         const applied = structure.handleImpact(impact);
-        if (applied > 0) {
-          lastImpactEnergy = impact.energy;
-          rig.addShake(impact.energy);
-          // Voiced by whichever piece was hit, so stone sounds like stone.
-          const family = structure.familyOfImpact(impact);
-          if (family) audio.impact(impact.energy, family);
-        }
+
+        // Shake and sound fire on EVERY impact, not only on ones that did damage.
+        //
+        // This was a real defect. Feedback used to be gated behind `applied > 0`, so a
+        // block that had already run out of hit points, or one merely landing hard on the
+        // sand, moved the camera not at all. The owner's words were that the screen "does
+        // not tend to vibrate" when the bricks fall, and he was right: the loudest moment
+        // in the game, a tower hitting the ground, was the quietest one on screen.
+        // Both functions have their own energy floors, so grazes still stay silent.
+        if (save.state.shake) rig.addShake(impact.energy);
+        const family = structure.familyOfImpact(impact);
+        if (family) audio.impact(impact.energy, family);
+        if (applied > 0) lastImpactEnergy = impact.energy;
       });
 
       structure.update(dt);
@@ -509,6 +536,14 @@ async function start() {
     // Aim state, exposed for the browser tests. Read only; the tests assert the sign of
     // the yaw, because a sign error here is what made dragging right aim left.
     globalThis.__IT_CANNON__ = { yaw: cannon.yaw, pitch: cannon.pitch };
+
+    // Live piece positions, for the browser tests only. Used to measure whether a hit
+    // actually moves anything, which is a question screenshots cannot answer.
+    globalThis.__IT_PIECES__ = [...structure._pieces.values()].map((e) => {
+      const rec = physics.getRecord(e.handle);
+      const t = rec ? rec.body.translation() : { x: 0, y: 0, z: 0 };
+      return { id: e.handle, piece: e.piece.id, x: t.x, y: t.y, z: t.z };
+    });
 
     requestAnimationFrame(frame);
   }

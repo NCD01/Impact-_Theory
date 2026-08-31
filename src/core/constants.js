@@ -88,9 +88,9 @@ export const WORLD = {
    * Rapier and stops costing solver time. Rubble at rest is the majority of bodies
    * late in a level, so this matters more than it looks.
    */
-  SLEEP_LINEAR_THRESHOLD: 0.12,
-  SLEEP_ANGULAR_THRESHOLD: 0.12,
-  SLEEP_TIME_S: 0.5,
+  SLEEP_LINEAR_THRESHOLD: 0.25,
+  SLEEP_ANGULAR_THRESHOLD: 0.25,
+  SLEEP_TIME_S: 0.25,
 };
 
 // ---------------------------------------------------------------------------
@@ -126,16 +126,36 @@ export const CAMERA = {
  * hit read as heavy, so it is scaled by the same energy number that drives damage.
  */
 export const SHAKE = {
-  /** SU of camera offset per joule of impact energy. Tuned against a stone hit. */
-  AMPLITUDE_PER_JOULE: 0.00042,
-  /** Hard ceiling in SU, so a pile-up cannot throw the camera off the playfield. */
-  MAX_AMPLITUDE: 0.34,
-  /** Per second decay factor. 0.001 means amplitude falls to a thousandth in a second. */
-  DECAY_PER_SECOND: 0.0016,
+  /**
+   * SU of camera offset per joule of impact energy.
+   *
+   * This value has been wrong in both directions and the history is worth keeping.
+   *
+   * It started at 0.00042 with shake applied only to impacts that did damage, which meant
+   * a tower landing on the sand moved the camera not at all. The owner said the screen
+   * "does not tend to vibrate". Removing the damage gate was the real fix; raising this to
+   * 0.0016 at the same time was not, and his next words were "stop the screen shaking its
+   * terrible".
+   *
+   * So: the gate stays removed, and the amplitude comes back down well below where it
+   * started. A collapse now registers as a small settle rather than a camera throwing
+   * itself around. Players who want none of it can turn it off in settings.
+   */
+  AMPLITUDE_PER_JOULE: 0.00016,
+  /** Hard ceiling in SU. Roughly a centimetre and a half at the worst pile-up. */
+  MAX_AMPLITUDE: 0.09,
+  /**
+   * Per second decay factor: amplitude is multiplied by this raised to the elapsed
+   * seconds. 0.004 settles almost completely within half a second.
+   */
+  DECAY_PER_SECOND: 0.004,
   /** Shake oscillation rate, Hz. Fast enough to read as a jolt, not a wobble. */
-  FREQUENCY_HZ: 22,
-  /** Impacts below this energy do not shake at all, so light grazes stay quiet. */
-  MIN_ENERGY_J: 12,
+  FREQUENCY_HZ: 24,
+  /**
+   * Impacts below this energy do not shake at all. High enough that only a real collapse
+   * or a square hit registers, rather than every block brushing its neighbour.
+   */
+  MIN_ENERGY_J: 400,
 };
 
 // ---------------------------------------------------------------------------
@@ -150,7 +170,7 @@ export const CANNON = {
   BARREL_RADIUS: 0.42,
 
   /** Ball speed leaving the muzzle, SU/s. Tuned so a flat shot crosses 12 SU quickly. */
-  MUZZLE_SPEED: 27,
+  MUZZLE_SPEED: 30,
 
   /**
    * Aim limits. Yaw is left and right from straight ahead; pitch is up from level.
@@ -182,17 +202,25 @@ export const BALL = {
   RADIUS_EASY: 0.42,
 
   /**
-   * Density, kg per cubic SU. A cannonball is dense relative to the blocks it hits, so
-   * a 0.3 SU ball at 900 weighs about 102 kg and carries roughly 37 kJ at muzzle speed.
-   * That is enough to break wood in one hit and stone in several, which is the shape of
-   * the reference clip.
+   * Density, kg per cubic SU.
+   *
+   * A cannonball has to be heavy relative to what it hits, because this game is about
+   * knocking pieces off a platform rather than about dissolving them where they stand. At
+   * 2500 the standard ball weighs about 283 kg and the easy one about 776, against a
+   * wooden crate of 150. The ball wins, which is the point: it arrives, the crate goes.
+   *
+   * Raised from 900 after a measurement showed a ball fired into a packed wall moved it by
+   * five centimetres, because the ball was a third the mass of a single crate.
    */
-  DENSITY: 900,
+  DENSITY: 2500,
   RESTITUTION: 0.32,
   FRICTION: 0.55,
 
-  /** Seconds before a ball is removed. Long enough to roll to rest and be seen. */
-  LIFETIME_S: 9,
+  /**
+   * Seconds before a ball is removed. Cut from 9 s. A ball that has done its work and is
+   * rolling away is just a body costing solver time.
+   */
+  LIFETIME_S: 4.5,
   /** Hard cap on balls in the world, so hold-to-fire cannot exhaust the body budget. */
   MAX_ALIVE: 20,
   /** Below this height a ball has left the playfield and is removed at once, SU. */
@@ -209,11 +237,19 @@ export const PLAYFIELD = {
   /** Ground plane height, SU. Everything rests on this. */
   GROUND_Y: 0,
   /**
-   * A piece whose centre falls below this height counts as no longer standing, for
-   * level clear purposes. Set just above the ground so a piece lying flat on the sand
-   * qualifies while a piece still stacked does not.
+   * How far below the platform top a piece's centre must fall to count as no longer
+   * standing, SU.
+   *
+   * Relative to the platform rather than to the sand, and that matters. Structures stand
+   * on plinths, so a piece resting on the deck sits well above the ground; an absolute
+   * threshold near the sand meant a level was only cleared once every piece was either
+   * destroyed outright or had rolled all the way off, which took twenty shots and a long
+   * wait on a wide wall. The owner's words were that the game "lags waiting".
+   *
+   * Measured from the deck top: a piece knocked off the platform onto the sand is down, a
+   * piece still sitting on the deck is not.
    */
-  REST_HEIGHT_THRESHOLD: 0.62,
+  REST_BELOW_PLATFORM: 0.35,
   /** A piece further than this from the structure origin has been knocked clear, SU. */
   OUT_OF_PLAY_RADIUS: 34,
 };
@@ -248,8 +284,25 @@ export const DESTRUCTION = {
   FRAGMENT_SIZE_FACTOR: 0.42,
   /** Random outward speed given to a fragment on top of the parent's velocity, SU/s. */
   FRAGMENT_SCATTER_SPEED: 2.6,
-  /** Seconds before a resting fragment despawns. Fragments never accumulate. */
-  FRAGMENT_LIFETIME_S: 6,
+
+  /**
+   * Extra speed given to debris along the impact direction, per square root of a joule.
+   *
+   * A piece is fractured inside the contact event, before the collision impulse has been
+   * integrated, so its velocity at that instant is still nearly zero. Without this the
+   * debris of a piece hit at 27 SU/s simply dropped where the piece had stood. Square
+   * root rather than linear so a 60 kJ hit throws debris about twice as far as a 15 kJ
+   * one rather than four times.
+   */
+  FRAGMENT_PUSH_PER_ROOT_JOULE: 0.035,
+  /** Ceiling on that push, SU/s, so a huge hit does not fire debris off the playfield. */
+  FRAGMENT_IMPACT_PUSH_MAX: 9,
+  /**
+   * Seconds before a resting fragment despawns. Cut from 6 s: debris lying on the sand
+   * long after a collapse keeps the body count up, keeps the world from reading as
+   * settled, and makes the end of a level feel slow.
+   */
+  FRAGMENT_LIFETIME_S: 2.2,
   /**
    * Hard cap on fragments alive at once.
    *
@@ -335,17 +388,33 @@ export const DIFFICULTY = {
     /** Unlimited balls. Null rather than a large number, so the HUD can show a dash. */
     ballLimitFromPar: null,
     canFail: false,
-    /** Every family's hit points are multiplied by this, so pieces break sooner. */
-    hitPointScale: 0.55,
-    /** Impact energy is multiplied by this before damage, so hits land harder. */
-    damageScale: 1.35,
+    /**
+     * Every family's hit points are multiplied by this, so pieces break sooner, and
+     * impact energy is multiplied by the second, so hits land harder. Together they make
+     * a piece roughly seven times easier to break on Easy than on Normal.
+     *
+     * Loosened twice after the owner reported that "blocks take too long to break". At
+     * the original 0.55 and 1.35 a painted steel deck beam took three or four square hits
+     * on the easy setting, which is a long time for a six year old to wait for something
+     * to happen.
+     */
+    hitPointScale: 0.5,
+    damageScale: 1.4,
     starBands: STARS.EASY,
   },
   normal: {
     label: 'Normal',
     ballRadius: BALL.RADIUS_NORMAL,
-    /** Balls available equals par plus this. Zero means exactly par. */
-    ballLimitFromPar: 0,
+    /**
+     * Balls available equals par plus this.
+     *
+     * Six rather than zero. Par is the target a three star run has to beat, not the hard
+     * limit: giving exactly par made every level past the third unwinnable on Normal,
+     * because clearing a structure means knocking every piece off rather than landing a
+     * perfect shot each time. The allowance is generous, and the stars are what reward
+     * efficiency.
+     */
+    ballLimitFromPar: 6,
     canFail: true,
     hitPointScale: 1,
     damageScale: 1,
@@ -395,12 +464,19 @@ export const LEVEL = {
   MAX_PIECES: 45,
   /**
    * Seconds the world must be settled before a level is judged cleared or failed.
-   * Without a settle delay, a structure that is mid collapse reads as cleared for one
-   * frame and the results screen appears over a still moving pile.
+   *
+   * Cut from 1.1 s after the owner reported the game "lags waiting" at the end of a
+   * level. A delay is still needed, because a structure mid collapse satisfies the clear
+   * condition for a single frame and the results screen would appear over a moving pile,
+   * but a third of a second is enough to tell a settled pile from a falling one.
    */
-  SETTLE_TIME_S: 1.1,
-  /** Total speed below which the world counts as settled, summed over live bodies. */
-  SETTLE_SPEED_EPSILON: 0.55,
+  SETTLE_TIME_S: 0.35,
+  /**
+   * Total speed below which the world counts as settled, summed over live pieces and
+   * fragments. Raised from 0.55 so that a pile still creeping a few millimetres a second
+   * counts as finished, which is what a player already thinks it is.
+   */
+  SETTLE_SPEED_EPSILON: 1.6,
   /** Seconds after the last ball lands before a failed level is declared failed. */
-  FAIL_GRACE_S: 2.2,
+  FAIL_GRACE_S: 1.2,
 };

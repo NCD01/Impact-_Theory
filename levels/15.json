@@ -1,116 +1,63 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 15,
-  "name": "The Yard",
-  "par": 8,
+  "name": "Crosswise",
+  "par": 11,
+  "pedestals": [
+    -3,
+    0,
+    3
+  ],
   "pieces": [
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": -3.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 0,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 3.5,
-      "y": 0,
-      "support": true
-    },
     {
       "piece": "B03_LONG_BEAM",
       "x": -2,
-      "y": 2
+      "y": 1.6
     },
     {
       "piece": "B03_LONG_BEAM",
       "x": 2,
-      "y": 2
+      "y": 1.6
     },
     {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": -3,
-      "y": 3
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": -1,
-      "y": 3
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 1,
-      "y": 3
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 3,
-      "y": 3
-    },
-    {
-      "piece": "B04_TALL_BLOCK",
-      "x": -2.5,
-      "y": 4
-    },
-    {
-      "piece": "B04_TALL_BLOCK",
+      "piece": "A03_CROSS_BEAM",
       "x": -1.5,
-      "y": 4
+      "y": 4.1
     },
     {
-      "piece": "B04_TALL_BLOCK",
-      "x": -0.5,
-      "y": 4
-    },
-    {
-      "piece": "B04_TALL_BLOCK",
-      "x": 0.5,
-      "y": 4
-    },
-    {
-      "piece": "B04_TALL_BLOCK",
+      "piece": "A03_CROSS_BEAM",
       "x": 1.5,
-      "y": 4
-    },
-    {
-      "piece": "B04_TALL_BLOCK",
-      "x": 2.5,
-      "y": 4
+      "y": 4.1
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -2.5,
-      "y": 7
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 7
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 7
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 7
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 7
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 2.5,
-      "y": 7
+      "y": 5.6
     }
   ]
 }

@@ -5,7 +5,7 @@ playfield fires balls at a structure built from a fifteen piece block kit standi
 supports. The structure is a real rigid body assembly, so it leans, buckles and falls the
 way its geometry says it should, and clearing it clears the level.
 
-Current version **1.13.0+19**. The version scheme is defined in
+Current version **1.14.0+20**. The version scheme is defined in
 [docs/VERSIONING.md](docs/VERSIONING.md), which is the only file that states it.
 
 ## Requirements
@@ -49,6 +49,10 @@ One gesture does everything, on touch and with a mouse alike.
 | Fire a stream | Press and hold. Shots leave at a capped rate. |
 | Pause | The button in the top right. |
 
+**The game is about knocking pieces off, not about breaking them.** A hit sends a piece
+flying, and a level is cleared once everything has come off its platform. Keep hitting the
+same piece and it will eventually break apart, but that is the slower way to do it.
+
 The aim is **absolute, not relative**: the barrel goes where your finger is, with no
 memory of where it was. It also compensates for the drop over the flight, so pointing at a
 block aims to land on that block rather than merely pointing the barrel at it.
@@ -80,7 +84,7 @@ tuning values only; there is one code path through the game.
 ## Tests
 
     npm run lint       # ESLint over src, scripts and tests
-    npm test           # Vitest, 178 unit tests
+    npm test           # Vitest, 181 unit tests
     npm run verify     # lint and unit tests together
     npm run e2e        # Playwright, 12 browser tests across two viewports
 

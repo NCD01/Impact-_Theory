@@ -16,6 +16,7 @@ import { fileURLToPath } from 'node:url';
 
 import { validateLevel, assertValidLevel, summariseLevel, LEVEL_SCHEMA_VERSION } from '../../src/game/level.js';
 import { LEVEL } from '../../src/core/constants.js';
+import { PEDESTAL_HEIGHT, PEDESTAL_CAP_RADIUS } from '../../src/game/pedestal.js';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const LEVELS_DIR = path.join(REPO_ROOT, 'levels');
@@ -33,9 +34,9 @@ function validLevel(overrides = {}) {
     id: 1,
     name: 'Test',
     par: 3,
+    pedestals: [0],
     pieces: [
-      { piece: 'S02_SHORT_COLUMN', x: -1, y: 0, support: true },
-      { piece: 'B01_SMALL_BLOCK', x: 0, y: 2 },
+      { piece: 'B01_SMALL_BLOCK', x: 0, y: 0 },
     ],
     ...overrides,
   };
@@ -68,8 +69,7 @@ describe('shipped levels', () => {
 
   it('gives every level at least one piece that has to be knocked down', () => {
     for (const { file, data } of levels) {
-      const targets = data.pieces.filter((p) => p.support !== true);
-      expect(targets.length, `${file} has no non support pieces`).toBeGreaterThan(0);
+      expect(data.pieces.length, `${file} has no pieces`).toBeGreaterThan(0);
     }
   });
 
@@ -118,18 +118,20 @@ describe('level validator', () => {
     expect(validateLevel(bad).join()).toMatch(/not a material family/);
   });
 
-  it('rejects a support that is not a support capable piece', () => {
+  it('rejects the old support field, so a schema 1 level fails loudly', () => {
     const bad = validLevel({
       pieces: [{ piece: 'B01_SMALL_BLOCK', x: 0, y: 0, support: true }],
     });
-    expect(validateLevel(bad).join()).toMatch(/may be supports/);
+    expect(validateLevel(bad).join()).toMatch(/no longer a piece field/);
   });
 
-  it('rejects a level made entirely of supports', () => {
-    const bad = validLevel({
-      pieces: [{ piece: 'S02_SHORT_COLUMN', x: 0, y: 0, support: true }],
-    });
-    expect(validateLevel(bad).join()).toMatch(/no non support pieces/);
+  it('rejects a level with no pieces to knock down', () => {
+    expect(validateLevel(validLevel({ pieces: [] })).join()).toMatch(/non-empty array/);
+  });
+
+  it('rejects a pedestals array that is empty or not numbers', () => {
+    expect(validateLevel(validLevel({ pedestals: [] })).join()).toMatch(/non-empty array/);
+    expect(validateLevel(validLevel({ pedestals: ['x'] })).join()).toMatch(/finite number/);
   });
 
   it('rejects a wrong schema version', () => {
@@ -208,19 +210,29 @@ describe('level support', () => {
     };
   };
 
+  /** A pedestal, as a solid block from the sand up to its cap. */
+  const pedestalBox = (x) => ({
+    x0: x - PEDESTAL_CAP_RADIUS,
+    x1: x + PEDESTAL_CAP_RADIUS,
+    bottom: 0,
+    top: PEDESTAL_HEIGHT,
+  });
+
   it.each(levels)('$file places nothing in mid air', ({ file, data }) => {
     const boxes = data.pieces.map(extents);
+    // Pedestals count as ground: they are fixed scenery, not pieces.
+    const carriers = [...boxes, ...(data.pedestals ?? []).map(pedestalBox)];
     const problems = [];
 
     data.pieces.forEach((spec, i) => {
       const e = boxes[i];
-      if (e.bottom <= 0.01) return; // resting on the ground
+      if (e.bottom <= 0.01) return; // resting on the sand
 
       let covered = 0;
       let leftOfCentre = false;
       let rightOfCentre = false;
-      boxes.forEach((o, j) => {
-        if (i === j) return;
+      carriers.forEach((o, j) => {
+        if (j === i) return;
         if (Math.abs(o.top - e.bottom) > 0.06) return; // not directly beneath
         const lo = Math.max(e.x0, o.x0);
         const hi = Math.min(e.x1, o.x1);
@@ -244,10 +256,21 @@ describe('level support', () => {
     expect(problems, `${file} has badly placed pieces`).toEqual([]);
   });
 
-  it('gives every level a platform of supports to stand on', () => {
+  it('gives every level at least one pedestal to stand on', () => {
     for (const { file, data } of levels) {
-      const supports = data.pieces.filter((p) => p.support === true);
-      expect(supports.length, `${file} has no supports`).toBeGreaterThanOrEqual(2);
+      expect(Array.isArray(data.pedestals), `${file} has no pedestals array`).toBe(true);
+      expect(data.pedestals.length, `${file} has no pedestals`).toBeGreaterThanOrEqual(1);
     }
+  });
+
+  it('keeps the pedestal height in the authoring script and the game in step', () => {
+    // author-levels.mjs and verify-level-support.mjs both restate PEDESTAL_HEIGHT rather
+    // than importing it, because they run in plain Node and importing the game module
+    // would pull in three.js. This is the test that stops the two drifting apart.
+    const authoring = fs.readFileSync(
+      path.join(REPO_ROOT, 'scripts', 'author-levels.mjs'), 'utf8',
+    ).match(/const PEDESTAL_HEIGHT = ([\d.]+)/);
+    expect(authoring, 'author-levels.mjs no longer declares PEDESTAL_HEIGHT').not.toBeNull();
+    expect(Number(authoring[1])).toBe(PEDESTAL_HEIGHT);
   });
 });

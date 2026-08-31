@@ -1,128 +1,111 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 26,
-  "name": "Cantilever",
-  "par": 10,
-  "note": "A heavy deck on tall columns. The columns are the real target.",
+  "name": "Hardstanding",
+  "par": 18,
+  "pedestals": [
+    -3,
+    0,
+    3
+  ],
   "pieces": [
     {
-      "piece": "S01_ROUND_COLUMN",
-      "x": -5.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S01_ROUND_COLUMN",
+      "piece": "B03_LONG_BEAM",
       "x": -2,
-      "y": 0,
-      "support": true
+      "y": 1.6
     },
     {
-      "piece": "S01_ROUND_COLUMN",
+      "piece": "B03_LONG_BEAM",
       "x": 2,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S01_ROUND_COLUMN",
-      "x": 5.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": -4,
-      "y": 3
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 0,
-      "y": 3
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 4,
-      "y": 3
-    },
-    {
-      "piece": "B05_LARGE_BLOCK",
-      "x": -5,
-      "y": 4
+      "y": 1.6
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": -3,
-      "y": 4
+      "y": 2.6,
+      "family": "concrete"
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": -1,
-      "y": 4
+      "y": 2.6,
+      "family": "concrete"
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 1,
-      "y": 4
+      "y": 2.6,
+      "family": "concrete"
     },
     {
       "piece": "B05_LARGE_BLOCK",
       "x": 3,
-      "y": 4
+      "y": 2.6,
+      "family": "concrete"
     },
     {
-      "piece": "B05_LARGE_BLOCK",
-      "x": 5,
-      "y": 4
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -3,
+      "y": 4.6,
+      "family": "stone"
     },
     {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -4.5,
-      "y": 6
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -1,
+      "y": 4.6,
+      "family": "stone"
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 4.6,
+      "family": "stone"
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 3,
+      "y": 4.6,
+      "family": "stone"
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -3.5,
-      "y": 6
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -2.5,
-      "y": 6
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 6
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 6
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 6
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 6
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 2.5,
-      "y": 6
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 3.5,
-      "y": 6
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 4.5,
-      "y": 6
+      "y": 5.6
     }
   ]
 }

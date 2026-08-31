@@ -1,76 +1,22 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 3,
-  "name": "Sandbar",
+  "name": "The Lookout",
   "par": 4,
+  "note": "A tall thin tower on one plinth. Tall is easy to hit; low down is where it counts.",
+  "pedestals": [
+    0
+  ],
   "pieces": [
     {
-      "piece": "S02_SHORT_COLUMN",
-      "x": -3.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
+      "piece": "B04_TALL_BLOCK",
       "x": 0,
-      "y": 0,
-      "support": true
+      "y": 1.6
     },
     {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 3.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": -2,
-      "y": 2
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 2,
-      "y": 2
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -2.5,
-      "y": 3
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -1.5,
-      "y": 3
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -0.5,
-      "y": 3
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 0.5,
-      "y": 3
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 1.5,
-      "y": 3
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 2.5,
-      "y": 3
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": -1,
-      "y": 4
-    },
-    {
-      "piece": "B02_MEDIUM_BLOCK",
-      "x": 1,
-      "y": 4
+      "piece": "B04_TALL_BLOCK",
+      "x": 0,
+      "y": 4.6
     }
   ]
 }

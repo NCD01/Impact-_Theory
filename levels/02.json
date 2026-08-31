@@ -1,45 +1,47 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 2,
   "name": "Two Up",
-  "par": 4,
+  "par": 8,
+  "pedestals": [
+    -1.5,
+    1.5
+  ],
   "pieces": [
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": -1.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "S02_SHORT_COLUMN",
-      "x": 1.5,
-      "y": 0,
-      "support": true
-    },
     {
       "piece": "B03_LONG_BEAM",
       "x": 0,
-      "y": 2
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": -1,
-      "y": 3
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 0,
-      "y": 3
-    },
-    {
-      "piece": "B01_SMALL_BLOCK",
-      "x": 1,
-      "y": 3
+      "y": 1.6
     },
     {
       "piece": "B02_MEDIUM_BLOCK",
-      "x": 0,
-      "y": 4
+      "x": -1,
+      "y": 2.6
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": 1,
+      "y": 2.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -1.5,
+      "y": 3.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": -0.5,
+      "y": 3.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 0.5,
+      "y": 3.6
+    },
+    {
+      "piece": "B01_SMALL_BLOCK",
+      "x": 1.5,
+      "y": 3.6
     }
   ]
 }

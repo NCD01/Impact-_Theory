@@ -1,77 +1,68 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": 18,
-  "name": "The Frame",
-  "par": 8,
+  "name": "Twin Arches",
+  "par": 12,
+  "pedestals": [
+    -3,
+    0,
+    3
+  ],
   "pieces": [
     {
-      "piece": "S01_ROUND_COLUMN",
-      "x": -3.5,
-      "y": 0,
-      "support": true
+      "piece": "B03_LONG_BEAM",
+      "x": -2,
+      "y": 1.6
     },
     {
-      "piece": "S01_ROUND_COLUMN",
+      "piece": "B03_LONG_BEAM",
+      "x": 2,
+      "y": 1.6
+    },
+    {
+      "piece": "S05_ARCH",
+      "x": -1.5,
+      "y": 2.6
+    },
+    {
+      "piece": "S05_ARCH",
+      "x": 1.5,
+      "y": 2.6
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
+      "x": -2,
+      "y": 4.6
+    },
+    {
+      "piece": "B02_MEDIUM_BLOCK",
       "x": 0,
-      "y": 0,
-      "support": true
+      "y": 4.6
     },
     {
-      "piece": "S01_ROUND_COLUMN",
-      "x": 3.5,
-      "y": 0,
-      "support": true
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": -2,
-      "y": 3
-    },
-    {
-      "piece": "B03_LONG_BEAM",
+      "piece": "B02_MEDIUM_BLOCK",
       "x": 2,
-      "y": 3
-    },
-    {
-      "piece": "A02_L_BLOCK",
-      "x": -1,
-      "y": 4
-    },
-    {
-      "piece": "A02_L_BLOCK",
-      "x": 1,
-      "y": 4,
-      "rotY": 3.142
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": -2,
-      "y": 6
-    },
-    {
-      "piece": "B03_LONG_BEAM",
-      "x": 2,
-      "y": 6
+      "y": 4.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -1.5,
-      "y": 7
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": -0.5,
-      "y": 7
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 0.5,
-      "y": 7
+      "y": 5.6
     },
     {
       "piece": "B01_SMALL_BLOCK",
       "x": 1.5,
-      "y": 7
+      "y": 5.6
     }
   ]
 }
