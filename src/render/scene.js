@@ -172,6 +172,30 @@ export function createSceneRig(canvas) {
   }
 
   /**
+   * Points the camera at the middle of a structure of a given height.
+   *
+   * Called once when a level loads, never during play, so the camera is still fixed for
+   * the whole of a level as the reference clip shows. Only the aim point moves; the eye
+   * stays where CAMERA.POSITION puts it, because moving the eye changes how big a ball
+   * looks and therefore how the game plays.
+   *
+   * How far away a structure sits is handled elsewhere, by placing short levels nearer
+   * the cannon. That is the only lever that works here: fitting a 3 SU structure into
+   * the frame by moving the camera would put the camera in front of its own cannon.
+   *
+   * @param {number} structureHeight Top of the tallest piece, SU.
+   */
+  function frameLevel(structureHeight) {
+    lookAt.set(
+      CAMERA.LOOK_AT[0],
+      Math.max(2.0, Math.min(structureHeight * 0.55, 6.2)),
+      CAMERA.LOOK_AT[2],
+    );
+    camera.position.copy(basePosition);
+    camera.lookAt(lookAt);
+  }
+
+  /**
    * Resizes the renderer and camera to the canvas's displayed size.
    *
    * Field of view is switched between a portrait and a landscape value rather than left
@@ -211,7 +235,7 @@ export function createSceneRig(canvas) {
 
   return {
     renderer, scene, camera, levelRoot, sun,
-    addShake, updateCamera, resize, render, dispose,
+    addShake, updateCamera, frameLevel, resize, render, dispose,
     palette: PALETTE,
   };
 }

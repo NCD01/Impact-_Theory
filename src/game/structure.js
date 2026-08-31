@@ -24,17 +24,13 @@
  * up any more, which is the physics engine's answer and not this module's.
  */
 
-import { BoxGeometry, Mesh, MeshStandardMaterial, Quaternion, Vector3 } from 'three';
+import { BoxGeometry, Mesh, MeshStandardMaterial } from 'three';
 
 import { DESTRUCTION, PLAYFIELD } from '../core/constants.js';
 import { createDamageState, applyImpact } from '../physics/damage.js';
 import { createPieceMesh } from '../blocks/loader.js';
 import { getFamily } from '../blocks/families.js';
 import { getPiece } from '../blocks/manifest.js';
-
-/** Reused so the per frame sync allocates nothing. */
-const tmpVec = new Vector3();
-const tmpQuat = new Quaternion();
 
 /**
  * Creates the structure manager for one play session.
@@ -61,6 +57,8 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
 
   let destroyedCount = 0;
   let targetCount = 0;
+  /** Where this level's pieces are placed, SU. Set per level before placing. */
+  let origin = [...PLAYFIELD.STRUCTURE_ORIGIN];
 
   /**
    * @typedef {object} PieceEntry
@@ -90,7 +88,6 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     const family = getFamily(spec.family ?? piece.defaultFamily);
     const isSupport = spec.support === true;
 
-    const origin = PLAYFIELD.STRUCTURE_ORIGIN;
     const position = {
       x: origin[0] + spec.x,
       y: origin[1] + spec.y,
@@ -133,6 +130,20 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     pieces.set(handle, entry);
     if (!isSupport) targetCount += 1;
     return entry;
+  }
+
+  /**
+   * Sets where this level's pieces are placed, in SU.
+   *
+   * Called once per level before any piece is placed. Short levels are put nearer the
+   * cannon so they fill the frame; tall ones further away so they fit in it. This is the
+   * lever that works, because fitting a 3 SU structure by moving the camera instead would
+   * put the camera in front of its own cannon.
+   *
+   * @param {[number, number, number]} next
+   */
+  function setOrigin(next) {
+    origin = [...next];
   }
 
   /** Difficulty's hit point multiplier. Set before a level is built. */
@@ -376,7 +387,6 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     const t = rec.body.translation();
     const centreY = t.y + entry.piece.collider.pivotLift;
     if (centreY < PLAYFIELD.REST_HEIGHT_THRESHOLD) return true;
-    const origin = PLAYFIELD.STRUCTURE_ORIGIN;
     const dx = t.x - origin[0];
     const dz = t.z - origin[2];
     return Math.hypot(dx, dz) > PLAYFIELD.OUT_OF_PLAY_RADIUS;
@@ -407,10 +417,32 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     targetCount = 0;
   }
 
+  /**
+   * The material family of whichever live piece an impact involved.
+   *
+   * Used to voice the impact sound, so a ball hitting stone sounds like stone. Returns
+   * the first live piece found, because a sound has one voice and a ball-versus-piece
+   * contact only ever has one piece in it. Returns null when neither side is a piece,
+   * which is what a ball landing on the sand is.
+   *
+   * @param {object} impact From PhysicsWorld.step.
+   * @returns {string|null} Family id.
+   */
+  function familyOfImpact(impact) {
+    for (const handle of [impact.handleA, impact.handleB]) {
+      if (handle === null) continue;
+      const entry = pieces.get(handle);
+      if (entry) return entry.family.id;
+    }
+    return null;
+  }
+
   return {
     place,
+    setOrigin,
     setDifficultyTuning,
     handleImpact,
+    familyOfImpact,
     update,
     isCleared,
     standingCount,
@@ -423,5 +455,3 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     _pieces: pieces,
   };
 }
-
-export { tmpVec, tmpQuat };

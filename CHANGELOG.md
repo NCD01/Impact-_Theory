@@ -5,6 +5,44 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.9.0+13 - 2026-08-30 - Feature
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Phases 8, 9, 11 and 12. The modules built so far were a playable slice with
+no way in or out. This turns them into a game: a title, level select, a heads up display,
+pause, settings, results with stars, difficulty, endless mode and sound.
+
+**Changes:**
+- `src/game/session.js`. One level attempt: balls remaining, the settle rule that gates
+  clear and fail, and the scoring run.
+- `src/ui/ui.js` and the interface stylesheet in `index.html`. Title, level select with
+  locks and stars, heads up display, pause, settings, results, score popups.
+- `src/audio/audio.js`. Every sound, synthesised. See D-008.
+- `src/game/endless.js`. A seeded generator emitting the same level schema.
+- `src/main.js` rewritten as a screen state machine.
+- `tests/unit/endless.test.js`.
+- `docs/DECISIONS.md` D-008 and D-009.
+
+**Three defects found by playing the game in a browser rather than by reasoning:**
+1. **Hidden screens still swallowed every touch.** `.screen { display: grid }` is a class
+   selector and beats the browser's own `[hidden] { display: none }`, so the settings
+   panel stayed laid out while invisible and intercepted presses meant for the level
+   select behind it. Fixed with an explicit `[hidden] { display: none !important }`.
+2. **A cleared level never showed its results.** The settle check counted every body's
+   motion including balls, so a ball rolling slowly across the sand long after the tower
+   had fallen kept the world "unsettled" forever. Motion is now measured over pieces and
+   fragments only.
+3. **Small levels were unreadable and large ones overflowed.** Framing is now computed
+   from each level's own height and width. See D-009.
+
+**Validation Evidence:** Played through in a real browser under Playwright at a 390 x 844
+portrait viewport with the GPU enabled: title, Play, level select, level 1, fired until
+cleared, results screen with stars, back to level select with level 2 now unlocked, and
+zero console errors. Defects 1 and 2 were each found this way and each re-tested after
+the fix. Framing was checked by capturing levels 1, 19 and 29, the smallest, a middling
+one and the largest, and looking at all three. `npx vitest run` reports 139 of 139
+passing, up from 126. `npx eslint .` exits 0.
+
 ## v1.8.0+12 - 2026-08-30 - Feature
 
 **Author:** Claude Opus 5, unattended build session

@@ -84,11 +84,198 @@
       }
 
       #boot-error:empty { display: none; }
+
+      /* ---- Interface overlay -------------------------------------------- */
+      /* The overlay never blocks the canvas: it is pointer transparent, and only the
+         controls inside it take presses back. Without that, the drag to aim gesture
+         would stop working anywhere a panel happened to sit. */
+      #ui {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+      }
+      #ui button, #ui .level-cell { pointer-events: auto; }
+
+      .hud {
+        padding: calc(var(--safe-top) + 0.5rem) 0.7rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+      .hud-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      .hud-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 3.6rem;
+        background: var(--panel);
+        border-radius: 10px;
+        padding: 0.25rem 0.5rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
+      }
+      .hud-value { font-size: 1.15rem; font-weight: 700; line-height: 1.1; }
+      .hud-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.7; }
+      .hud-level {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #fffdf7;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+        padding-left: 0.15rem;
+      }
+      .hud-combo {
+        align-self: flex-start;
+        background: var(--accent);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.78rem;
+        padding: 0.15rem 0.55rem;
+        border-radius: 999px;
+      }
+      .icon-button {
+        margin-left: auto;
+        width: 2.5rem; height: 2.5rem;
+        border-radius: 10px;
+        letter-spacing: 0.1em;
+      }
+
+      /* ---- Screens ------------------------------------------------------- */
+      /* This rule is load bearing. A class selector such as `.screen { display: grid }`
+         beats the browser's own `[hidden] { display: none }`, so without this a hidden
+         screen stays laid out and its buttons keep swallowing touches over the game.
+         That was a real defect: the settings panel was invisible and still intercepting
+         every press on the level select behind it. */
+      [hidden] { display: none !important; }
+
+      .screen {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: calc(var(--safe-top) + 1rem) 1rem calc(var(--safe-bottom) + 1rem);
+        background: rgba(12, 40, 56, 0.55);
+        backdrop-filter: blur(2px);
+        overflow-y: auto;
+        pointer-events: auto;
+      }
+      .panel {
+        background: var(--panel);
+        border-radius: 16px;
+        padding: 1.4rem 1.2rem;
+        width: min(22rem, 100%);
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+      }
+      .panel.wide { width: min(34rem, 100%); }
+      .panel h1 { margin: 0; font-size: 2rem; letter-spacing: 0.01em; }
+      .panel h2 { margin: 0; font-size: 1.4rem; }
+      .tagline { margin: 0 0 0.4rem; opacity: 0.75; }
+      .subtle { margin: 0; opacity: 0.72; font-size: 0.85rem; }
+      .subtle.small { font-size: 0.76rem; line-height: 1.35; }
+      .stars { margin: 0; font-size: 2rem; letter-spacing: 0.15em; }
+      .big-score { margin: 0; font-size: 2.2rem; font-weight: 700; }
+      .version { margin: 0.3rem 0 0; font-size: 0.7rem; opacity: 0.5; }
+
+      #ui button {
+        font: inherit;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        padding: 0.7rem 1rem;
+        background: #dfe8ec;
+        color: var(--ink);
+        cursor: pointer;
+        min-height: 2.75rem;
+      }
+      #ui button:hover { filter: brightness(1.04); }
+      #ui button:active { transform: translateY(1px); }
+      #ui button.primary { background: var(--accent); color: #fff; }
+      #ui button.selected { outline: 3px solid var(--accent); }
+      #ui button:disabled { opacity: 0.45; cursor: default; }
+      #ui button:focus-visible { outline: 3px solid #2f7fc4; outline-offset: 2px; }
+
+      /* ---- Level select -------------------------------------------------- */
+      .level-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(5.2rem, 1fr));
+        gap: 0.45rem;
+        max-height: 58vh;
+        overflow-y: auto;
+        padding: 0.15rem;
+      }
+      .level-cell {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.1rem;
+        padding: 0.5rem 0.25rem !important;
+        line-height: 1.15;
+      }
+      .level-number { font-size: 1.1rem; font-weight: 700; }
+      .level-name {
+        font-size: 0.62rem;
+        opacity: 0.75;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .level-stars { font-size: 0.72rem; letter-spacing: 0.05em; }
+      .star.on { color: #e8a13c; }
+      .star.off { color: #b9bfc4; }
+
+      /* ---- Score popups -------------------------------------------------- */
+      .popups { position: absolute; inset: 0; overflow: hidden; }
+      .popup {
+        position: absolute;
+        top: 0; left: 0;
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #fffdf7;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        white-space: nowrap;
+        will-change: transform, opacity;
+      }
+
+      /* ---- Debug overlay ------------------------------------------------- */
+      .debug {
+        position: absolute;
+        left: 0.5rem;
+        bottom: calc(var(--safe-bottom) + 0.5rem);
+        margin: 0;
+        padding: 0.4rem 0.55rem;
+        background: rgba(12, 30, 40, 0.8);
+        color: #d6f0ff;
+        font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+        font-size: 0.66rem;
+        line-height: 1.35;
+        border-radius: 8px;
+        white-space: pre;
+      }
+
+      /* A short wide window, which is what a desktop browser gives. The panels stay
+         readable rather than stretching, and the level grid gets more columns. */
+      @media (orientation: landscape) and (max-height: 34rem) {
+        .panel { padding: 1rem; gap: 0.4rem; }
+        .panel h1 { font-size: 1.5rem; }
+        .level-grid { max-height: 42vh; }
+        .hud-stat { min-width: 3.2rem; }
+      }
+
     </style>
   </head>
   <body>
     <div id="app">
       <canvas id="game-canvas"></canvas>
+      <div id="ui"></div>
       <div id="boot">
         <h1>Impact Theory</h1>
         <p id="boot-status">Loading</p>

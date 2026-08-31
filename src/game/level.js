@@ -148,10 +148,12 @@ export function assertValidLevel(data, source = 'level') {
  *
  * @param {object} level
  * @returns {{id: number, name: string, par: number, pieces: number,
- *            supports: number, height: number, families: string[]}}
+ *            supports: number, height: number, width: number, families: string[]}}
  */
 export function summariseLevel(level) {
   let height = 0;
+  let minX = Infinity;
+  let maxX = -Infinity;
   let supports = 0;
   const families = new Set();
 
@@ -160,6 +162,11 @@ export function summariseLevel(level) {
     // A geometric-center piece straddles its origin, so its top is half a height up.
     const top = spec.y + (piece.pivot === 'geometric-center' ? piece.height / 2 : piece.height);
     if (top > height) height = top;
+    // Width counts the piece's own extent, not just its origin. A 4 SU beam centred at
+    // the edge of a level reaches 2 SU further than its origin says, and framing that
+    // ignores it puts half the beam off screen.
+    if (spec.x - piece.width / 2 < minX) minX = spec.x - piece.width / 2;
+    if (spec.x + piece.width / 2 > maxX) maxX = spec.x + piece.width / 2;
     if (spec.support === true) supports += 1;
     families.add(spec.family ?? piece.defaultFamily);
   }
@@ -171,6 +178,7 @@ export function summariseLevel(level) {
     pieces: level.pieces.length,
     supports,
     height: Math.round(height * 100) / 100,
+    width: Math.round((maxX - minX) * 100) / 100,
     families: [...families].sort(),
   };
 }

@@ -240,3 +240,64 @@ mostly tumble, and some of them break.
 
 **Rollback.** Both numbers are named constants with their reasoning attached, in
 `src/blocks/families.js` and `src/core/constants.js`. Changing them changes no code.
+
+---
+
+## D-008: Audio is synthesised, not sourced.
+
+**Decided:** 2026-08-30, phase 11.
+
+**Decision.** Every sound in the game is generated at runtime with the Web Audio API.
+Impacts, the cannon, fractures, the collapse rumble, the level clear sting, the fail
+note, interface taps and the background pad. The game ships no audio files.
+
+**The brief asked for CC0 audio with every file in the manifest with its licence.** The
+reason for departing from that is the licence rule itself, "no asset ships without a
+licence you read". In an unattended session there is nobody to confirm that a pack found
+at three in the morning is genuinely CC0, that its own README carries no attribution
+requirement, or that a sample inside it was not lifted from somewhere else. Audio
+generated from arithmetic has no licence question, ships no bytes, and cannot be the
+thing that makes this game unpublishable.
+
+**What it also buys.** An impact built from a noise burst and a tuned resonance can be
+scaled continuously by impact energy and voiced per material family, so a graze and a
+square hit on stone are genuinely different sounds rather than the same sample at two
+volumes. That is what the destruction requirement asks for and what a sample library
+makes harder, not easier.
+
+**What it costs.** Synthesised sound is thinner than a recorded sample. The impacts read
+as percussive and material specific, but nobody would mistake them for a recording of
+masonry falling.
+
+**Rollback.** `src/audio/audio.js` exposes one function per sound. Replacing the bodies
+with sample playback is a change to that file alone, plus an asset manifest entry per
+file. No caller changes.
+
+---
+
+## D-009: Levels are placed by size rather than the camera being moved.
+
+**Decided:** 2026-08-30, phase 12.
+
+**The problem.** Level 1 is a single crate on two short columns, 3 SU tall. With the
+framing chosen for the tallest level it appeared as a speck in the lower third of a
+phone screen under two thirds of empty sky.
+
+**First attempt, wrong.** Move the camera closer for short levels. The arithmetic says a
+3 SU structure fills the frame at about 5 SU away, but the cannon is 12.9 SU in front of
+the structure origin, so the camera would have ended up in front of its own barrel.
+
+**Decision.** The camera position stays fixed. Each level's structure is placed at a
+distance computed from its own height and width, between 13.5 and 28 SU from the camera.
+The camera's aim point rises with the structure's height so a tall level sits centred.
+Both are set once when a level loads and neither moves during play, so the camera is
+still fixed while the level is being played, as the reference clip shows.
+
+**Width turned out to matter more than height.** The vertical field of view is 58
+degrees, but a 390 by 844 phone has an aspect near 0.46, so the horizontal field of view
+is under half the vertical one. Framing on height alone put level 29, which is 12 SU wide
+and 9.5 tall, so close that it overflowed the screen in both directions. Distance is now
+computed for both and the larger wins.
+
+**Rollback.** One function, `originForSize` in `src/main.js`, plus `frameLevel` in
+`src/render/scene.js`. Returning a constant from the first restores the old behaviour.

@@ -346,14 +346,23 @@ export function createPhysicsWorld() {
   }
 
   /**
-   * Total kinetic energy across every non sleeping body, joules. Used to decide the
-   * world has settled, which gates level clear and level fail.
+   * Total speed summed across every non sleeping body, SU per second.
    *
+   * Used to decide the world has settled, which gates level clear and level fail.
+   *
+   * `kinds` filters which bodies count. The session passes pieces and fragments only,
+   * deliberately excluding balls: a ball rolling slowly across the sand is not a reason
+   * to withhold a level clear, and treating it as one leaves the results screen waiting
+   * for ammunition to stop moving while the structure has plainly been flattened. That
+   * was a real defect, found by playing a level through in a browser.
+   *
+   * @param {Set<string>|null} [kinds] Body kinds to count, or null for all.
    * @returns {number}
    */
-  function totalMotion() {
+  function totalMotion(kinds = null) {
     let sum = 0;
     for (const rec of bodies.values()) {
+      if (kinds && !kinds.has(rec.kind)) continue;
       if (rec.body.isSleeping()) continue;
       const v = rec.body.linvel();
       sum += Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
