@@ -1,0 +1,406 @@
+{
+  "library": "Impact Theory V1 Structural Block Library",
+  "validation_status": "PASS",
+  "validated_piece_count": 15,
+  "tolerance_su": 0.002,
+  "checks": [
+    "binary FBX",
+    "single mesh object",
+    "dimensions",
+    "pivot",
+    "clean re-import",
+    "512x512 RGBA preview transparency"
+  ],
+  "pieces": [
+    {
+      "id": "B01_SMALL_BLOCK",
+      "status": "PASS",
+      "model_filename": "B01_SMALL_BLOCK.fbx",
+      "file_size_bytes": 18636,
+      "sha256": "10da6248581904d29f5c692f2147822dad309a21ebd4c571f6fcc161665d8c7b",
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "imported_dimensions_su": {
+        "width": 1.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 9e-08,
+      "preview_filename": "Previews/B01_SMALL_BLOCK.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "B02_MEDIUM_BLOCK",
+      "status": "PASS",
+      "model_filename": "B02_MEDIUM_BLOCK.fbx",
+      "file_size_bytes": 18668,
+      "sha256": "e0bbf0d2dc23a275e922d0b380ddbb51528f52b0e460f204312f1bf1a9f79525",
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "imported_dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 9e-08,
+      "preview_filename": "Previews/B02_MEDIUM_BLOCK.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "B03_LONG_BEAM",
+      "status": "PASS",
+      "model_filename": "B03_LONG_BEAM.fbx",
+      "file_size_bytes": 18668,
+      "sha256": "25a949a999a99360b9f5a5c3f14fc378313cfc0de88267f382345574e6b9ccce",
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "imported_dimensions_su": {
+        "width": 4.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 9e-08,
+      "preview_filename": "Previews/B03_LONG_BEAM.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "B04_TALL_BLOCK",
+      "status": "PASS",
+      "model_filename": "B04_TALL_BLOCK.fbx",
+      "file_size_bytes": 18604,
+      "sha256": "e621fda5542ba851052e2fc6786c5e7fd8c296462dca8ccf128906835a6e80b7",
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "imported_dimensions_su": {
+        "width": 1.0,
+        "height": 3.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 2.4e-07,
+      "preview_filename": "Previews/B04_TALL_BLOCK.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "B05_LARGE_BLOCK",
+      "status": "PASS",
+      "model_filename": "B05_LARGE_BLOCK.fbx",
+      "file_size_bytes": 18636,
+      "sha256": "33d12924e57387c15075e329381602291547189408116c68932d1cb46e8c7536",
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "imported_dimensions_su": {
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 1.5e-07,
+      "preview_filename": "Previews/B05_LARGE_BLOCK.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "S01_ROUND_COLUMN",
+      "status": "PASS",
+      "model_filename": "S01_ROUND_COLUMN.fbx",
+      "file_size_bytes": 25884,
+      "sha256": "cec4a71e8a8f8d9b2ec8ae00a262548ea79c20e05161ad04c72ca97ca6307be0",
+      "mesh_object_count": 1,
+      "vertex_count": 192,
+      "triangle_count": 380,
+      "imported_dimensions_su": {
+        "width": 1.0,
+        "height": 3.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 2.4e-07,
+      "preview_filename": "Previews/S01_ROUND_COLUMN.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "S02_SHORT_COLUMN",
+      "status": "PASS",
+      "model_filename": "S02_SHORT_COLUMN.fbx",
+      "file_size_bytes": 18636,
+      "sha256": "64541f172e73358b5e84c6262005d20145dc689727bb21a7c8d1b5b973ee97b9",
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "imported_dimensions_su": {
+        "width": 1.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 1.5e-07,
+      "preview_filename": "Previews/S02_SHORT_COLUMN.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "S03_WIDE_FOOTING",
+      "status": "PASS",
+      "model_filename": "S03_WIDE_FOOTING.fbx",
+      "file_size_bytes": 18668,
+      "sha256": "838dc8304f6dbc0ee13dc5d6b1e8d72d7aa81fbd9dd66b0c09db39429af02ec6",
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "imported_dimensions_su": {
+        "width": 3.0,
+        "height": 0.5,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 7e-08,
+      "preview_filename": "Previews/S03_WIDE_FOOTING.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "S04_WEDGE",
+      "status": "PASS",
+      "model_filename": "S04_WEDGE.fbx",
+      "file_size_bytes": 17116,
+      "sha256": "a6f98309a1a9f41827df3a040d60d57c023b11db9608c10c83a942feb85bc8ea",
+      "mesh_object_count": 1,
+      "vertex_count": 42,
+      "triangle_count": 80,
+      "imported_dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 9e-08,
+      "preview_filename": "Previews/S04_WEDGE.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "S05_ARCH",
+      "status": "PASS",
+      "model_filename": "S05_ARCH.fbx",
+      "file_size_bytes": 19660,
+      "sha256": "b699787c75a4871315a23a4d1dbd2be09e6ce097c46771ba05af9e3ef90591bf",
+      "mesh_object_count": 1,
+      "vertex_count": 112,
+      "triangle_count": 220,
+      "imported_dimensions_su": {
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 1.5e-07,
+      "preview_filename": "Previews/S05_ARCH.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "A01_T_BLOCK",
+      "status": "PASS",
+      "model_filename": "A01_T_BLOCK.fbx",
+      "file_size_bytes": 19724,
+      "sha256": "a9c6543b2dedcd73e47ceb44c28affedd6bd00a2f55030662f58cf626a295f98",
+      "mesh_object_count": 1,
+      "vertex_count": 112,
+      "triangle_count": 220,
+      "imported_dimensions_su": {
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 1.5e-07,
+      "preview_filename": "Previews/A01_T_BLOCK.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "A02_L_BLOCK",
+      "status": "PASS",
+      "model_filename": "A02_L_BLOCK.fbx",
+      "file_size_bytes": 18636,
+      "sha256": "b456f1bef6bf7ad597a6e9e51b895cfa13245a88d1847429996617d76b306e1e",
+      "mesh_object_count": 1,
+      "vertex_count": 84,
+      "triangle_count": 164,
+      "imported_dimensions_su": {
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 1.5e-07,
+      "preview_filename": "Previews/A02_L_BLOCK.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "A03_CROSS_BEAM",
+      "status": "PASS",
+      "model_filename": "A03_CROSS_BEAM.fbx",
+      "file_size_bytes": 21468,
+      "sha256": "999265c3d7f626e506b89c1d94a081cf0555ac78ec9c284a4a219c7975eba4b4",
+      "mesh_object_count": 1,
+      "vertex_count": 168,
+      "triangle_count": 332,
+      "imported_dimensions_su": {
+        "width": 3.0,
+        "height": 3.0,
+        "depth": 1.0
+      },
+      "pivot": "geometric-center",
+      "pivot_error_su": 0.0,
+      "preview_filename": "Previews/A03_CROSS_BEAM.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "A04_ROLLER",
+      "status": "PASS",
+      "model_filename": "A04_ROLLER.fbx",
+      "file_size_bytes": 26332,
+      "sha256": "be534aae3b170c16c12c3a8983ef7c0d5046bea9b0172769bf6c25a07e2af0cf",
+      "mesh_object_count": 1,
+      "vertex_count": 192,
+      "triangle_count": 380,
+      "imported_dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "geometric-center",
+      "pivot_error_su": 0.0,
+      "preview_filename": "Previews/A04_ROLLER.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "A05_MECHANICAL_STABILIZER",
+      "status": "PASS",
+      "model_filename": "A05_MECHANICAL_STABILIZER.fbx",
+      "file_size_bytes": 97900,
+      "sha256": "c67814a3be6e094ad5e0fb5cce8e58a3c92d6c2f0027e71201b2be2f13824288",
+      "mesh_object_count": 1,
+      "vertex_count": 1544,
+      "triangle_count": 3028,
+      "imported_dimensions_su": {
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 8e-08,
+      "preview_filename": "Previews/A05_MECHANICAL_STABILIZER.png",
+      "preview_size_pixels": [
+        512,
+        512
+      ],
+      "preview_alpha_range": [
+        0.0,
+        1.0
+      ]
+    }
+  ]
+}

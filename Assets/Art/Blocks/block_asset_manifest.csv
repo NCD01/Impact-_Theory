@@ -1,0 +1,16 @@
+id,name,category,width,height,depth,unit,pivot,model_filename,preview_filename
+B01_SMALL_BLOCK,Small Block,BASIC,1.0,1.0,1.0,SU,center-bottom,B01_SMALL_BLOCK.fbx,Previews/B01_SMALL_BLOCK.png
+B02_MEDIUM_BLOCK,Medium Block,BASIC,2.0,1.0,1.0,SU,center-bottom,B02_MEDIUM_BLOCK.fbx,Previews/B02_MEDIUM_BLOCK.png
+B03_LONG_BEAM,Long Beam,BASIC,4.0,1.0,1.0,SU,center-bottom,B03_LONG_BEAM.fbx,Previews/B03_LONG_BEAM.png
+B04_TALL_BLOCK,Tall Block,BASIC,1.0,3.0,1.0,SU,center-bottom,B04_TALL_BLOCK.fbx,Previews/B04_TALL_BLOCK.png
+B05_LARGE_BLOCK,Large Block,BASIC,2.0,2.0,1.0,SU,center-bottom,B05_LARGE_BLOCK.fbx,Previews/B05_LARGE_BLOCK.png
+S01_ROUND_COLUMN,Round Column,SUPPORT,1.0,3.0,1.0,SU,center-bottom,S01_ROUND_COLUMN.fbx,Previews/S01_ROUND_COLUMN.png
+S02_SHORT_COLUMN,Short Column,SUPPORT,1.0,2.0,1.0,SU,center-bottom,S02_SHORT_COLUMN.fbx,Previews/S02_SHORT_COLUMN.png
+S03_WIDE_FOOTING,Wide Footing,SUPPORT,3.0,0.5,1.0,SU,center-bottom,S03_WIDE_FOOTING.fbx,Previews/S03_WIDE_FOOTING.png
+S04_WEDGE,Wedge,SUPPORT,2.0,1.0,1.0,SU,center-bottom,S04_WEDGE.fbx,Previews/S04_WEDGE.png
+S05_ARCH,Arch,SUPPORT,3.0,2.0,1.0,SU,center-bottom,S05_ARCH.fbx,Previews/S05_ARCH.png
+A01_T_BLOCK,T-Block,ADVANCED,3.0,2.0,1.0,SU,center-bottom,A01_T_BLOCK.fbx,Previews/A01_T_BLOCK.png
+A02_L_BLOCK,L-Block,ADVANCED,2.0,2.0,1.0,SU,center-bottom,A02_L_BLOCK.fbx,Previews/A02_L_BLOCK.png
+A03_CROSS_BEAM,Cross Beam,ADVANCED,3.0,3.0,1.0,SU,geometric-center,A03_CROSS_BEAM.fbx,Previews/A03_CROSS_BEAM.png
+A04_ROLLER,Roller,ADVANCED,2.0,1.0,1.0,SU,geometric-center,A04_ROLLER.fbx,Previews/A04_ROLLER.png
+A05_MECHANICAL_STABILIZER,Mechanical Stabilizer,ADVANCED,3.0,2.0,1.0,SU,center-bottom,A05_MECHANICAL_STABILIZER.fbx,Previews/A05_MECHANICAL_STABILIZER.png

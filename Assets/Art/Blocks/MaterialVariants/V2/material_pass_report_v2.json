@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "geometry_preserved": true,
+  "pieces_processed": 15,
+  "materialized_variant_fbx_count": 15,
+  "preview_render_count": 40,
+  "checks": [
+    "geometry hashes",
+    "dimensions",
+    "pivots",
+    "512x512 RGBA transparency",
+    "material/geometry separation"
+  ]
+}

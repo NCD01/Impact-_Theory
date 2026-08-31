@@ -1,0 +1,16 @@
+{
+    "name": "ImpactTheory.Save",
+    "rootNamespace": "ImpactTheory.Save",
+    "references": [
+        "ImpactTheory.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

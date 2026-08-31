@@ -1,0 +1,264 @@
+{
+  "test_name": "Impact Theory Material System \u2013 Addendum 005",
+  "status": "AWAITING_APPROVAL",
+  "scope": "Four-piece material and multi-view approval pack only; production FBX assets and remaining 11 pieces are unchanged.",
+  "architecture": "Geometry identity and material identity remain separate. Materials are reusable MAT_* assets in the test Blender file.",
+  "palette_hex_srgb": {
+    "wood_dark": "#5A321C",
+    "wood_honey": "#B96E32",
+    "wood_light": "#D9A05A",
+    "stone_dark": "#87847D",
+    "stone_mid": "#B3AFA5",
+    "stone_light": "#D1CCC0",
+    "rubber_dark": "#101820",
+    "rubber_light": "#25313B",
+    "deep_teal": "#168A91",
+    "steel_dark": "#4E5B66",
+    "steel_light": "#B2BAC0",
+    "painted_navy": "#24364A",
+    "painted_navy_light": "#2E4057",
+    "structural_blue": "#1F78D1",
+    "structural_blue_light": "#2D8CFF",
+    "warm_orange": "#F28A2E",
+    "golden_yellow": "#D9A73A"
+  },
+  "preview_count": 14,
+  "pieces": [
+    {
+      "id": "B02_MEDIUM_BLOCK",
+      "geometry": "B02_MEDIUM_BLOCK",
+      "material_family": "MAT_WOOD",
+      "treatment": "Honey-toned wood with restrained directional grain, end grain, subtle bump, and a polished game-art finish.",
+      "geometry_preserved": true,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 0.0,
+      "preview_count": 3,
+      "previews": [
+        {
+          "filename": "B02_MEDIUM_BLOCK_STANDARD_PERSPECTIVE.png",
+          "view": "STANDARD_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "B02_MEDIUM_BLOCK_UPRIGHT.png",
+          "view": "UPRIGHT",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "B02_MEDIUM_BLOCK_SIDEWAYS.png",
+          "view": "SIDEWAYS",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S04_WEDGE",
+      "geometry": "S04_WEDGE",
+      "material_family": "MAT_STONE_CONCRETE",
+      "treatment": "Warm light stone/concrete with clean tonal variation, fine surface character, and a lighter cut slope face for orientation.",
+      "geometry_preserved": true,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 0.0,
+      "preview_count": 3,
+      "previews": [
+        {
+          "filename": "S04_WEDGE_SLOPE_PERSPECTIVE.png",
+          "view": "SLOPE_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "S04_WEDGE_OPPOSITE_SIDE.png",
+          "view": "OPPOSITE_SIDE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "S04_WEDGE_SIDE_PROFILE.png",
+          "view": "SIDE_PROFILE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "A04_ROLLER",
+      "geometry": "A04_ROLLER",
+      "material_family": "MAT_RUBBER + MAT_STEEL",
+      "treatment": "Dark textured rubber body, restrained teal traction band, and metallic steel end caps.",
+      "geometry_preserved": true,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "geometric-center",
+      "pivot_error_su": 0.0,
+      "preview_count": 3,
+      "previews": [
+        {
+          "filename": "A04_ROLLER_HORIZONTAL_PERSPECTIVE.png",
+          "view": "HORIZONTAL_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "A04_ROLLER_END_VIEW.png",
+          "view": "END_VIEW",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "A04_ROLLER_ALTERNATE_ANGLE.png",
+          "view": "ALTERNATE_ANGLE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "A05_MECHANICAL_STABILIZER",
+      "geometry": "A05_MECHANICAL_STABILIZER",
+      "material_family": "MAT_PAINTED_STEEL + MAT_STEEL_HARDWARE",
+      "treatment": "Dark navy painted-steel frame, cobalt braces, warm-orange piston bodies, bare-steel rods and hardware, and golden support pads.",
+      "geometry_preserved": true,
+      "dimensions_su": {
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 0.0,
+      "preview_count": 5,
+      "previews": [
+        {
+          "filename": "A05_MECHANICAL_STABILIZER_STANDING.png",
+          "view": "STANDING",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "A05_MECHANICAL_STABILIZER_LAID_DOWN.png",
+          "view": "LAID_DOWN",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "A05_MECHANICAL_STABILIZER_FRONT.png",
+          "view": "FRONT",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "A05_MECHANICAL_STABILIZER_SIDE.png",
+          "view": "SIDE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "A05_MECHANICAL_STABILIZER_THREE_QUARTER.png",
+          "view": "THREE_QUARTER",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    }
+  ]
+}

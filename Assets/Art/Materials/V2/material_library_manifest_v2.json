@@ -1,0 +1,191 @@
+{
+  "library": "Impact Theory V2 Material Library",
+  "version": 2,
+  "architecture": "Geometry and material identity are separate. Every single-material family is compatible with every standardized geometry; mixed-material variants use multiple slots.",
+  "physics_values": "Not defined in this art pass.",
+  "families": [
+    {
+      "id": "MAT_WOOD",
+      "family": "Wood",
+      "character": "Warm honey wood with directional grain and end grain."
+    },
+    {
+      "id": "MAT_BRICK",
+      "family": "Brick",
+      "character": "Clean terracotta masonry with simplified light mortar joints."
+    },
+    {
+      "id": "MAT_STONE",
+      "family": "Stone",
+      "character": "Warm light stone with restrained tonal and surface variation."
+    },
+    {
+      "id": "MAT_CONCRETE",
+      "family": "Concrete",
+      "character": "Neutral structural gray with fine clean aggregate variation."
+    },
+    {
+      "id": "MAT_STEEL",
+      "family": "Steel",
+      "character": "Blue-gray metallic response with subtle clean variation."
+    },
+    {
+      "id": "MAT_PAINTED_STEEL",
+      "family": "Painted Steel",
+      "character": "Reusable navy, cobalt, orange, and golden-yellow engineered coatings."
+    },
+    {
+      "id": "MAT_RUBBER",
+      "family": "Rubber",
+      "character": "Dark navy-black soft finish with restrained fine texture."
+    }
+  ],
+  "showcase_variants": [
+    {
+      "geometry_id": "B01_SMALL_BLOCK",
+      "variant_id": "B01_SMALL_BLOCK_WOOD_V2",
+      "materials": [
+        "MAT_WOOD"
+      ],
+      "model_filename": "MaterialVariants/V2/B01_SMALL_BLOCK_WOOD_V2.fbx",
+      "geometry_source_filename": "B01_SMALL_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "B02_MEDIUM_BLOCK",
+      "variant_id": "B02_MEDIUM_BLOCK_WOOD_V2",
+      "materials": [
+        "MAT_WOOD"
+      ],
+      "model_filename": "MaterialVariants/V2/B02_MEDIUM_BLOCK_WOOD_V2.fbx",
+      "geometry_source_filename": "B02_MEDIUM_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "B03_LONG_BEAM",
+      "variant_id": "B03_LONG_BEAM_PAINTED_STEEL_V2",
+      "materials": [
+        "MAT_PAINTED_STEEL_ORANGE",
+        "MAT_STEEL"
+      ],
+      "model_filename": "MaterialVariants/V2/B03_LONG_BEAM_PAINTED_STEEL_V2.fbx",
+      "geometry_source_filename": "B03_LONG_BEAM.fbx"
+    },
+    {
+      "geometry_id": "B04_TALL_BLOCK",
+      "variant_id": "B04_TALL_BLOCK_BRICK_V2",
+      "materials": [
+        "MAT_BRICK"
+      ],
+      "model_filename": "MaterialVariants/V2/B04_TALL_BLOCK_BRICK_V2.fbx",
+      "geometry_source_filename": "B04_TALL_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "B05_LARGE_BLOCK",
+      "variant_id": "B05_LARGE_BLOCK_CONCRETE_V2",
+      "materials": [
+        "MAT_CONCRETE"
+      ],
+      "model_filename": "MaterialVariants/V2/B05_LARGE_BLOCK_CONCRETE_V2.fbx",
+      "geometry_source_filename": "B05_LARGE_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "S01_ROUND_COLUMN",
+      "variant_id": "S01_ROUND_COLUMN_STEEL_V2",
+      "materials": [
+        "MAT_STEEL",
+        "MAT_PAINTED_STEEL_COBALT"
+      ],
+      "model_filename": "MaterialVariants/V2/S01_ROUND_COLUMN_STEEL_V2.fbx",
+      "geometry_source_filename": "S01_ROUND_COLUMN.fbx"
+    },
+    {
+      "geometry_id": "S02_SHORT_COLUMN",
+      "variant_id": "S02_SHORT_COLUMN_CONCRETE_V2",
+      "materials": [
+        "MAT_CONCRETE"
+      ],
+      "model_filename": "MaterialVariants/V2/S02_SHORT_COLUMN_CONCRETE_V2.fbx",
+      "geometry_source_filename": "S02_SHORT_COLUMN.fbx"
+    },
+    {
+      "geometry_id": "S03_WIDE_FOOTING",
+      "variant_id": "S03_WIDE_FOOTING_STONE_V2",
+      "materials": [
+        "MAT_STONE"
+      ],
+      "model_filename": "MaterialVariants/V2/S03_WIDE_FOOTING_STONE_V2.fbx",
+      "geometry_source_filename": "S03_WIDE_FOOTING.fbx"
+    },
+    {
+      "geometry_id": "S04_WEDGE",
+      "variant_id": "S04_WEDGE_STONE_V2",
+      "materials": [
+        "MAT_STONE",
+        "MAT_STONE_CUT_FACE"
+      ],
+      "model_filename": "MaterialVariants/V2/S04_WEDGE_STONE_V2.fbx",
+      "geometry_source_filename": "S04_WEDGE.fbx"
+    },
+    {
+      "geometry_id": "S05_ARCH",
+      "variant_id": "S05_ARCH_BRICK_V2",
+      "materials": [
+        "MAT_BRICK"
+      ],
+      "model_filename": "MaterialVariants/V2/S05_ARCH_BRICK_V2.fbx",
+      "geometry_source_filename": "S05_ARCH.fbx"
+    },
+    {
+      "geometry_id": "A01_T_BLOCK",
+      "variant_id": "A01_T_BLOCK_PAINTED_STEEL_V2",
+      "materials": [
+        "MAT_PAINTED_STEEL_NAVY",
+        "MAT_PAINTED_STEEL_ORANGE"
+      ],
+      "model_filename": "MaterialVariants/V2/A01_T_BLOCK_PAINTED_STEEL_V2.fbx",
+      "geometry_source_filename": "A01_T_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "A02_L_BLOCK",
+      "variant_id": "A02_L_BLOCK_PAINTED_STEEL_V2",
+      "materials": [
+        "MAT_PAINTED_STEEL_COBALT",
+        "MAT_PAINTED_STEEL_SUPPORT_YELLOW"
+      ],
+      "model_filename": "MaterialVariants/V2/A02_L_BLOCK_PAINTED_STEEL_V2.fbx",
+      "geometry_source_filename": "A02_L_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "A03_CROSS_BEAM",
+      "variant_id": "A03_CROSS_BEAM_STEEL_V2",
+      "materials": [
+        "MAT_STEEL",
+        "MAT_PAINTED_STEEL_ORANGE"
+      ],
+      "model_filename": "MaterialVariants/V2/A03_CROSS_BEAM_STEEL_V2.fbx",
+      "geometry_source_filename": "A03_CROSS_BEAM.fbx"
+    },
+    {
+      "geometry_id": "A04_ROLLER",
+      "variant_id": "A04_ROLLER_RUBBER_STEEL_V2",
+      "materials": [
+        "MAT_RUBBER",
+        "MAT_STEEL"
+      ],
+      "model_filename": "MaterialVariants/V2/A04_ROLLER_RUBBER_STEEL_V2.fbx",
+      "geometry_source_filename": "A04_ROLLER.fbx"
+    },
+    {
+      "geometry_id": "A05_MECHANICAL_STABILIZER",
+      "variant_id": "A05_MECHANICAL_STABILIZER_PAINTED_STEEL_V2",
+      "materials": [
+        "MAT_PAINTED_STEEL_NAVY",
+        "MAT_PAINTED_STEEL_COBALT",
+        "MAT_PAINTED_STEEL_ORANGE",
+        "MAT_STEEL",
+        "MAT_PAINTED_STEEL_SUPPORT_YELLOW"
+      ],
+      "model_filename": "MaterialVariants/V2/A05_MECHANICAL_STABILIZER_PAINTED_STEEL_V2.fbx",
+      "geometry_source_filename": "A05_MECHANICAL_STABILIZER.fbx"
+    }
+  ]
+}

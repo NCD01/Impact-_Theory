@@ -5,6 +5,31 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.1.0+2 - 2026-08-30 - Asset
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The existing `Assets\` tree, including the V2 materialized block library,
+sat on a single network share with no version control of its own in this location.
+This commit places the whole tree on a remote before any other work begins, so that a
+disk failure stops being able to end the project.
+
+**Changes:**
+- Committed the entire existing `Assets\` tree verbatim. Nothing was cleaned,
+  filtered, reorganised or renamed first, including the two Windows `Thumbs.db`
+  thumbnail caches, which are removed from tracking in the next commit and remain
+  recoverable from this one.
+- Content: 15 V1 structural FBX models, 15 V2 materialized FBX variants, 40 V2 and
+  V1 transparent PNG previews, the reproducible Blender sources, the V2 material
+  library, `block_asset_manifest.json` and `.csv`, `validation_report.json`,
+  `material_variant_manifest_v2.json` and `validation_report_v2.json`, plus the
+  Unity checkpoint code that is moved aside in a later commit.
+
+**Validation Evidence:** File and byte counts taken with `find` before staging and
+compared against `git ls-files` after committing, both reported in the commit body.
+`find . -type f -size +50M` returned zero files, so no Git LFS pointer was needed and
+nothing was excluded for size. The push was confirmed by fetching from the remote and
+running `git diff --stat HEAD origin/main`, which reported no difference.
+
 ## v1.0.0+1 - 2026-08-30 - Structural
 
 **Author:** Claude Opus 5, unattended build session

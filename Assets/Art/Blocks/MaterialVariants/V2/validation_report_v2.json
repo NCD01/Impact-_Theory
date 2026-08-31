@@ -1,0 +1,776 @@
+{
+  "library": "Impact Theory V2 Material System",
+  "status": "PASS",
+  "v1_geometry_fbx_unchanged": true,
+  "v1_geometry_count": 15,
+  "v2_variant_fbx_count": 15,
+  "v2_preview_count": 40,
+  "tolerance_su": 0.002,
+  "checks": [
+    "V1 SHA-256 preservation",
+    "binary V2 FBX",
+    "clean re-import",
+    "single mesh object",
+    "dimensions",
+    "pivots",
+    "material slots",
+    "512x512 RGBA transparency"
+  ],
+  "variants": [
+    {
+      "variant_id": "B01_SMALL_BLOCK_WOOD_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/B01_SMALL_BLOCK_WOOD_V2.fbx",
+      "sha256": "97158e939a5bd21d2d8295b91c91f2dfa27ec12f1fa5202ccb8270a7504615bb",
+      "file_size_bytes": 20028,
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "dimensions_su": {
+        "width": 1.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 9e-08,
+      "imported_material_slots": [
+        "MAT_WOOD",
+        "MAT_WOOD_END_GRAIN"
+      ]
+    },
+    {
+      "variant_id": "B02_MEDIUM_BLOCK_WOOD_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/B02_MEDIUM_BLOCK_WOOD_V2.fbx",
+      "sha256": "f26ec2ed3a98c9506c982bd520c3af2653a3999efcb583a4e2e14f532fa87d69",
+      "file_size_bytes": 20076,
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 9e-08,
+      "imported_material_slots": [
+        "MAT_WOOD.001",
+        "MAT_WOOD_END_GRAIN.001"
+      ]
+    },
+    {
+      "variant_id": "B03_LONG_BEAM_PAINTED_STEEL_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/B03_LONG_BEAM_PAINTED_STEEL_V2.fbx",
+      "sha256": "a80b7acc1aa6de05e0885494d5310d73cb96a05cafef387cb32d22afedb2b650",
+      "file_size_bytes": 20108,
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "dimensions_su": {
+        "width": 4.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 9e-08,
+      "imported_material_slots": [
+        "MAT_PAINTED_STEEL_ORANGE",
+        "MAT_STEEL"
+      ]
+    },
+    {
+      "variant_id": "B04_TALL_BLOCK_BRICK_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/B04_TALL_BLOCK_BRICK_V2.fbx",
+      "sha256": "30a976622fed6e9addcb581e8bd2656db2a4bdd6c6605d6ed9532091952be3b5",
+      "file_size_bytes": 18844,
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "dimensions_su": {
+        "width": 1.0,
+        "height": 3.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 2.4e-07,
+      "imported_material_slots": [
+        "MAT_BRICK"
+      ]
+    },
+    {
+      "variant_id": "B05_LARGE_BLOCK_CONCRETE_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/B05_LARGE_BLOCK_CONCRETE_V2.fbx",
+      "sha256": "1ecb5922ea3e0222bded6d4011446242e0ec25cb5fac90b7403642294f6857a9",
+      "file_size_bytes": 18892,
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 1.5e-07,
+      "imported_material_slots": [
+        "MAT_CONCRETE"
+      ]
+    },
+    {
+      "variant_id": "S01_ROUND_COLUMN_STEEL_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/S01_ROUND_COLUMN_STEEL_V2.fbx",
+      "sha256": "b54ab1517f65454701c38e4bf799e3838af4c33b648e2cab290c3980ca5c0e6b",
+      "file_size_bytes": 27308,
+      "mesh_object_count": 1,
+      "vertex_count": 192,
+      "triangle_count": 380,
+      "dimensions_su": {
+        "width": 1.0,
+        "height": 3.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 2.4e-07,
+      "imported_material_slots": [
+        "MAT_STEEL.001",
+        "MAT_PAINTED_STEEL_COBALT"
+      ]
+    },
+    {
+      "variant_id": "S02_SHORT_COLUMN_CONCRETE_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/S02_SHORT_COLUMN_CONCRETE_V2.fbx",
+      "sha256": "fb3922e83a48ac126472dd1980845c4409a69fefe96798a1fd53da4d8868e8cf",
+      "file_size_bytes": 18892,
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "dimensions_su": {
+        "width": 1.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 1.5e-07,
+      "imported_material_slots": [
+        "MAT_CONCRETE.001"
+      ]
+    },
+    {
+      "variant_id": "S03_WIDE_FOOTING_STONE_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/S03_WIDE_FOOTING_STONE_V2.fbx",
+      "sha256": "f134df1d6c1b86a8d8fe111f082b0ab50ffb943268d1aff995b5d7b7e2e4ba09",
+      "file_size_bytes": 18924,
+      "mesh_object_count": 1,
+      "vertex_count": 56,
+      "triangle_count": 108,
+      "dimensions_su": {
+        "width": 3.0,
+        "height": 0.5,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 7e-08,
+      "imported_material_slots": [
+        "MAT_STONE"
+      ]
+    },
+    {
+      "variant_id": "S04_WEDGE_STONE_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/S04_WEDGE_STONE_V2.fbx",
+      "sha256": "53f8bdd134a15528830250531ae93be37db3be2f00f2a0cc3c0f9d19dbe2d99b",
+      "file_size_bytes": 18508,
+      "mesh_object_count": 1,
+      "vertex_count": 42,
+      "triangle_count": 80,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 9e-08,
+      "imported_material_slots": [
+        "MAT_STONE.001",
+        "MAT_STONE_CUT_FACE"
+      ]
+    },
+    {
+      "variant_id": "S05_ARCH_BRICK_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/S05_ARCH_BRICK_V2.fbx",
+      "sha256": "af6d8fe60b9feacd8b865eab201fc7eb33bf038759db2fec1accb6bd3d0b6c43",
+      "file_size_bytes": 19900,
+      "mesh_object_count": 1,
+      "vertex_count": 112,
+      "triangle_count": 220,
+      "dimensions_su": {
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 1.5e-07,
+      "imported_material_slots": [
+        "MAT_BRICK.001"
+      ]
+    },
+    {
+      "variant_id": "A01_T_BLOCK_PAINTED_STEEL_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/A01_T_BLOCK_PAINTED_STEEL_V2.fbx",
+      "sha256": "b9dfc288cd3b510c417cfbb828161b17d97a5dee9527c27864d832b9778f8a5d",
+      "file_size_bytes": 21196,
+      "mesh_object_count": 1,
+      "vertex_count": 112,
+      "triangle_count": 220,
+      "dimensions_su": {
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 1.5e-07,
+      "imported_material_slots": [
+        "MAT_PAINTED_STEEL_NAVY",
+        "MAT_PAINTED_STEEL_ORANGE.001"
+      ]
+    },
+    {
+      "variant_id": "A02_L_BLOCK_PAINTED_STEEL_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/A02_L_BLOCK_PAINTED_STEEL_V2.fbx",
+      "sha256": "98cbfbb2eef1b7d52f4ffa01e4dcb85cd1b4eabfc9f00074a635db059ac7d9d8",
+      "file_size_bytes": 20140,
+      "mesh_object_count": 1,
+      "vertex_count": 84,
+      "triangle_count": 164,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 1.5e-07,
+      "imported_material_slots": [
+        "MAT_PAINTED_STEEL_COBALT.001",
+        "MAT_PAINTED_STEEL_SUPPORT_YELLOW"
+      ]
+    },
+    {
+      "variant_id": "A03_CROSS_BEAM_STEEL_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/A03_CROSS_BEAM_STEEL_V2.fbx",
+      "sha256": "43519339104905da2f6dee636e321bde06df134e189fcb62f1dcb1370afd28e5",
+      "file_size_bytes": 22924,
+      "mesh_object_count": 1,
+      "vertex_count": 168,
+      "triangle_count": 332,
+      "dimensions_su": {
+        "width": 3.0,
+        "height": 3.0,
+        "depth": 1.0
+      },
+      "pivot": "geometric-center",
+      "pivot_error_su": 0.0,
+      "imported_material_slots": [
+        "MAT_STEEL.002",
+        "MAT_PAINTED_STEEL_ORANGE.002"
+      ]
+    },
+    {
+      "variant_id": "A04_ROLLER_RUBBER_STEEL_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/A04_ROLLER_RUBBER_STEEL_V2.fbx",
+      "sha256": "bde76224e0bd6c28596ce2cec9979b1cb80c64fee3909338cc264c0c362874e7",
+      "file_size_bytes": 27724,
+      "mesh_object_count": 1,
+      "vertex_count": 192,
+      "triangle_count": 380,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "geometric-center",
+      "pivot_error_su": 0.0,
+      "imported_material_slots": [
+        "MAT_RUBBER",
+        "MAT_STEEL.003"
+      ]
+    },
+    {
+      "variant_id": "A05_MECHANICAL_STABILIZER_PAINTED_STEEL_V2",
+      "status": "PASS",
+      "model_filename": "MaterialVariants/V2/A05_MECHANICAL_STABILIZER_PAINTED_STEEL_V2.fbx",
+      "sha256": "0227a81cf9c960c08a325903ab53e15d331dd9f37b109df9ad777aff7327db98",
+      "file_size_bytes": 101676,
+      "mesh_object_count": 1,
+      "vertex_count": 1544,
+      "triangle_count": 3028,
+      "dimensions_su": {
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 8e-08,
+      "imported_material_slots": [
+        "MAT_PAINTED_STEEL_NAVY.001",
+        "MAT_PAINTED_STEEL_COBALT.002",
+        "MAT_PAINTED_STEEL_ORANGE.003",
+        "MAT_STEEL.004",
+        "MAT_PAINTED_STEEL_SUPPORT_YELLOW.001"
+      ]
+    }
+  ],
+  "previews": [
+    {
+      "filename": "Previews/V2/B01_SMALL_BLOCK.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/B02_MEDIUM_BLOCK.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/B02_MEDIUM_BLOCK_UPRIGHT.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/B02_MEDIUM_BLOCK_SIDEWAYS.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/B03_LONG_BEAM.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/B03_LONG_BEAM_UPRIGHT.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/B03_LONG_BEAM_END_VIEW.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/B04_TALL_BLOCK.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/B04_TALL_BLOCK_SIDEWAYS.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/B05_LARGE_BLOCK.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/B05_LARGE_BLOCK_SIDE_VIEW.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/S01_ROUND_COLUMN.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/S01_ROUND_COLUMN_HORIZONTAL.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/S02_SHORT_COLUMN.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/S02_SHORT_COLUMN_SIDEWAYS.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/S03_WIDE_FOOTING.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/S03_WIDE_FOOTING_UPRIGHT.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/S04_WEDGE.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/S04_WEDGE_OPPOSITE_SIDE.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/S04_WEDGE_SIDE_PROFILE.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/S05_ARCH.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/S05_ARCH_FRONT.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/S05_ARCH_LAID_DOWN.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/A01_T_BLOCK.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A01_T_BLOCK_ROTATED.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A01_T_BLOCK_FRONT.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/A02_L_BLOCK.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A02_L_BLOCK_ROTATED.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A02_L_BLOCK_FRONT.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/A03_CROSS_BEAM.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A03_CROSS_BEAM_ROTATED.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A03_CROSS_BEAM_FRONT.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/A04_ROLLER.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A04_ROLLER_END_VIEW.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A04_ROLLER_ALTERNATE_ANGLE.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/A05_MECHANICAL_STABILIZER.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A05_MECHANICAL_STABILIZER_LAID_DOWN.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A05_MECHANICAL_STABILIZER_FRONT.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A05_MECHANICAL_STABILIZER_SIDE.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "filename": "Previews/V2/Views/A05_MECHANICAL_STABILIZER_THREE_QUARTER.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    }
+  ]
+}

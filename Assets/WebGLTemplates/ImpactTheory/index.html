@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#111827">
+    <title>{{{ PRODUCT_NAME }}}</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="TemplateData/style.css">
+  </head>
+  <body>
+    <main id="unity-container">
+      <canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} tabindex="0" aria-label="Impact Theory game"></canvas>
+      <section id="unity-loading" aria-live="polite">
+        <div class="loading-title">IMPACT THEORY</div>
+        <div class="loading-track"><div id="unity-progress"></div></div>
+        <div id="unity-loading-label">Loading 0%</div>
+      </section>
+      <div id="unity-warning" role="alert"></div>
+      <button id="fullscreen-button" type="button" title="Full screen" aria-label="Full screen">FULL SCREEN</button>
+    </main>
+
+    <script>
+      const canvas = document.querySelector("#unity-canvas");
+      const loading = document.querySelector("#unity-loading");
+      const progressBar = document.querySelector("#unity-progress");
+      const loadingLabel = document.querySelector("#unity-loading-label");
+      const warning = document.querySelector("#unity-warning");
+
+      function focusGame() {
+        window.focus();
+        try {
+          canvas.focus({ preventScroll: true });
+        } catch (_) {
+          canvas.focus();
+        }
+      }
+
+      canvas.addEventListener("pointerdown", focusGame);
+      canvas.addEventListener("touchstart", focusGame, { passive: true });
+
+      // Stop Space and the aim arrows from scrolling the host page before Unity receives them.
+      window.addEventListener("keydown", (event) => {
+        const gameKeys = ["Space", "Enter", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+        if (gameKeys.includes(event.code)) {
+          event.preventDefault();
+          focusGame();
+        }
+
+      }, { capture: true });
+
+      function unityShowBanner(message, type) {
+        const item = document.createElement("div");
+        item.className = type === "error" ? "error" : "warning";
+        item.textContent = message;
+        warning.appendChild(item);
+        warning.style.display = "block";
+
+        if (type !== "error") {
+          setTimeout(() => {
+            item.remove();
+            warning.style.display = warning.children.length ? "block" : "none";
+          }, 5000);
+        }
+      }
+
+      const buildUrl = "Build";
+      const loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";
+      const config = {
+        arguments: [],
+        dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
+        frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_THREADS
+        workerUrl: buildUrl + "/{{{ WORKER_FILENAME }}}",
+#endif
+#if USE_WASM
+        codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+        symbolsUrl: buildUrl + "/{{{ SYMBOLS_FILENAME }}}",
+#endif
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+        productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+        productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+        showBanner: unityShowBanner,
+      };
+
+#if BACKGROUND_FILENAME
+      canvas.style.background = "url('" + buildUrl + "/{{{ BACKGROUND_FILENAME.replace(/'/g, '%27') }}}') center / cover";
+#endif
+
+      const script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          const percent = Math.round(progress * 100);
+          progressBar.style.width = percent + "%";
+          loadingLabel.textContent = "Loading " + percent + "%";
+        }).then((unityInstance) => {
+          loading.style.display = "none";
+          document.querySelector("#fullscreen-button").onclick = () => unityInstance.SetFullscreen(1);
+          requestAnimationFrame(focusGame);
+        }).catch((message) => {
+          loading.style.display = "none";
+          unityShowBanner(String(message), "error");
+        });
+      };
+      script.onerror = () => {
+        loading.style.display = "none";
+        unityShowBanner("The game loader could not start. Refresh the page and try again.", "error");
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>

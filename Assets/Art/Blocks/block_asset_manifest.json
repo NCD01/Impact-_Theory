@@ -1,0 +1,193 @@
+{
+  "library": "Impact Theory V1 Structural Block Library",
+  "version": 1,
+  "structural_unit_meters": 1.0,
+  "orientation": {
+    "up": "Y",
+    "width": "X",
+    "depth": "Z"
+  },
+  "piece_count": 15,
+  "pieces": [
+    {
+      "id": "B01_SMALL_BLOCK",
+      "name": "Small Block",
+      "category": "BASIC",
+      "width": 1.0,
+      "height": 1.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "B01_SMALL_BLOCK.fbx",
+      "preview_filename": "Previews/B01_SMALL_BLOCK.png"
+    },
+    {
+      "id": "B02_MEDIUM_BLOCK",
+      "name": "Medium Block",
+      "category": "BASIC",
+      "width": 2.0,
+      "height": 1.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "B02_MEDIUM_BLOCK.fbx",
+      "preview_filename": "Previews/B02_MEDIUM_BLOCK.png"
+    },
+    {
+      "id": "B03_LONG_BEAM",
+      "name": "Long Beam",
+      "category": "BASIC",
+      "width": 4.0,
+      "height": 1.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "B03_LONG_BEAM.fbx",
+      "preview_filename": "Previews/B03_LONG_BEAM.png"
+    },
+    {
+      "id": "B04_TALL_BLOCK",
+      "name": "Tall Block",
+      "category": "BASIC",
+      "width": 1.0,
+      "height": 3.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "B04_TALL_BLOCK.fbx",
+      "preview_filename": "Previews/B04_TALL_BLOCK.png"
+    },
+    {
+      "id": "B05_LARGE_BLOCK",
+      "name": "Large Block",
+      "category": "BASIC",
+      "width": 2.0,
+      "height": 2.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "B05_LARGE_BLOCK.fbx",
+      "preview_filename": "Previews/B05_LARGE_BLOCK.png"
+    },
+    {
+      "id": "S01_ROUND_COLUMN",
+      "name": "Round Column",
+      "category": "SUPPORT",
+      "width": 1.0,
+      "height": 3.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "S01_ROUND_COLUMN.fbx",
+      "preview_filename": "Previews/S01_ROUND_COLUMN.png"
+    },
+    {
+      "id": "S02_SHORT_COLUMN",
+      "name": "Short Column",
+      "category": "SUPPORT",
+      "width": 1.0,
+      "height": 2.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "S02_SHORT_COLUMN.fbx",
+      "preview_filename": "Previews/S02_SHORT_COLUMN.png"
+    },
+    {
+      "id": "S03_WIDE_FOOTING",
+      "name": "Wide Footing",
+      "category": "SUPPORT",
+      "width": 3.0,
+      "height": 0.5,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "S03_WIDE_FOOTING.fbx",
+      "preview_filename": "Previews/S03_WIDE_FOOTING.png"
+    },
+    {
+      "id": "S04_WEDGE",
+      "name": "Wedge",
+      "category": "SUPPORT",
+      "width": 2.0,
+      "height": 1.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "S04_WEDGE.fbx",
+      "preview_filename": "Previews/S04_WEDGE.png"
+    },
+    {
+      "id": "S05_ARCH",
+      "name": "Arch",
+      "category": "SUPPORT",
+      "width": 3.0,
+      "height": 2.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "S05_ARCH.fbx",
+      "preview_filename": "Previews/S05_ARCH.png"
+    },
+    {
+      "id": "A01_T_BLOCK",
+      "name": "T-Block",
+      "category": "ADVANCED",
+      "width": 3.0,
+      "height": 2.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "A01_T_BLOCK.fbx",
+      "preview_filename": "Previews/A01_T_BLOCK.png"
+    },
+    {
+      "id": "A02_L_BLOCK",
+      "name": "L-Block",
+      "category": "ADVANCED",
+      "width": 2.0,
+      "height": 2.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "A02_L_BLOCK.fbx",
+      "preview_filename": "Previews/A02_L_BLOCK.png"
+    },
+    {
+      "id": "A03_CROSS_BEAM",
+      "name": "Cross Beam",
+      "category": "ADVANCED",
+      "width": 3.0,
+      "height": 3.0,
+      "depth": 1.0,
+      "pivot": "geometric-center",
+      "unit": "SU",
+      "model_filename": "A03_CROSS_BEAM.fbx",
+      "preview_filename": "Previews/A03_CROSS_BEAM.png"
+    },
+    {
+      "id": "A04_ROLLER",
+      "name": "Roller",
+      "category": "ADVANCED",
+      "width": 2.0,
+      "height": 1.0,
+      "depth": 1.0,
+      "pivot": "geometric-center",
+      "unit": "SU",
+      "model_filename": "A04_ROLLER.fbx",
+      "preview_filename": "Previews/A04_ROLLER.png"
+    },
+    {
+      "id": "A05_MECHANICAL_STABILIZER",
+      "name": "Mechanical Stabilizer",
+      "category": "ADVANCED",
+      "width": 3.0,
+      "height": 2.0,
+      "depth": 1.0,
+      "pivot": "center-bottom",
+      "unit": "SU",
+      "model_filename": "A05_MECHANICAL_STABILIZER.fbx",
+      "preview_filename": "Previews/A05_MECHANICAL_STABILIZER.png"
+    }
+  ]
+}

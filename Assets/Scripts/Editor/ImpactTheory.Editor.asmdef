@@ -1,0 +1,23 @@
+{
+    "name": "ImpactTheory.Editor",
+    "rootNamespace": "ImpactTheory.Editor",
+    "references": [
+        "ImpactTheory.Core",
+        "ImpactTheory.Structure",
+        "ImpactTheory.Physics",
+        "ImpactTheory.Gameplay",
+        "ImpactTheory.Save",
+        "ImpactTheory.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

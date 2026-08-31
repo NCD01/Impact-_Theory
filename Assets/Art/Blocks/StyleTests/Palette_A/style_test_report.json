@@ -1,0 +1,121 @@
+{
+  "test_name": "Impact Theory V1 Palette A",
+  "status": "AWAITING_APPROVAL",
+  "scope": "Four-piece visual style test only; production FBX assets are unchanged.",
+  "material_language": "Semi-gloss premium molded construction toy with controlled category palettes.",
+  "palette": {
+    "cobalt_blue": "#0638D1",
+    "warm_orange": "#FF4206",
+    "signal_yellow": "#FFB806",
+    "navy": "#06132E",
+    "steel_blue": "#1F577D",
+    "dark_teal": "#005257",
+    "cream": "#EDE3C2",
+    "graphite": "#090B11",
+    "metal_gray": "#303845",
+    "electric_green": "#29FF45",
+    "fuchsia": "#FF0678"
+  },
+  "pieces": [
+    {
+      "id": "B02_MEDIUM_BLOCK",
+      "category": "BASIC",
+      "geometry_preserved": true,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 0.0,
+      "treatment": {
+        "body": "cobalt blue semi-gloss molded finish",
+        "detail": "warm-orange end caps with a narrow signal-yellow center band"
+      },
+      "preview": "B02_MEDIUM_BLOCK_STYLE_TEST_A.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "S04_WEDGE",
+      "category": "SUPPORT",
+      "geometry_preserved": true,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 0.0,
+      "treatment": {
+        "body": "navy and steel-blue technical molded finish",
+        "detail": "cream slope face with a dark-teal directional band"
+      },
+      "preview": "S04_WEDGE_STYLE_TEST_A.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "A04_ROLLER",
+      "category": "ADVANCED",
+      "geometry_preserved": true,
+      "dimensions_su": {
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0
+      },
+      "pivot": "geometric-center",
+      "pivot_error_su": 0.0,
+      "treatment": {
+        "body": "semi-metallic graphite molded finish",
+        "detail": "electric-green mobility band and high-readability fuchsia end caps"
+      },
+      "preview": "A04_ROLLER_STYLE_TEST_A.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "A05_MECHANICAL_STABILIZER",
+      "category": "ADVANCED",
+      "geometry_preserved": true,
+      "dimensions_su": {
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 1.0
+      },
+      "pivot": "center-bottom",
+      "pivot_error_su": 0.0,
+      "treatment": {
+        "body": "dark graphite semi-metallic structural frame",
+        "detail": "electric-green pistons, fuchsia bolt faces, cream support pads, and a narrow header signal band"
+      },
+      "preview": "A05_MECHANICAL_STABILIZER_STYLE_TEST_A.png",
+      "size_pixels": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0.0,
+        1.0
+      ]
+    }
+  ]
+}

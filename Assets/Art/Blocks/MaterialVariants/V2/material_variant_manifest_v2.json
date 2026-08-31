@@ -1,0 +1,728 @@
+{
+  "library": "Impact Theory V2 Materialized Showcase Variants",
+  "version": 2,
+  "base_geometry_count": 15,
+  "variant_count": 15,
+  "production_geometry_fbx_unchanged": true,
+  "variants": [
+    {
+      "geometry_id": "B01_SMALL_BLOCK",
+      "variant_id": "B01_SMALL_BLOCK_WOOD_V2",
+      "materials": [
+        "MAT_WOOD"
+      ],
+      "model_filename": "MaterialVariants/V2/B01_SMALL_BLOCK_WOOD_V2.fbx",
+      "geometry_source_filename": "B01_SMALL_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "B02_MEDIUM_BLOCK",
+      "variant_id": "B02_MEDIUM_BLOCK_WOOD_V2",
+      "materials": [
+        "MAT_WOOD"
+      ],
+      "model_filename": "MaterialVariants/V2/B02_MEDIUM_BLOCK_WOOD_V2.fbx",
+      "geometry_source_filename": "B02_MEDIUM_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "B03_LONG_BEAM",
+      "variant_id": "B03_LONG_BEAM_PAINTED_STEEL_V2",
+      "materials": [
+        "MAT_PAINTED_STEEL_ORANGE",
+        "MAT_STEEL"
+      ],
+      "model_filename": "MaterialVariants/V2/B03_LONG_BEAM_PAINTED_STEEL_V2.fbx",
+      "geometry_source_filename": "B03_LONG_BEAM.fbx"
+    },
+    {
+      "geometry_id": "B04_TALL_BLOCK",
+      "variant_id": "B04_TALL_BLOCK_BRICK_V2",
+      "materials": [
+        "MAT_BRICK"
+      ],
+      "model_filename": "MaterialVariants/V2/B04_TALL_BLOCK_BRICK_V2.fbx",
+      "geometry_source_filename": "B04_TALL_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "B05_LARGE_BLOCK",
+      "variant_id": "B05_LARGE_BLOCK_CONCRETE_V2",
+      "materials": [
+        "MAT_CONCRETE"
+      ],
+      "model_filename": "MaterialVariants/V2/B05_LARGE_BLOCK_CONCRETE_V2.fbx",
+      "geometry_source_filename": "B05_LARGE_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "S01_ROUND_COLUMN",
+      "variant_id": "S01_ROUND_COLUMN_STEEL_V2",
+      "materials": [
+        "MAT_STEEL",
+        "MAT_PAINTED_STEEL_COBALT"
+      ],
+      "model_filename": "MaterialVariants/V2/S01_ROUND_COLUMN_STEEL_V2.fbx",
+      "geometry_source_filename": "S01_ROUND_COLUMN.fbx"
+    },
+    {
+      "geometry_id": "S02_SHORT_COLUMN",
+      "variant_id": "S02_SHORT_COLUMN_CONCRETE_V2",
+      "materials": [
+        "MAT_CONCRETE"
+      ],
+      "model_filename": "MaterialVariants/V2/S02_SHORT_COLUMN_CONCRETE_V2.fbx",
+      "geometry_source_filename": "S02_SHORT_COLUMN.fbx"
+    },
+    {
+      "geometry_id": "S03_WIDE_FOOTING",
+      "variant_id": "S03_WIDE_FOOTING_STONE_V2",
+      "materials": [
+        "MAT_STONE"
+      ],
+      "model_filename": "MaterialVariants/V2/S03_WIDE_FOOTING_STONE_V2.fbx",
+      "geometry_source_filename": "S03_WIDE_FOOTING.fbx"
+    },
+    {
+      "geometry_id": "S04_WEDGE",
+      "variant_id": "S04_WEDGE_STONE_V2",
+      "materials": [
+        "MAT_STONE",
+        "MAT_STONE_CUT_FACE"
+      ],
+      "model_filename": "MaterialVariants/V2/S04_WEDGE_STONE_V2.fbx",
+      "geometry_source_filename": "S04_WEDGE.fbx"
+    },
+    {
+      "geometry_id": "S05_ARCH",
+      "variant_id": "S05_ARCH_BRICK_V2",
+      "materials": [
+        "MAT_BRICK"
+      ],
+      "model_filename": "MaterialVariants/V2/S05_ARCH_BRICK_V2.fbx",
+      "geometry_source_filename": "S05_ARCH.fbx"
+    },
+    {
+      "geometry_id": "A01_T_BLOCK",
+      "variant_id": "A01_T_BLOCK_PAINTED_STEEL_V2",
+      "materials": [
+        "MAT_PAINTED_STEEL_NAVY",
+        "MAT_PAINTED_STEEL_ORANGE"
+      ],
+      "model_filename": "MaterialVariants/V2/A01_T_BLOCK_PAINTED_STEEL_V2.fbx",
+      "geometry_source_filename": "A01_T_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "A02_L_BLOCK",
+      "variant_id": "A02_L_BLOCK_PAINTED_STEEL_V2",
+      "materials": [
+        "MAT_PAINTED_STEEL_COBALT",
+        "MAT_PAINTED_STEEL_SUPPORT_YELLOW"
+      ],
+      "model_filename": "MaterialVariants/V2/A02_L_BLOCK_PAINTED_STEEL_V2.fbx",
+      "geometry_source_filename": "A02_L_BLOCK.fbx"
+    },
+    {
+      "geometry_id": "A03_CROSS_BEAM",
+      "variant_id": "A03_CROSS_BEAM_STEEL_V2",
+      "materials": [
+        "MAT_STEEL",
+        "MAT_PAINTED_STEEL_ORANGE"
+      ],
+      "model_filename": "MaterialVariants/V2/A03_CROSS_BEAM_STEEL_V2.fbx",
+      "geometry_source_filename": "A03_CROSS_BEAM.fbx"
+    },
+    {
+      "geometry_id": "A04_ROLLER",
+      "variant_id": "A04_ROLLER_RUBBER_STEEL_V2",
+      "materials": [
+        "MAT_RUBBER",
+        "MAT_STEEL"
+      ],
+      "model_filename": "MaterialVariants/V2/A04_ROLLER_RUBBER_STEEL_V2.fbx",
+      "geometry_source_filename": "A04_ROLLER.fbx"
+    },
+    {
+      "geometry_id": "A05_MECHANICAL_STABILIZER",
+      "variant_id": "A05_MECHANICAL_STABILIZER_PAINTED_STEEL_V2",
+      "materials": [
+        "MAT_PAINTED_STEEL_NAVY",
+        "MAT_PAINTED_STEEL_COBALT",
+        "MAT_PAINTED_STEEL_ORANGE",
+        "MAT_STEEL",
+        "MAT_PAINTED_STEEL_SUPPORT_YELLOW"
+      ],
+      "model_filename": "MaterialVariants/V2/A05_MECHANICAL_STABILIZER_PAINTED_STEEL_V2.fbx",
+      "geometry_source_filename": "A05_MECHANICAL_STABILIZER.fbx"
+    }
+  ],
+  "preview_render_count": 40,
+  "preview_sets": [
+    {
+      "geometry_id": "B01_SMALL_BLOCK",
+      "primary_preview": "Previews/V2/B01_SMALL_BLOCK.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/B01_SMALL_BLOCK.png",
+          "view": "STANDARD_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "B02_MEDIUM_BLOCK",
+      "primary_preview": "Previews/V2/B02_MEDIUM_BLOCK.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/B02_MEDIUM_BLOCK.png",
+          "view": "STANDARD_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/B02_MEDIUM_BLOCK_UPRIGHT.png",
+          "view": "UPRIGHT",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/B02_MEDIUM_BLOCK_SIDEWAYS.png",
+          "view": "SIDEWAYS",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "B03_LONG_BEAM",
+      "primary_preview": "Previews/V2/B03_LONG_BEAM.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/B03_LONG_BEAM.png",
+          "view": "STANDARD_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/B03_LONG_BEAM_UPRIGHT.png",
+          "view": "UPRIGHT",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/B03_LONG_BEAM_END_VIEW.png",
+          "view": "END_VIEW",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "B04_TALL_BLOCK",
+      "primary_preview": "Previews/V2/B04_TALL_BLOCK.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/B04_TALL_BLOCK.png",
+          "view": "STANDING",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/B04_TALL_BLOCK_SIDEWAYS.png",
+          "view": "SIDEWAYS",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "B05_LARGE_BLOCK",
+      "primary_preview": "Previews/V2/B05_LARGE_BLOCK.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/B05_LARGE_BLOCK.png",
+          "view": "STANDARD_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/B05_LARGE_BLOCK_SIDE_VIEW.png",
+          "view": "SIDE_VIEW",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "S01_ROUND_COLUMN",
+      "primary_preview": "Previews/V2/S01_ROUND_COLUMN.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/S01_ROUND_COLUMN.png",
+          "view": "STANDING",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/S01_ROUND_COLUMN_HORIZONTAL.png",
+          "view": "HORIZONTAL",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "S02_SHORT_COLUMN",
+      "primary_preview": "Previews/V2/S02_SHORT_COLUMN.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/S02_SHORT_COLUMN.png",
+          "view": "STANDING",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/S02_SHORT_COLUMN_SIDEWAYS.png",
+          "view": "SIDEWAYS",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "S03_WIDE_FOOTING",
+      "primary_preview": "Previews/V2/S03_WIDE_FOOTING.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/S03_WIDE_FOOTING.png",
+          "view": "STANDARD_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/S03_WIDE_FOOTING_UPRIGHT.png",
+          "view": "UPRIGHT",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "S04_WEDGE",
+      "primary_preview": "Previews/V2/S04_WEDGE.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/S04_WEDGE.png",
+          "view": "SLOPE_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/S04_WEDGE_OPPOSITE_SIDE.png",
+          "view": "OPPOSITE_SIDE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/S04_WEDGE_SIDE_PROFILE.png",
+          "view": "SIDE_PROFILE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "S05_ARCH",
+      "primary_preview": "Previews/V2/S05_ARCH.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/S05_ARCH.png",
+          "view": "ARCHITECTURAL_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/S05_ARCH_FRONT.png",
+          "view": "FRONT",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/S05_ARCH_LAID_DOWN.png",
+          "view": "LAID_DOWN",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "A01_T_BLOCK",
+      "primary_preview": "Previews/V2/A01_T_BLOCK.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/A01_T_BLOCK.png",
+          "view": "STANDARD_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A01_T_BLOCK_ROTATED.png",
+          "view": "ROTATED",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A01_T_BLOCK_FRONT.png",
+          "view": "FRONT",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "A02_L_BLOCK",
+      "primary_preview": "Previews/V2/A02_L_BLOCK.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/A02_L_BLOCK.png",
+          "view": "STANDARD_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A02_L_BLOCK_ROTATED.png",
+          "view": "ROTATED",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A02_L_BLOCK_FRONT.png",
+          "view": "FRONT",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "A03_CROSS_BEAM",
+      "primary_preview": "Previews/V2/A03_CROSS_BEAM.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/A03_CROSS_BEAM.png",
+          "view": "STANDARD_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A03_CROSS_BEAM_ROTATED.png",
+          "view": "ROTATED",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A03_CROSS_BEAM_FRONT.png",
+          "view": "FRONT",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "A04_ROLLER",
+      "primary_preview": "Previews/V2/A04_ROLLER.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/A04_ROLLER.png",
+          "view": "HORIZONTAL_PERSPECTIVE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A04_ROLLER_END_VIEW.png",
+          "view": "END_VIEW",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A04_ROLLER_ALTERNATE_ANGLE.png",
+          "view": "ALTERNATE_ANGLE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "geometry_id": "A05_MECHANICAL_STABILIZER",
+      "primary_preview": "Previews/V2/A05_MECHANICAL_STABILIZER.png",
+      "previews": [
+        {
+          "filename": "Previews/V2/A05_MECHANICAL_STABILIZER.png",
+          "view": "STANDING",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A05_MECHANICAL_STABILIZER_LAID_DOWN.png",
+          "view": "LAID_DOWN",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A05_MECHANICAL_STABILIZER_FRONT.png",
+          "view": "FRONT",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A05_MECHANICAL_STABILIZER_SIDE.png",
+          "view": "SIDE",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "filename": "Previews/V2/Views/A05_MECHANICAL_STABILIZER_THREE_QUARTER.png",
+          "view": "THREE_QUARTER",
+          "size_pixels": [
+            512,
+            512
+          ],
+          "alpha_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    }
+  ]
+}
