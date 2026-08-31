@@ -5,6 +5,39 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.12.2+18 - 2026-08-31 - Documentation
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Phase 15, the closing report, plus two factual errors found in the README
+during final verification.
+
+**Changes:**
+- `HANDOFF.md`, the report. Bottom line, how to run it, the asset backup with its hash and
+  size, the body budget with its evidence and its caveat, all sixteen phases, every
+  decision taken alone with its rollback cost, block kit conformance, a fidelity ledger
+  against the reference clip, what is broken or missing ordered by consequence, every
+  unverified value with the question that settles it, open questions, and the next three
+  moves.
+- `README.md` corrected: the test counts were stale at 139 and 10, now 147 and 12, and
+  Rapier was described as MIT licensed when it is Apache 2.0. The asset manifest had it
+  right; the README did not.
+
+**The most important thing in the report:** the brief's central claim, that the V2
+materialized block library exists nowhere under version control and that two of the
+owner's commit messages are therefore false, is itself incorrect. `git ls-tree -r
+origin/main` in the neighbouring project returns all 18 files under `MaterialVariants`.
+What is actually wrong there is 162 uncommitted staged deletions in its working tree,
+which is a live hazard the owner may not know about and which no one should act on without
+checking whether the deletions were deliberate.
+
+**Validation Evidence:** Every figure in the report was re-read from its source at the time
+of writing, not carried forward from earlier in the session: the asset commit hash and its
+480 files and 16,838,375 bytes from `git ls-tree -r -l`; the presence of 15 V2 FBX files on
+the remote from `git ls-tree -r origin/main` after a fetch; `Games\IT` still at HEAD
+`93add81` with its 162 staged deletions and its non-underscore remote; eight gate
+screenshots present on disk. `npx eslint .` exits 0, `npx vitest run` reports 147 of 147,
+and `npx playwright test` reports 12 of 12 across both viewports.
+
 ## v1.12.1+17 - 2026-08-31 - Refactor
 
 **Author:** Claude Opus 5, unattended build session
