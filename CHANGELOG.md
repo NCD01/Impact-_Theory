@@ -5,6 +5,35 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.2.2+5 - 2026-08-30 - Structural
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** This build starts over in Three.js and keeps the art. The Unity project
+files needed to move out of the way of the new source tree without being deleted and
+without losing their history.
+
+**Changes:**
+- Moved into `_source/unity-checkpoint/Assets/` with `git mv`: `Scripts`, `Tests`,
+  `Scenes`, `WebGLTemplates`, `Resources`, `Generated`, `Materials`, `Physics`, and
+  every `.meta` and `.asmdef` file that was under `Assets`.
+- Left `Assets/Art`, `Assets/Audio`, `Assets/Data` and `Assets/Reference` in place as
+  this build's asset home.
+- Added `docs/ARCHIVE.md` recording what is in the checkpoint, where the same C# lives
+  under version control, and the exact commands to move it back.
+
+**Note:** `Generated`, `Materials` and `Physics` were not named in the brief. Each held
+nothing but a `.gitkeep` and each is a Unity folder convention with no meaning to a
+Three.js build, so they moved with the rest. `Resources` moved because Unity treats
+that folder name specially and its contents are two ShaderLab shaders and two PNGs
+belonging to a different project of the owner's.
+
+**Validation Evidence:** `git status --short` reports 337 entries beginning with `R`,
+so git recorded every one of them as a rename and history follows the files. Asset
+counts under `Assets` after the move: 30 FBX, 73 PNG, 5 blend, 2 blend1, 8 JSON, 1 CSV,
+3 Markdown. The PNG count fell from 75 to 73 because the two background images that
+belong to another project moved into the checkpoint. Checkpoint contents counted at 61
+C#, 257 meta, 9 asmdef, 1 Unity scene, 2 shaders. Nothing was deleted.
+
 ## v1.2.1+4 - 2026-08-30 - Structural
 
 **Author:** Claude Opus 5, unattended build session
