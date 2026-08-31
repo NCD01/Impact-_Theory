@@ -136,7 +136,6 @@ async function convertAll() {
     }
     // Sequential on purpose. GLTFExporter keeps internal per-parse state and the whole
     // run takes a couple of seconds, so there is nothing to gain from overlapping them.
-    // eslint-disable-next-line no-await-in-loop
     pieces.push(await convertPiece(piece, variant, exporter));
   }
 

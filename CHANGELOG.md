@@ -5,6 +5,45 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.5.0+8 - 2026-08-30 - Feature
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The game needs the block kit as data before it can place a single piece:
+dimensions, pivots, material families and collider shapes, all traceable to the
+authored manifest rather than restated from memory.
+
+**Changes:**
+- `src/core/constants.js`. Every tuning value in one file, each with its units, its
+  reason and where the number came from.
+- `src/core/projection.js`. The single screen to world helper standard 4 requires.
+  Pointer to normalised coordinates, pointer to world ray, pointer to ground point,
+  world to screen for the interface, and viewport metrics, all recalculated on resize.
+- `src/core/version.js`, holding the version string the running game reports.
+- `src/blocks/families.js`. The seven physics material families with density,
+  restitution, friction, hit points and score weight, plus each piece's default family
+  taken from the approved V2 art direction.
+- `src/blocks/colliders.js`. Collider shapes derived from manifest dimensions, never
+  from the mesh, with the pivot lift that reconciles center-bottom authoring against
+  Rapier's centred colliders.
+- `src/blocks/manifest.js`. Reads the authored manifest and joins each piece to its
+  family and collider.
+- `vite.config.js` and `eslint.config.js`.
+- `tests/unit/block-manifest.test.js`, 34 tests.
+
+**On the density values:** they are not the real densities of the named materials. Real
+steel is 7850 kg per cubic metre, which makes a 1 SU cube weigh nearly eight tonnes and
+immovable by any ball a child would believe in. The values keep the ordering and
+compress the range to roughly three to one. That is a deliberate game value and the
+reason is recorded in the file.
+
+**Validation Evidence:** `npx vitest run` reported 34 of 34 passing. The suite restates
+the manifest's dimension table independently and checks all fifteen pieces against it,
+checks both geometric-center pivots resolve to zero lift and the thirteen center-bottom
+pivots to half height, checks the arch collider encloses less volume than its bounding
+box so the opening survives, and checks every converted `.glb` exists on disk with the
+measured dimensions and pivots from the conversion report. `npx eslint .` exited 0 with
+no errors and no warnings.
+
 ## v1.4.0+7 - 2026-08-30 - Feature
 
 **Author:** Claude Opus 5, unattended build session

@@ -1,7 +1,7 @@
 {
   "name": "impact-theory",
   "private": true,
-  "version": "1.4.0+7",
+  "version": "1.5.0+8",
   "type": "module",
   "description": "A physics demolition game. Fire balls from a cannon at structures built from a fifteen piece block kit and bring them down.",
   "license": "MIT",
@@ -28,8 +28,10 @@
     "three": "^0.185.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.62.1",
     "eslint": "^10.9.1",
+    "globals": "^17.11.0",
     "vite": "^8.2.2",
     "vitest": "^4.1.11"
   }
