@@ -59,6 +59,13 @@ export function createEmptySave() {
      * now off and anyone who wants it can turn it on in settings.
      */
     shake: false,
+    /**
+     * Whether the device buzzes on an impact. On by default: a phone has a vibration
+     * motor and that is the honest channel for the feel of a heavy hit, where moving the
+     * camera takes the picture away at the worst moment. No effect on a device without
+     * one, such as any iPhone.
+     */
+    vibrate: true,
   };
 }
 
@@ -85,7 +92,7 @@ const MIGRATIONS = {
    * already had, which is the one being complained about. A migration is the honest way to
    * make a changed default actually reach the people it is for.
    */
-  2: (save) => ({ ...save, schema: 3, shake: false }),
+  2: (save) => ({ ...save, schema: 3, shake: false, vibrate: true }),
 
   1: (save) => {
     const levels = {};
@@ -168,6 +175,8 @@ function normalise(save) {
   clean.seenHint = save.seenHint === true;
   // Defaults to off, so only an explicit true turns it on.
   clean.shake = save.shake === true;
+  // Defaults to on, so only an explicit false turns it off.
+  clean.vibrate = save.vibrate !== false;
 
   if (typeof save.levels === 'object' && save.levels !== null) {
     for (const [key, value] of Object.entries(save.levels)) {
@@ -293,6 +302,12 @@ export function createSaveStore(storage = safeStorage()) {
     persist();
   }
 
+  /** Turns device vibration on or off. */
+  function setVibrate(on) {
+    state.vibrate = on === true;
+    persist();
+  }
+
   /** Records that the how to play hint has been shown, so it is not shown again. */
   function setSeenHint() {
     state.seenHint = true;
@@ -335,6 +350,7 @@ export function createSaveStore(storage = safeStorage()) {
     setDifficulty,
     setMuted,
     setShake,
+    setVibrate,
     setSeenHint,
     setEndlessBest,
     totalStars,

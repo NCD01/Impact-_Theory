@@ -5,6 +5,45 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.16.0+23 - 2026-08-31 - Feature
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The owner's observation, which is a better idea than what had been built:
+"you can shake a mobile device but not screen". A phone has a vibration motor, and that is
+the honest channel for the physical feedback of a heavy hit. Moving the camera to simulate
+the same thing takes the picture away at the moment the player most wants to see it, which
+is why it read as unpleasant through two rounds of tuning.
+
+**Changes:**
+- `src/game/haptics.js`. The device buzzes on impact, with the duration scaled by the same
+  energy that drives damage, sound and score. A square root curve, so a huge hit is
+  clearly bigger than a medium one without saturating at the cap for everything.
+- Rate limited to one pulse per 90 ms. A collapse produces dozens of qualifying impacts a
+  second, and running the motor for each merges into a single meaningless drone; one short
+  pulse per interval reads as a series of distinct knocks.
+- A double pulse on level clear. The motor is stopped on pause and on level teardown.
+- **Vibration** setting, on by default, stored in the save. On a device with no motor the
+  button reads "Vibration: not on this device" and is disabled, rather than offering a
+  switch that quietly does nothing.
+- Camera shake stays, still off by default, for anyone who wants it.
+- `tests/unit/haptics.test.js`, 13 tests.
+
+**Not available on iOS.** Safari does not implement the Vibration API at all, so on any
+iPhone this is a no-op and the game plays exactly as before. That is detected and reported
+rather than assumed.
+
+**Validation Evidence:** Verified in a real browser rather than only against the test stub,
+because a passing stub proves nothing about the wiring. Every real `navigator.vibrate` call
+the game made was recorded: eight shots produced ten buzzes with durations of 18 to 45 ms,
+correctly spread across the range and capped at the 45 ms maximum. The setting was then
+turned off through the actual settings screen, the button label changed to "Vibration:
+off", and six further shots produced **zero** calls to the motor.
+
+`npx vitest run` reports 199 of 199 passing, up from 186. `npx eslint .` exits 0. `npx
+playwright test` passes 6 of 6 on the phone viewport. One defect was found and fixed while
+writing the tests: Node exposes `globalThis.navigator` as a getter only property, so the
+stub had to use `Object.defineProperty` rather than assignment.
+
 ## v1.15.0+22 - 2026-08-31 - Fix
 
 **Author:** Claude Opus 5, unattended build session

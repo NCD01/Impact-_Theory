@@ -80,7 +80,12 @@ spend the body budget on rubble.
 
 What makes a hit read as heavy, all scaled by the same energy number:
 
-- a camera shake, **off by default**, with a switch in settings for players who want it
+- **the device vibrating**, scaled by the same energy, which is the feedback channel a
+  phone actually has. On by default, switchable, and a no-op on a device with no motor
+  such as any iPhone
+- a camera shake, **off by default**, with a switch in settings for players who want it.
+  Moving the picture takes the view away at the moment the player most wants to see it,
+  which is why the device buzzing replaced it
 - an impact sound voiced by the material family and scaled in loudness and pitch
 - dust and real debris
 - momentum carried through the stack, which is the physics engine's answer and not a

@@ -158,6 +158,37 @@ export const SHAKE = {
   MIN_ENERGY_J: 400,
 };
 
+/**
+ * Device vibration, which is the feedback channel a phone actually has.
+ *
+ * Camera shake moves the picture away from the player at the moment they most want to see
+ * it. A phone's vibration motor does the same job honestly, which is what the owner meant
+ * by "you can shake a mobile device but not screen". Shake is off by default; this is on.
+ *
+ * Not available on iOS Safari, where every call here is a no-op.
+ */
+export const HAPTICS = {
+  /**
+   * Impacts below this energy never buzz, so the constant small contacts of a settling
+   * structure stay silent in the hand. Higher than the damage floor on purpose: plenty of
+   * impacts are worth counting as damage without being worth feeling.
+   */
+  MIN_ENERGY_J: 1500,
+  /** The energy that earns a full length buzz. Above this it saturates. */
+  FULL_STRENGTH_ENERGY_J: 60000,
+  /** Duration range in milliseconds. Short: a knock, not a rumble. */
+  MIN_DURATION_MS: 12,
+  MAX_DURATION_MS: 45,
+  /**
+   * Shortest gap between buzzes, milliseconds. A collapse produces dozens of qualifying
+   * impacts a second and running the motor for each merges into one meaningless drone;
+   * one pulse per interval reads as a series of distinct knocks.
+   */
+  MIN_INTERVAL_MS: 90,
+  /** Pattern for a level clear: buzz, pause, buzz. */
+  CLEAR_PATTERN_MS: [40, 60, 90],
+};
+
 // ---------------------------------------------------------------------------
 // Cannon and firing
 // ---------------------------------------------------------------------------

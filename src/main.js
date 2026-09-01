@@ -36,6 +36,7 @@ import { loadShippedLevels, summariseLevel } from './game/level.js';
 import { generateEndlessLevel } from './game/endless.js';
 import { createSaveStore } from './save/save.js';
 import { createAudio } from './audio/audio.js';
+import { createHaptics } from './game/haptics.js';
 import { createUI } from './ui/ui.js';
 import { CAMERA, DIFFICULTY, PLAYFIELD } from './core/constants.js';
 import { buildStressStack } from './game/stress.js';
@@ -102,6 +103,8 @@ async function start() {
   if (save.loadNote) console.info(`[Impact Theory] ${save.loadNote}`);
   const audio = createAudio();
   audio.setMuted(save.state.muted);
+  const haptics = createHaptics();
+  haptics.setEnabled(save.state.vibrate);
 
   // ---- Game objects -------------------------------------------------------
   const dust = createDust(rig.levelRoot);
@@ -150,25 +153,31 @@ async function start() {
     onNext: () => next(),
     onDifficulty: (id) => {
       save.setDifficulty(id);
-      ui.syncSettings(save.state);
+      ui.syncSettings(save.state, haptics.available);
     },
     onToggleShake: () => {
       save.setShake(!save.state.shake);
-      ui.syncSettings(save.state);
+      ui.syncSettings(save.state, haptics.available);
+    },
+    onToggleVibrate: () => {
+      save.setVibrate(!save.state.vibrate);
+      haptics.setEnabled(save.state.vibrate);
+      ui.syncSettings(save.state, haptics.available);
     },
     onToggleMute: () => {
       save.setMuted(!save.state.muted);
       audio.setMuted(save.state.muted);
-      ui.syncSettings(save.state);
+      ui.syncSettings(save.state, haptics.available);
     },
     onResetProgress: () => {
       save.reset();
-      ui.syncSettings(save.state);
+      haptics.setEnabled(save.state.vibrate);
+      ui.syncSettings(save.state, haptics.available);
       refreshSelect();
     },
   });
   ui.setVersion(`v${VERSION}`);
-  ui.syncSettings(save.state);
+  ui.syncSettings(save.state, haptics.available);
 
   /**
    * Where to place a structure, so that it fits the frame.
@@ -228,6 +237,7 @@ async function start() {
   // ---- Screen transitions -------------------------------------------------
 
   function clearWorld() {
+    haptics.stop();
     structure.clear();
     balls.clear();
     pedestals?.clear();
@@ -318,6 +328,7 @@ async function start() {
 
   function pause() {
     if (screen !== 'playing') return;
+    haptics.stop();
     screen = 'paused';
     ui.show('pause');
     controls.setEnabled(false);
@@ -365,6 +376,7 @@ async function start() {
     }
     if (event.type === 'cleared') {
       audio.levelClear();
+      haptics.levelClear();
       const result = { ...event.result, cleared: true };
       lastResult = result;
       if (endlessRound === null) save.recordLevelResult(session.level.id, result);
@@ -461,6 +473,9 @@ async function start() {
         // in the game, a tower hitting the ground, was the quietest one on screen.
         // Both functions have their own energy floors, so grazes still stay silent.
         if (save.state.shake) rig.addShake(impact.energy);
+        // The device buzzes rather than the camera moving. A phone has a motor for this,
+        // and moving the picture takes the view away at the moment it matters most.
+        haptics.impact(impact.energy);
         const family = structure.familyOfImpact(impact);
         if (family) audio.impact(impact.energy, family);
         if (applied > 0) lastImpactEnergy = impact.energy;
@@ -522,6 +537,7 @@ async function start() {
       modelsFailed: load.failed,
       levelCount: levels.length,
       audioAvailable: audio.available,
+      hapticsAvailable: haptics.available,
       unlocked: save.state.unlocked,
       difficulty: save.state.difficulty,
       ready: true,

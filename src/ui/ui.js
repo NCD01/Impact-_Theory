@@ -63,6 +63,7 @@ export function createUI(root, projection, handlers = {}) {
     difficultyButtons: root.querySelectorAll('[data-difficulty]'),
     muteButton: el('mute-button'),
     shakeButton: el('shake-button'),
+    vibrateButton: el('vibrate-button'),
     debug: el('debug'),
     hint: el('hint'),
     version: el('version-label'),
@@ -94,6 +95,7 @@ export function createUI(root, projection, handlers = {}) {
   on('settings-reset', () => handlers.onResetProgress?.());
   on('mute-button', () => handlers.onToggleMute?.());
   on('shake-button', () => handlers.onToggleShake?.());
+  on('vibrate-button', () => handlers.onToggleVibrate?.());
 
   for (const button of nodes.difficultyButtons) {
     button.addEventListener('click', (e) => {
@@ -258,7 +260,7 @@ export function createUI(root, projection, handlers = {}) {
   }
 
   /** Reflects the stored difficulty and mute state in settings. */
-  function syncSettings({ difficulty, muted, shake }) {
+  function syncSettings({ difficulty, muted, shake, vibrate }, hapticsAvailable = true) {
     for (const button of nodes.difficultyButtons) {
       button.setAttribute('aria-pressed', String(button.dataset.difficulty === difficulty));
       button.classList.toggle('selected', button.dataset.difficulty === difficulty);
@@ -268,6 +270,15 @@ export function createUI(root, projection, handlers = {}) {
     const shakeOn = shake === true;
     nodes.shakeButton.textContent = shakeOn ? 'Screen shake: on' : 'Screen shake: off';
     nodes.shakeButton.setAttribute('aria-pressed', String(shakeOn));
+
+    // A device with no vibration motor, such as any iPhone, says so rather than offering
+    // a switch that quietly does nothing.
+    const vibrateOn = vibrate !== false;
+    nodes.vibrateButton.disabled = !hapticsAvailable;
+    nodes.vibrateButton.textContent = hapticsAvailable
+      ? (vibrateOn ? 'Vibration: on' : 'Vibration: off')
+      : 'Vibration: not on this device';
+    nodes.vibrateButton.setAttribute('aria-pressed', String(vibrateOn && hapticsAvailable));
   }
 
   /**
@@ -425,6 +436,7 @@ const TEMPLATE = `
     <p class="subtle small">Easy gives unlimited balls and no way to lose. Normal limits
       your balls to the level's par.</p>
     <button id="mute-button" type="button" aria-pressed="false">Sound: on</button>
+    <button id="vibrate-button" type="button" aria-pressed="true">Vibration: on</button>
     <button id="shake-button" type="button" aria-pressed="false">Screen shake: off</button>
     <button id="settings-reset" type="button">Erase progress</button>
     <button id="settings-back" class="primary" type="button">Back</button>

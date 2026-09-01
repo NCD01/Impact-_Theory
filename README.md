@@ -5,7 +5,7 @@ playfield fires balls at a structure built from a fifteen piece block kit standi
 supports. The structure is a real rigid body assembly, so it leans, buckles and falls the
 way its geometry says it should, and clearing it clears the level.
 
-Current version **1.15.0+22**. The version scheme is defined in
+Current version **1.16.0+23**. The version scheme is defined in
 [docs/VERSIONING.md](docs/VERSIONING.md), which is the only file that states it.
 
 ## Requirements
@@ -57,6 +57,15 @@ The aim is **absolute, not relative**: the barrel goes where your finger is, wit
 memory of where it was. It also compensates for the drop over the flight, so pointing at a
 block aims to land on that block rather than merely pointing the barrel at it.
 
+## Settings
+
+**Vibration** is on by default: the device buzzes on a heavy impact, scaled by its energy.
+It has no effect on a device without a vibration motor, which includes every iPhone, and
+the settings screen says so rather than offering a switch that does nothing.
+
+**Screen shake** is off by default. Moving the camera takes the picture away at the moment
+the player most wants to see it, so the device buzzing does that job instead.
+
 ## Difficulty
 
 Chosen in Settings, changeable at any time, and stored in the save. Difficulty changes
@@ -84,7 +93,7 @@ tuning values only; there is one code path through the game.
 ## Tests
 
     npm run lint       # ESLint over src, scripts and tests
-    npm test           # Vitest, 186 unit tests
+    npm test           # Vitest, 199 unit tests
     npm run verify     # lint and unit tests together
     npm run e2e        # Playwright, 12 browser tests across two viewports
 
