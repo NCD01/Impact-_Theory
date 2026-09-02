@@ -136,10 +136,13 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
       piece,
       family,
       damage: createDamageState(family.hitPoints * currentHitPointScale),
-      // Where the piece's centre of volume started. A piece counts as knocked down when
-      // it has fallen most of a unit from here, which is the only test that matches what
-      // a player sees; see PLAYFIELD.FALL_TO_COUNT_DOWN.
+      // Where and how the piece was placed. A piece counts as knocked down once it has
+      // moved or tilted appreciably from this, which is what "knocked down" means to the
+      // person watching. See isDown().
       startCentreY: position.y + piece.collider.pivotLift,
+      startX: position.x,
+      startY: position.y,
+      startZ: position.z,
       counted: false,
     };
     pieces.set(handle, entry);
@@ -459,6 +462,24 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
   }
 
   /**
+   * How far a piece has tilted from upright, in radians.
+   *
+   * Every piece is placed upright, with any authored rotation being about the vertical
+   * axis only, so the piece's own up vector starts as world up. Rotating it by the body
+   * and reading the y component gives the cosine of the tilt directly.
+   *
+   * @param {object} rec Physics body record.
+   * @returns {number} Radians from upright, 0 to pi.
+   */
+  function tiltFromUpright(rec) {
+    const r = rec.body.rotation();
+    bodyRotation.set(r.x, r.y, r.z, r.w);
+    centreOffset.set(0, 1, 0).applyQuaternion(bodyRotation);
+    // Clamped because floating point can push the dot product a hair outside [-1, 1].
+    return Math.acos(Math.min(1, Math.max(-1, centreOffset.y)));
+  }
+
+  /**
    * Whether every piece has been destroyed or brought down.
    *
    * This is the single place the clear rule lives. A piece counts as down when its
@@ -478,6 +499,17 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     const rec = physics.getRecord(entry.handle);
     if (!rec) return true;
     const t = rec.body.translation();
+
+    // Knocked over. A piece tilted well off upright has plainly been brought down, even if
+    // it landed back on the platform. A beam lying flat across the deck is not standing,
+    // and requiring it to roll off before the level ends is why a demolished structure
+    // could leave the game still playing.
+    if (tiltFromUpright(rec) > PLAYFIELD.TILT_TO_COUNT_DOWN) return true;
+
+    // Shoved out of place. Same reasoning: a piece pushed most of a unit from where it was
+    // built has been knocked down, wherever it came to rest.
+    const moved = Math.hypot(t.x - entry.startX, t.y - entry.startY, t.z - entry.startZ);
+    if (moved > PLAYFIELD.MOVED_TO_COUNT_DOWN) return true;
 
     // Off the top: it has dropped below the platform surface, so it is on the sand or in
     // the rubble rather than on the platform.

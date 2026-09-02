@@ -117,26 +117,32 @@ somewhere else, and why placing a roller in a structure is a decision.
 
 Stated once, in one function, in `src/game/structure.js`:
 
-> A level is cleared when nothing is left standing on the platform: every piece has been
-> destroyed, has dropped below the platform surface, has been pushed off its side, or has
-> been knocked more than 34 SU from the structure origin.
+> A level is cleared when nothing is left standing. A piece counts as standing only if it
+> is still upright, still where it was built, and still on the platform. Anything
+> destroyed, knocked over, shoved out of place, dropped off the platform or knocked out of
+> the playfield is down.
 
-**"Is it still on the platform", not "has it dropped".** That is the question a player is
-actually asking when they look at the screen, and it took three attempts to land on it:
+**"Is it still standing", not "where did it end up".** That took four attempts, and each
+failure was reasonable and wrong in a different direction:
 
 - *An absolute height near the sand.* A level only cleared once every piece had rolled all
   the way to the ground, which took a long wait on a wide wall.
 - *Relative to the platform, height only.* A piece knocked off but landing on rubble beside
-  the platform still sat above the line and counted as standing, so a structure lying flat
-  on the sand refused to end.
+  the platform still sat above the line, so a structure lying flat on the sand refused to
+  end.
 - *Fallen from its own start.* A piece that toppled from the top of the stack onto the deck
-  counted as down while sitting in plain view on the platform, so the results screen
-  appeared with blocks still up there.
+  counted as down while sitting in plain view on the platform.
+- *On the platform or not.* A beam lying flat across the deck still counted as standing,
+  so a fully demolished structure left the game playing.
 
-The height compared is the piece's **centre of volume, with the pivot offset rotated by the
-body**. Thirteen of the fifteen pieces have their origin on the base, so the centre is half
-a height above it in the piece's own frame. Adding that offset without rotating it made a
-toppled piece read as still upright.
+The test is now three things together: **tilt** more than 30 degrees from upright, or
+**movement** more than 0.7 SU from where it was built, or **off the platform**. An
+untouched piece satisfies none of them. A demolished one satisfies at least one, wherever
+it happens to have landed.
+
+The height comparison uses the piece's **centre of volume with the pivot offset rotated by
+the body**. Thirteen of the fifteen pieces have their origin on the base, so adding that
+offset without rotating it made a toppled piece read as still upright.
 
 Pedestals and their deck are not pieces and are not in this check. They are fixed scenery.
 

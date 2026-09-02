@@ -117,7 +117,12 @@ export const CAMERA = {
   PORTRAIT_ASPECT_THRESHOLD: 0.85,
 
   NEAR: 0.1,
-  FAR: 220,
+  /**
+   * Far clip plane, SU. Must comfortably exceed the sky dome's radius: at 220 against a
+   * 240 SU dome the top of the sky was clipped away and the clear colour showed through
+   * as a hard diagonal seam across the upper screen.
+   */
+  FAR: 420,
 };
 
 /**
@@ -292,6 +297,25 @@ export const PLAYFIELD = {
 
   /** Horizontal margin past the deck edge before a piece counts as pushed off it, SU. */
   BESIDE_PLATFORM_TO_COUNT_DOWN: 0.35,
+
+  /**
+   * How far a piece must move from where it was placed to count as knocked down, SU.
+   *
+   * The game is about knocking a structure down, and a piece that has been shoved most of
+   * a unit out of place has been knocked down whether or not it happens to have ended up
+   * back on the platform. Well above the few millimetres a structure settles by when the
+   * physics starts, which was measured at under 5 mm.
+   */
+  MOVED_TO_COUNT_DOWN: 0.7,
+
+  /**
+   * How far a piece must tilt from upright to count as knocked down, radians.
+   *
+   * 0.52 rad, thirty degrees. A beam lying flat across the deck has plainly been knocked
+   * over, and requiring it to also roll off the platform before the level would end is
+   * why the owner saw a demolished structure with the game still playing.
+   */
+  TILT_TO_COUNT_DOWN: 0.52,
   /** A piece further than this from the structure origin has been knocked clear, SU. */
   OUT_OF_PLAY_RADIUS: 34,
 
@@ -490,11 +514,16 @@ export const AUDIO = {
   /** Master gain applied over every sound, so one number turns the game down. */
   MASTER_GAIN: 0.75,
   /** Impact energy in joules that maps to full volume on an impact sound. */
-  IMPACT_FULL_VOLUME_ENERGY_J: 900,
+  /**
+   * Impact energy that maps to full volume. Raised to match the recalibrated physics: a
+   * square ball hit is worth 60,000 to 90,000 J now, so a 900 J ceiling meant every hit
+   * from a graze upward played at maximum and they all sounded identical.
+   */
+  IMPACT_FULL_VOLUME_ENERGY_J: 70000,
   /** Impacts below this energy make no sound, matching the damage floor. */
-  IMPACT_MIN_ENERGY_J: 8,
+  IMPACT_MIN_ENERGY_J: 120,
   /** Most impact sounds allowed to start in one frame, so a collapse does not clip. */
-  MAX_IMPACTS_PER_FRAME: 3,
+  MAX_IMPACTS_PER_FRAME: 4,
   /** Seconds before the same family's impact sound may retrigger. */
   IMPACT_RETRIGGER_S: 0.045,
   MUSIC_GAIN: 0.3,

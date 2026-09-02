@@ -162,13 +162,30 @@ export function createAudio() {
     out.gain.value = level;
     out.connect(master);
 
-    // Percussive noise burst, band passed at the family's resonance.
+    // The attack transient. A very short, very bright noise click at the front of the
+    // sound, which is what makes an impact read as a strike rather than a note fading in.
+    // Without it every material sounded like a soft thud at a different pitch.
+    const click = c.createBufferSource();
+    click.buffer = noiseBuffer;
+    const hp = c.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 1800 + t * 2200;
+    const clickGain = c.createGain();
+    clickGain.gain.setValueAtTime(0.55 * voice.noise + 0.25, now);
+    clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+    click.connect(hp).connect(clickGain).connect(out);
+    click.start(now);
+    click.stop(now + 0.05);
+
+    // Percussive noise burst, band passed at the family's resonance. This is the body of
+    // the material: gritty for brick and stone, tighter for wood, thin for steel.
     const noise = c.createBufferSource();
     noise.buffer = noiseBuffer;
     noise.loop = true;
     const band = c.createBiquadFilter();
     band.type = 'bandpass';
-    band.frequency.value = freq * 2.4;
+    band.frequency.setValueAtTime(freq * 2.8, now);
+    band.frequency.exponentialRampToValueAtTime(freq * 1.2, now + voice.decay);
     band.Q.value = 1.2;
     const noiseGain = c.createGain();
     noiseGain.gain.setValueAtTime(voice.noise, now);
@@ -176,6 +193,22 @@ export function createAudio() {
     noise.connect(band).connect(noiseGain).connect(out);
     noise.start(now);
     noise.stop(now + voice.decay + 0.05);
+
+    // A low thump under everything, scaled by energy. This is what separates a heavy hit
+    // from a light one on a small speaker, where the difference in loudness alone is easy
+    // to miss.
+    if (t > 0.15) {
+      const thump = c.createOscillator();
+      thump.type = 'sine';
+      thump.frequency.setValueAtTime(90 + t * 40, now);
+      thump.frequency.exponentialRampToValueAtTime(40, now + 0.14);
+      const thumpGain = c.createGain();
+      thumpGain.gain.setValueAtTime(Math.min(0.8, t * 1.1), now);
+      thumpGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+      thump.connect(thumpGain).connect(out);
+      thump.start(now);
+      thump.stop(now + 0.2);
+    }
 
     // Tuned body, which is what carries the material's identity.
     const osc = c.createOscillator();
@@ -196,37 +229,64 @@ export function createAudio() {
     return true;
   }
 
-  /** The cannon firing. A low thump with a bright transient on top. */
+  /**
+   * The cannon firing.
+   *
+   * Three layers, because a single oscillator reads as a blip rather than a shot: a
+   * pitched body that drops fast and gives the boom its weight, a filtered noise crack for
+   * the muzzle transient, and a short low sine thump underneath for the punch you feel.
+   * The whole thing is under 400 ms so it never overlaps the impact that follows it.
+   */
   function fire() {
     const c = ensure();
     if (!c || muted) return;
     const now = c.currentTime;
     const out = c.createGain();
-    out.gain.value = 0.5;
+    out.gain.value = 0.62;
     out.connect(master);
 
-    const osc = c.createOscillator();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(160, now);
-    osc.frequency.exponentialRampToValueAtTime(38, now + 0.22);
-    const g = c.createGain();
-    g.gain.setValueAtTime(1, now);
-    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
-    osc.connect(g).connect(out);
-    osc.start(now);
-    osc.stop(now + 0.3);
+    // Body: a fast downward sweep, which is what reads as a report rather than a note.
+    const body = c.createOscillator();
+    body.type = 'sawtooth';
+    body.frequency.setValueAtTime(220, now);
+    body.frequency.exponentialRampToValueAtTime(46, now + 0.13);
+    const bodyFilter = c.createBiquadFilter();
+    bodyFilter.type = 'lowpass';
+    bodyFilter.frequency.setValueAtTime(1800, now);
+    bodyFilter.frequency.exponentialRampToValueAtTime(180, now + 0.22);
+    const bodyGain = c.createGain();
+    bodyGain.gain.setValueAtTime(1, now);
+    bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+    body.connect(bodyFilter).connect(bodyGain).connect(out);
+    body.start(now);
+    body.stop(now + 0.32);
 
-    const noise = c.createBufferSource();
-    noise.buffer = noiseBuffer;
-    const hp = c.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = 900;
-    const ng = c.createGain();
-    ng.gain.setValueAtTime(0.5, now);
-    ng.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
-    noise.connect(hp).connect(ng).connect(out);
-    noise.start(now);
-    noise.stop(now + 0.12);
+    // Crack: the muzzle transient. Short, bright, and gone.
+    const crack = c.createBufferSource();
+    crack.buffer = noiseBuffer;
+    const bp = c.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.setValueAtTime(2600, now);
+    bp.frequency.exponentialRampToValueAtTime(700, now + 0.12);
+    bp.Q.value = 0.8;
+    const crackGain = c.createGain();
+    crackGain.gain.setValueAtTime(0.85, now);
+    crackGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+    crack.connect(bp).connect(crackGain).connect(out);
+    crack.start(now);
+    crack.stop(now + 0.16);
+
+    // Thump: the low end, felt more than heard on a phone speaker but it carries.
+    const thump = c.createOscillator();
+    thump.type = 'sine';
+    thump.frequency.setValueAtTime(120, now);
+    thump.frequency.exponentialRampToValueAtTime(38, now + 0.18);
+    const thumpGain = c.createGain();
+    thumpGain.gain.setValueAtTime(0.9, now);
+    thumpGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
+    thump.connect(thumpGain).connect(out);
+    thump.start(now);
+    thump.stop(now + 0.28);
   }
 
   /** A piece breaking apart. Sharper and grittier than an impact. */

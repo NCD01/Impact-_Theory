@@ -5,6 +5,56 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.17.0+25 - 2026-09-01 - Fix
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** Four reports from the owner: a demolished level that would not end, weak
+shooting and impact sounds, a request to match the reference clip more closely, and a check
+that boards are the same every time.
+
+**1. A demolished level still would not end.** A beam lying flat across the deck counted as
+standing, because the previous rule asked whether a piece was still *on* the platform. The
+rule now asks whether it is still *standing*: upright, where it was built, and on the
+platform. Tilt beyond 30 degrees, or movement beyond 0.7 SU, or being off the platform all
+count as down. This is the fourth version of this rule and all four failures are recorded
+in `docs/GAMEPLAY.md`, because each was reasonable and each was wrong differently.
+
+**2. Every impact sounded identical, and that was a real bug.** `IMPACT_FULL_VOLUME_ENERGY_J`
+was still 900 from before the physics recalibration, while a square hit is now worth 60,000
+to 90,000 J. Every impact from a graze upward saturated at full volume. Raised to 70,000, so
+loudness and pitch track the hit again.
+
+**3. Shooting and impact sounds rebuilt.** The cannon is now three layers: a pitched body
+that sweeps down for the report, a filtered noise crack for the muzzle transient, and a low
+sine thump for the punch. A single oscillator read as a blip. Impacts gained a short bright
+attack transient at the front, which is what makes a hit read as a strike rather than a
+note fading in, and a low thump above a threshold so a heavy hit is distinguishable from a
+light one on a phone speaker.
+
+**4. The beach backdrop, matching the reference clip.** `src/render/backdrop.js`: a band of
+sea with a foam line, eight palms with curved trunks and drooping fronds, a lifeguard hut on
+stilts, two lines of sagging bunting and five clouds. All primitives in code, no textures,
+no shadows, roughly 2000 triangles. This was the largest visible gap against the reference
+and was the phase skipped overnight.
+
+Two rendering defects were found and fixed while adding it. The sky dome had a radius of
+240 against a camera far plane of 220, so the top of the sky was clipped and the clear
+colour showed through as a hard diagonal seam. And the fog began at 34 SU, which would have
+swallowed the backdrop entirely.
+
+**5. Boards are already deterministic, verified rather than assumed.** Loading level 2
+three times and comparing every settled piece position gives an identical result each time.
+Levels are static JSON and endless mode is seeded by round number, so board 1 is always the
+same board.
+
+**Validation Evidence:** Levels 2, 4, 11 and 16 now clear in 13, 23, 24 and 23 shots with
+zero pieces standing; before this change level 16 did not clear at all within 60 shots
+despite the structure being demolished. Determinism was checked by loading level 2 three
+times and comparing the sorted list of settled piece positions, which matched exactly.
+`npm run verify` exits 0 with 199 of 199 unit tests, `node scripts/verify-level-support.mjs`
+reports nothing floating, and `npx playwright test` passes 6 of 6 on the phone viewport at
+60 fps with the backdrop in place.
+
 ## v1.16.1+24 - 2026-09-01 - Fix
 
 **Author:** Claude Opus 5, unattended build session

@@ -32,6 +32,7 @@ import {
 } from 'three';
 
 import { CAMERA, PLAYFIELD, SHAKE, WORLD } from '../core/constants.js';
+import { createBackdrop } from './backdrop.js';
 
 /** Palette. Original to this project; no colour is sampled from the reference clip. */
 const PALETTE = {
@@ -66,8 +67,10 @@ export function createSceneRig(canvas) {
 
   const scene = new Scene();
   scene.background = new Color(PALETTE.skyBottom);
-  // Fog hides the far edge of the ground plane without needing a bigger plane.
-  scene.fog = new Fog(PALETTE.fog, 34, 96);
+  // Fog hides the far edge of the ground plane without needing a bigger plane. It starts
+  // well past the playfield and ends past the backdrop, so the beach reads as distant
+  // rather than being swallowed by haze.
+  scene.fog = new Fog(PALETTE.fog, 70, 230);
 
   const camera = new PerspectiveCamera(
     CAMERA.FOV_PORTRAIT_DEG, 1, CAMERA.NEAR, CAMERA.FAR,
@@ -110,13 +113,19 @@ export function createSceneRig(canvas) {
   scene.add(ground);
 
   // ---- Sky dome -----------------------------------------------------------
-  // A large inverted sphere rather than a flat backdrop, so the horizon stays put in
-  // both portrait and landscape without re-authoring anything.
+  // A large inverted sphere rather than a flat backdrop, so the horizon stays put in both
+  // portrait and landscape without re-authoring anything. Its radius must stay inside
+  // CAMERA.FAR or the top of the dome is clipped and the clear colour shows through as a
+  // seam across the sky.
   const sky = new Mesh(
-    new SphereGeometry(150, 24, 16),
+    new SphereGeometry(300, 24, 16),
     new MeshBasicMaterial({ color: PALETTE.skyTop, side: BackSide, fog: false }),
   );
   scene.add(sky);
+
+  // The beach behind the playfield. Built once and never torn down, because nothing in it
+  // belongs to a level.
+  const backdrop = createBackdrop(scene);
 
   /** Everything a level owns hangs here, so tearing a level down is one removal. */
   const levelRoot = new Group();
@@ -230,6 +239,7 @@ export function createSceneRig(canvas) {
   }
 
   function dispose() {
+    backdrop.dispose();
     renderer.dispose();
   }
 
