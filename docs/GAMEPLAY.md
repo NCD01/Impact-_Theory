@@ -117,29 +117,33 @@ somewhere else, and why placing a roller in a structure is a decision.
 
 Stated once, in one function, in `src/game/structure.js`:
 
-> A level is cleared when every piece is either destroyed, or has fallen more than 0.9 SU
-> below **where that piece started**, or has been knocked more than 34 SU from the
-> structure origin.
+> A level is cleared when nothing is left standing on the platform: every piece has been
+> destroyed, has dropped below the platform surface, has been pushed off its side, or has
+> been knocked more than 34 SU from the structure origin.
 
-Per piece, against its own starting height. Two other rules were tried and both were
-wrong. An absolute height near the sand meant a level was only cleared once every piece had
-rolled all the way to the ground. A height relative to the platform meant a piece knocked
-off but landing on other rubble still counted as standing, and a structure lying completely
-flat refused to end.
+**"Is it still on the platform", not "has it dropped".** That is the question a player is
+actually asking when they look at the screen, and it took three attempts to land on it:
+
+- *An absolute height near the sand.* A level only cleared once every piece had rolled all
+  the way to the ground, which took a long wait on a wide wall.
+- *Relative to the platform, height only.* A piece knocked off but landing on rubble beside
+  the platform still sat above the line and counted as standing, so a structure lying flat
+  on the sand refused to end.
+- *Fallen from its own start.* A piece that toppled from the top of the stack onto the deck
+  counted as down while sitting in plain view on the platform, so the results screen
+  appeared with blocks still up there.
 
 The height compared is the piece's **centre of volume, with the pivot offset rotated by the
 body**. Thirteen of the fifteen pieces have their origin on the base, so the centre is half
 a height above it in the piece's own frame. Adding that offset without rotating it made a
-toppled piece read as still upright: a 3 SU column lying flat on the sand registered as
-having fallen 0.6 SU and never counted as down, which left one unclearable piece surviving
-120 shots.
+toppled piece read as still upright.
 
-Pedestals and their deck are not pieces and are not in this check. They are fixed scenery
-and they survive every collapse, exactly as in the reference clip where the plinths stand
-untouched in the rubble of the structure they were carrying.
+Pedestals and their deck are not pieces and are not in this check. They are fixed scenery.
 
 The clear is only declared once the condition holds **and** the world has been quiet for
-0.35 s. Without that, a structure mid collapse satisfies the condition for a single frame
+0.35 s, capped at 2.5 s in total. Firing is also refused once the platform is clear. Both
+exist for the same reason: a player firing into the rubble keeps the world moving, and
+without a ceiling the level would never end at all. Without that, a structure mid collapse satisfies the condition for a single frame
 and the results screen appears over a still moving pile. Balls are excluded from that
 quietness check: a ball rolling across the sand long after the tower fell is not a reason
 to withhold a result.

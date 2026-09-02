@@ -253,7 +253,7 @@ export function createUI(root, projection, handlers = {}) {
     nodes.resultsStars.innerHTML = result.cleared ? starGlyphs(result.stars) : starGlyphs(0);
     nodes.resultsScore.textContent = result.cleared ? String(result.score) : '';
     nodes.resultsDetail.textContent = result.cleared
-      ? `${result.destroyed} pieces down, ${result.ballsUsed} of ${result.par} balls used`
+      ? clearedSummary(result)
       : 'Nothing left to fire. Give it another go.';
     nodes.resultsNext.hidden = !(result.cleared && hasNext);
     show('results');
@@ -332,6 +332,27 @@ export function createUI(root, projection, handlers = {}) {
     setVersion,
     get screen() { return root.dataset.screen; },
   };
+}
+
+/**
+ * The one line summary under the score on a cleared level.
+ *
+ * `destroyed` counts pieces that were broken apart, which in this game is the uncommon
+ * outcome: most pieces are knocked off the platform intact. Reporting it as "pieces down"
+ * was simply wrong, and read as "1 pieces down" after a level where fourteen pieces had
+ * been cleared. Balls used against par is the number that means something, and it is
+ * phrased so that going over par does not read as nonsense.
+ *
+ * @param {{ballsUsed: number, par: number, destroyed: number}} result
+ * @returns {string}
+ */
+function clearedSummary(result) {
+  const balls = result.ballsUsed === 1 ? '1 ball' : `${result.ballsUsed} balls`;
+  const parPart = result.ballsUsed <= result.par
+    ? `par is ${result.par}`
+    : `${result.ballsUsed - result.par} over par`;
+  const broken = result.destroyed > 0 ? `, ${result.destroyed} smashed` : '';
+  return `Cleared in ${balls}, ${parPart}${broken}`;
 }
 
 /**

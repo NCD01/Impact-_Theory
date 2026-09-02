@@ -27,7 +27,7 @@ import { createSceneRig } from './render/scene.js';
 import { createDust } from './render/dust.js';
 import { loadAllPieceModels, getLoadFailures } from './blocks/loader.js';
 import { createStructure } from './game/structure.js';
-import { placePedestals, PEDESTAL_HEIGHT } from './game/pedestal.js';
+import { placePedestals, PLATFORM_TOP as PLATFORM_HEIGHT } from './game/pedestal.js';
 import { createBalls } from './game/balls.js';
 import { createCannon } from './game/cannon.js';
 import { createControls } from './input/controls.js';
@@ -282,10 +282,10 @@ async function start() {
     const shape = summariseLevel(level);
     // Structures stand on the pedestals, so the framing has to account for the plinth
     // height as well as the structure's own.
-    const origin = originForSize(shape.height + PEDESTAL_HEIGHT, shape.width);
+    const origin = originForSize(shape.height + PLATFORM_HEIGHT, shape.width);
     structure.setOrigin(origin);
     currentAimDepth = origin[2];
-    rig.frameLevel(shape.height + PEDESTAL_HEIGHT);
+    rig.frameLevel(shape.height + PLATFORM_HEIGHT);
 
     // Pedestals first: they are fixed scenery and everything else rests on them.
     pedestals = placePedestals({
@@ -293,6 +293,14 @@ async function start() {
       root: rig.levelRoot,
       xs: level.pedestals ?? [0],
       origin,
+    });
+
+    // A piece is standing while it is on the platform, and down once it is off it. Set
+    // before the first place(), because every piece is judged against this.
+    structure.setPlatform({
+      top: pedestals.top,
+      minX: pedestals.minX,
+      maxX: pedestals.maxX,
     });
     session = createSession({
       level,

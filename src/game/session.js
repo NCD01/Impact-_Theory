@@ -48,6 +48,8 @@ export function createSession({ level, difficultyId, structure, balls, onEvent }
   let ballsFired = 0;
   let settleTimer = 0;
   let failTimer = 0;
+  /** Seconds since the clear condition first held, whether or not the world is quiet. */
+  let clearedFor = 0;
   /** Pieces destroyed since the last collapse rumble, to trigger one per collapse. */
   let sinceRumble = 0;
   let rumbleCooldown = 0;
@@ -66,6 +68,10 @@ export function createSession({ level, difficultyId, structure, balls, onEvent }
    */
   function canFire() {
     if (state !== 'playing') return false;
+    // Once the platform is clear the level is decided, so further shots are refused. They
+    // would only churn the rubble and hold off the results screen, and they would cost
+    // the player balls against their star rating for a level they have already won.
+    if (structure.isCleared()) return false;
     if (allowance === null) return true;
     return ballsFired < allowance;
   }
@@ -116,10 +122,17 @@ export function createSession({ level, difficultyId, structure, balls, onEvent }
     const quiet = worldMotion < LEVEL.SETTLE_SPEED_EPSILON;
 
     if (structure.isCleared()) {
-      // The clear condition can hold for one frame mid collapse. Require it to hold
-      // while the world is also quiet before believing it.
+      // Nothing is left standing on the platform, so the level is over. The only thing
+      // left to decide is when to show the result.
+      clearedFor += dt;
+
+      // The clear condition can hold for a single frame mid collapse, so it has to hold
+      // while the world is also quiet before the results screen appears over a moving
+      // pile. But the wait is capped: a player who keeps firing into the rubble disturbs
+      // it constantly, and without a ceiling the level would never end at all. That was a
+      // real defect, with every piece off the platform and the game still playing.
       settleTimer = quiet ? settleTimer + dt : 0;
-      if (settleTimer >= LEVEL.SETTLE_TIME_S) {
+      if (settleTimer >= LEVEL.SETTLE_TIME_S || clearedFor >= LEVEL.MAX_SETTLE_WAIT_S) {
         state = 'cleared';
         const result = scoring.finish(ballsFired, allowance === null);
         onEvent({ type: 'cleared', result });
@@ -127,6 +140,7 @@ export function createSession({ level, difficultyId, structure, balls, onEvent }
       return;
     }
     settleTimer = 0;
+    clearedFor = 0;
 
     // Failure only exists on a difficulty that allows it, and only once every ball has
     // been spent and the world has stopped, because the last ball may still bring the

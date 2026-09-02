@@ -60,6 +60,13 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
   let destroyedCount = 0;
   let targetCount = 0;
 
+  /**
+   * The platform this level's structure stands on, in world space: the height of its
+   * surface and the horizontal span of its deck. Set once per level before any piece is
+   * placed. A piece is judged against this, not against where it personally started.
+   */
+  let platform = { top: 0, minX: -Infinity, maxX: Infinity };
+
   /** Reused by the centre of volume calculation, so the per frame check allocates none. */
   const centreOffset = new Vector3();
   const bodyRotation = new Quaternion();
@@ -152,6 +159,18 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
    */
   function setOrigin(next) {
     origin = [...next];
+  }
+
+  /**
+   * Sets the platform the structure stands on, in world coordinates.
+   *
+   * Everything resting on it counts as standing. Anything that falls below its surface, or
+   * is pushed off its side, counts as down. Must be called before the first `place()`.
+   *
+   * @param {{top: number, minX: number, maxX: number}} next
+   */
+  function setPlatform(next) {
+    platform = { ...next };
   }
 
   /** Difficulty's hit point multiplier. Set before a level is built. */
@@ -459,9 +478,18 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     const rec = physics.getRecord(entry.handle);
     if (!rec) return true;
     const t = rec.body.translation();
-    if (entry.startCentreY - worldCentreY(entry, rec) > PLAYFIELD.FALL_TO_COUNT_DOWN) {
+
+    // Off the top: it has dropped below the platform surface, so it is on the sand or in
+    // the rubble rather than on the platform.
+    if (worldCentreY(entry, rec) < platform.top - PLAYFIELD.BELOW_PLATFORM_TO_COUNT_DOWN) {
       return true;
     }
+    // Off the side: it is still high up but no longer over the deck, so it is balanced on
+    // rubble beside the platform rather than standing on it.
+    const margin = PLAYFIELD.BESIDE_PLATFORM_TO_COUNT_DOWN;
+    if (t.x < platform.minX - margin || t.x > platform.maxX + margin) return true;
+
+    // Knocked clean out of the playfield.
     const dx = t.x - origin[0];
     const dz = t.z - origin[2];
     return Math.hypot(dx, dz) > PLAYFIELD.OUT_OF_PLAY_RADIUS;
@@ -515,6 +543,7 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
   return {
     place,
     setOrigin,
+    setPlatform,
     /** Whether one piece counts as knocked down. Exposed for the browser diagnostics. */
     isPieceDown: isDown,
     setDifficultyTuning,

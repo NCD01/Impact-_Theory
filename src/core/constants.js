@@ -268,23 +268,30 @@ export const PLAYFIELD = {
   /** Ground plane height, SU. Everything rests on this. */
   GROUND_Y: 0,
   /**
-   * How far a piece's centre must drop from where it started to count as knocked down, SU.
+   * How far below the platform surface a piece's centre must sit to count as off it, SU.
    *
-   * Measured against the piece's **own starting height**, not against an absolute height
-   * and not against the platform. Both of those were tried and both were wrong:
+   * The clear rule is "is it still on the platform", not "has it dropped". That is the
+   * question a player is actually asking when they look at the screen, and it took three
+   * attempts to land on it:
    *
-   *   Absolute, near the sand: a level was only cleared once every piece had rolled all
-   *   the way down to the ground, which took a long wait on a wide wall.
+   *   Absolute height near the sand: a level only cleared once every piece had rolled all
+   *   the way to the ground, which took a long wait on a wide wall.
    *
-   *   Relative to the platform: a piece knocked off but landing on top of other rubble
-   *   still sat above the line and counted as standing. The owner sent a screenshot of a
-   *   structure lying completely flat on the sand with the level refusing to end.
+   *   Relative to the platform, height only: a piece knocked off but landing on rubble
+   *   beside the platform still sat above the line and counted as standing, so a
+   *   structure lying flat on the sand refused to end.
    *
-   * Per piece, from where it began, is the rule that matches what a player sees. Anything
-   * that has come down by most of a unit has visibly come down. A piece that merely rocks
-   * or slides on the spot has not.
+   *   Fallen from its own start: a piece that toppled from the top of the stack onto the
+   *   deck counted as down while sitting in plain view on the platform. The owner saw the
+   *   results screen appear with blocks still on the platform.
+   *
+   * So a piece is off the platform when it is below this line **or** outside the deck
+   * horizontally. Both together answer the question the player is asking.
    */
-  FALL_TO_COUNT_DOWN: 0.9,
+  BELOW_PLATFORM_TO_COUNT_DOWN: 0.25,
+
+  /** Horizontal margin past the deck edge before a piece counts as pushed off it, SU. */
+  BESIDE_PLATFORM_TO_COUNT_DOWN: 0.35,
   /** A piece further than this from the structure origin has been knocked clear, SU. */
   OUT_OF_PLAY_RADIUS: 34,
 
@@ -521,6 +528,16 @@ export const LEVEL = {
    * but a third of a second is enough to tell a settled pile from a falling one.
    */
   SETTLE_TIME_S: 0.35,
+  /**
+   * Longest the game will wait for a quiet world after the platform is already clear.
+   *
+   * A ceiling on the settle wait, not a replacement for it. Without one, a player firing
+   * into the rubble keeps the world moving and the level never ends: every piece is off
+   * the platform and the game is still playing. Firing is refused once the platform is
+   * clear, and this catches the remaining case of debris that simply takes a while to
+   * stop rolling.
+   */
+  MAX_SETTLE_WAIT_S: 2.5,
   /**
    * Total speed below which the world counts as settled, summed over live pieces and
    * fragments. Raised from 0.55 so that a pile still creeping a few millimetres a second

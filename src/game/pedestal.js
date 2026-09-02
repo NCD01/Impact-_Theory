@@ -151,8 +151,11 @@ function buildPedestalMesh(materials) {
  * Places a level's pedestals.
  *
  * Assumes `xs` are positions in SU relative to the structure origin, and that `origin` is
- * that origin in world space. Creates a fixed body and a mesh for each. Returns a handle
- * with the height structures should start at and a `clear()` for level teardown.
+ * that origin in world space. Creates a fixed body and a mesh for each, plus the deck.
+ *
+ * Returns the platform's world space extent: the height of its surface and the horizontal
+ * span of its deck. The game judges what is still standing against exactly those numbers,
+ * so they are reported from here rather than recomputed by the caller.
  *
  * The colliders are cylinders matching the cap radius rather than the narrow shaft, so a
  * piece resting on the cap is carried by the whole cap and does not slide off the waist.
@@ -255,5 +258,14 @@ export function placePedestals({ physics, root, xs, origin }) {
     for (const m of Object.values(materials)) m.dispose();
   }
 
-  return { top: PLATFORM_TOP, count: xs.length, width: deckWidth, clear };
+  return {
+    /** Height of the deck surface, in world space. Structures stand here. */
+    top: origin[1] + PLATFORM_TOP,
+    /** World x extent of the deck, so the game can tell what is still on the platform. */
+    minX: origin[0] + deckCentreX - deckWidth / 2,
+    maxX: origin[0] + deckCentreX + deckWidth / 2,
+    width: deckWidth,
+    count: xs.length,
+    clear,
+  };
 }

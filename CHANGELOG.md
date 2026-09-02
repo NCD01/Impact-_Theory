@@ -5,6 +5,44 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.16.1+24 - 2026-09-01 - Fix
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The owner sent a screenshot of the results screen saying "Level clear" with
+blocks plainly still standing on the platform.
+
+**1. The clear rule asked the wrong question.** It asked "has this piece dropped from where
+it started", so a piece that toppled from the top of the stack **onto the deck** counted as
+down while sitting in plain view on the platform. The question a player is actually asking
+is "is it still on the platform", and that is now what is asked: a piece is down when it is
+below the platform surface, or pushed off its side, or destroyed, or out of the playfield.
+
+That is the third attempt at this rule and all three failures are recorded in
+`docs/GAMEPLAY.md`, because each one was reasonable and each one was wrong in a different
+direction.
+
+**2. A cleared level could refuse to end.** Every piece off the platform, and the game
+still playing. The results screen waits for the world to be quiet, and a player firing into
+the rubble keeps it moving indefinitely. Two fixes: firing is refused once the platform is
+clear, since the level is already decided and further shots would only cost the player
+balls against their stars; and the settle wait is capped at 2.5 seconds.
+
+**3. The results line was wrong and ungrammatical.** It read "1 pieces down, 24 of 13 balls
+used" after a level where fourteen pieces had been cleared. It was reporting pieces
+*smashed*, which in this game is the uncommon outcome, and it read as nonsense when the
+player went over par. It now reads "Cleared in 21 balls, 8 over par, 2 smashed".
+
+**Validation Evidence:** Screenshotted at the exact frame each level declares itself done,
+and the piece list read live at that moment. Before: level 11 reported "1 pieces down, 24
+of 13 balls used". After: "Cleared in 21 balls, 8 over par, 2 smashed" with an empty
+platform behind it. Levels 4, 7 and 11 clear in 23, 13 and 29 shots with zero pieces left
+standing; before the settle fix they did not clear at all within 60 shots despite every
+piece being off the platform.
+
+A browser assertion was added so this cannot come back: when the game reports a level
+cleared, `standing` must be exactly 0. `npx vitest run` reports 199 of 199, `npx eslint .`
+exits 0, and `npx playwright test` passes 6 of 6 on the phone viewport.
+
 ## v1.16.0+23 - 2026-08-31 - Feature
 
 **Author:** Claude Opus 5, unattended build session
