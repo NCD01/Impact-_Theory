@@ -567,6 +567,7 @@ async function start() {
 
     // Live piece positions, for the browser tests only. Used to measure whether a hit
     // actually moves anything, which is a question screenshots cannot answer.
+    globalThis.__IT_PLATFORM__ = structure.platform;
     globalThis.__IT_PIECES__ = [...structure._pieces.values()].map((e) => {
       const rec = physics.getRecord(e.handle);
       const t = rec ? rec.body.translation() : { x: 0, y: 0, z: 0 };
@@ -577,6 +578,7 @@ async function start() {
         y: t.y,
         z: t.z,
         startCentreY: e.startCentreY,
+        state: structure.pieceState(e),
         down: structure.isPieceDown(e),
       };
     });

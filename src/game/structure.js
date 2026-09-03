@@ -33,6 +33,7 @@ import { createDamageState, applyImpact } from '../physics/damage.js';
 import { createPieceMesh } from '../blocks/loader.js';
 import { getFamily } from '../blocks/families.js';
 import { getPiece } from '../blocks/manifest.js';
+import { isKnockedDown } from './clear-rule.js';
 
 /**
  * Creates the structure manager for one play session.
@@ -495,36 +496,29 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     return true;
   }
 
+  /**
+   * Whether a piece has been knocked down.
+   *
+   * Reads the body's state and hands the four numbers that matter to the clear rule, which
+   * lives in src/game/clear-rule.js as pure arithmetic so it can be unit tested. That
+   * separation exists because this rule was wrong five times and every one of them reached
+   * the owner rather than a test.
+   *
+   * @param {PieceEntry} entry
+   * @returns {boolean}
+   */
   function isDown(entry) {
     const rec = physics.getRecord(entry.handle);
+    // No body means the piece was destroyed, which is as down as it gets.
     if (!rec) return true;
+
     const t = rec.body.translation();
-
-    // Knocked over. A piece tilted well off upright has plainly been brought down, even if
-    // it landed back on the platform. A beam lying flat across the deck is not standing,
-    // and requiring it to roll off before the level ends is why a demolished structure
-    // could leave the game still playing.
-    if (tiltFromUpright(rec) > PLAYFIELD.TILT_TO_COUNT_DOWN) return true;
-
-    // Shoved out of place. Same reasoning: a piece pushed most of a unit from where it was
-    // built has been knocked down, wherever it came to rest.
-    const moved = Math.hypot(t.x - entry.startX, t.y - entry.startY, t.z - entry.startZ);
-    if (moved > PLAYFIELD.MOVED_TO_COUNT_DOWN) return true;
-
-    // Off the top: it has dropped below the platform surface, so it is on the sand or in
-    // the rubble rather than on the platform.
-    if (worldCentreY(entry, rec) < platform.top - PLAYFIELD.BELOW_PLATFORM_TO_COUNT_DOWN) {
-      return true;
-    }
-    // Off the side: it is still high up but no longer over the deck, so it is balanced on
-    // rubble beside the platform rather than standing on it.
-    const margin = PLAYFIELD.BESIDE_PLATFORM_TO_COUNT_DOWN;
-    if (t.x < platform.minX - margin || t.x > platform.maxX + margin) return true;
-
-    // Knocked clean out of the playfield.
-    const dx = t.x - origin[0];
-    const dz = t.z - origin[2];
-    return Math.hypot(dx, dz) > PLAYFIELD.OUT_OF_PLAY_RADIUS;
+    return isKnockedDown({
+      tiltRadians: tiltFromUpright(rec),
+      centreY: worldCentreY(entry, rec),
+      x: t.x,
+      distanceFromOrigin: Math.hypot(t.x - origin[0], t.z - origin[2]),
+    }, platform);
   }
 
   /** How many pieces are still standing. Drives the progress readout. */
@@ -576,6 +570,21 @@ export function createStructure({ physics, root, dust, onDestroyed }) {
     place,
     setOrigin,
     setPlatform,
+    /** The platform in world space. Exposed for the browser diagnostics. */
+    get platform() { return platform; },
+    /** The clause inputs for one piece. Exposed for the browser diagnostics. */
+    pieceState(entry) {
+      const rec = physics.getRecord(entry.handle);
+      if (!rec) return null;
+      const t = rec.body.translation();
+      return {
+        tiltRadians: tiltFromUpright(rec),
+        centreY: worldCentreY(entry, rec),
+        x: t.x,
+        y: t.y,
+        distanceFromOrigin: Math.hypot(t.x - origin[0], t.z - origin[2]),
+      };
+    },
     /** Whether one piece counts as knocked down. Exposed for the browser diagnostics. */
     isPieceDown: isDown,
     setDifficultyTuning,

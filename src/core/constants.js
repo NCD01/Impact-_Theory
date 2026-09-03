@@ -298,15 +298,6 @@ export const PLAYFIELD = {
   /** Horizontal margin past the deck edge before a piece counts as pushed off it, SU. */
   BESIDE_PLATFORM_TO_COUNT_DOWN: 0.35,
 
-  /**
-   * How far a piece must move from where it was placed to count as knocked down, SU.
-   *
-   * The game is about knocking a structure down, and a piece that has been shoved most of
-   * a unit out of place has been knocked down whether or not it happens to have ended up
-   * back on the platform. Well above the few millimetres a structure settles by when the
-   * physics starts, which was measured at under 5 mm.
-   */
-  MOVED_TO_COUNT_DOWN: 0.7,
 
   /**
    * How far a piece must tilt from upright to count as knocked down, radians.

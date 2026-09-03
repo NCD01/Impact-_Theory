@@ -5,7 +5,7 @@ playfield fires balls at a structure built from a fifteen piece block kit standi
 supports. The structure is a real rigid body assembly, so it leans, buckles and falls the
 way its geometry says it should, and clearing it clears the level.
 
-Current version **1.17.1+26**. The version scheme is defined in
+Current version **1.18.0+27**. The version scheme is defined in
 [docs/VERSIONING.md](docs/VERSIONING.md), which is the only file that states it.
 
 ## Requirements
@@ -103,7 +103,7 @@ tuning values only; there is one code path through the game.
 ## Tests
 
     npm run lint       # ESLint over src, scripts and tests
-    npm test           # Vitest, 199 unit tests
+    npm test           # Vitest, 218 unit tests
     npm run verify     # lint and unit tests together
     npm run e2e        # Playwright, 12 browser tests across two viewports
 

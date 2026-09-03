@@ -5,6 +5,51 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.18.0+27 - 2026-09-02 - Fix
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** The owner reported a level clearing with a tower still standing on the platform,
+for the fourth time, and the browser opening before the dev server was ready.
+
+**1. The clear rule, moved out of the physics layer and unit tested.**
+
+The rule has now been wrong five times and **every one reached the owner rather than a
+test**, because it lived inside a module that needs a physics world and a renderer to run.
+It could only be checked by playing. That was the actual defect; the individual wrong
+answers were symptoms of it.
+
+It is now `src/game/clear-rule.js`, a pure function of four numbers, with
+`tests/unit/clear-rule.test.js` carrying one test per historical failure, each named for
+what the owner saw on screen. Nineteen new tests.
+
+**The fifth wrong answer, which is the one reported.** Level 3 is two tall blocks stacked
+on a plinth. Smash the lower one and the upper falls three units straight down, landing
+upright on the deck. The rule included "has it moved more than 0.7 SU", so that counted as
+knocked down, and one ball cleared a level with a tower plainly still standing.
+
+That clause is gone. **A piece is standing if it is upright and on the platform.** How far
+it travelled to get there is not part of the question, because it is not part of what a
+player sees.
+
+**2. `play.bat` opened the browser before the server was up**, which showed a connection
+error. It counted six seconds; it now polls the server and opens the browser the moment it
+answers, for up to two minutes. A cold start is far slower than a warm one, so no fixed
+delay is right for both.
+
+**Validation Evidence:** The rule is covered by 19 unit tests including all five historical
+failures. Beyond that, the wiring was checked in a browser, because a passing unit test of
+an unwired function proves nothing: eight level clears across levels 2, 3, 5, 9, 11 and 16
+were each inspected for anything still upright on the platform, using looser thresholds
+than the rule's own so the check is not merely the rule restated. Zero of the eight left
+anything standing. A live probe of level 3 confirmed the numbers reaching the rule are
+real: after one shot the surviving block reads tilt 1.571 radians at centre height 0.50,
+which is flat on the sand and correctly down.
+
+`npm run verify` exits 0 with 218 of 218 unit tests, up from 199. `npx playwright test`
+passes 6 of 6 on the phone viewport. The PowerShell readiness poll `play.bat` now uses was
+run directly and returned on its first attempt against the live server; the batch file
+itself has still not been double-clicked from a desktop, because this session has none.
+
 ## v1.17.1+26 - 2026-09-02 - Fix
 
 **Author:** Claude Opus 5, unattended build session
