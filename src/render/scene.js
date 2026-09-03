@@ -22,7 +22,7 @@ import {
   Mesh,
   MeshBasicMaterial,
   MeshStandardMaterial,
-  PCFSoftShadowMap,
+  PCFShadowMap,
   PerspectiveCamera,
   PlaneGeometry,
   Scene,
@@ -61,7 +61,10 @@ export function createSceneRig(canvas) {
   });
   renderer.setClearColor(PALETTE.skyBottom, 1);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  // PCFShadowMap rather than PCFSoftShadowMap: the soft variant is deprecated as of
+  // three r185 and silently falls back to this one anyway, logging a warning on every
+  // single page load. Naming it directly gets the same shadows without the noise.
+  renderer.shadowMap.type = PCFShadowMap;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
 

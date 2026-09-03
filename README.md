@@ -5,7 +5,7 @@ playfield fires balls at a structure built from a fifteen piece block kit standi
 supports. The structure is a real rigid body assembly, so it leans, buckles and falls the
 way its geometry says it should, and clearing it clears the level.
 
-Current version **1.17.0+25**. The version scheme is defined in
+Current version **1.17.1+26**. The version scheme is defined in
 [docs/VERSIONING.md](docs/VERSIONING.md), which is the only file that states it.
 
 ## Requirements
@@ -18,12 +18,22 @@ Nothing else. There is no game engine, no framework and no build step beyond Vit
 
 ## Install and run
 
-Every command below was run on this machine before it was written here.
+**The quickest way on Windows: double-click `play.bat` in the project folder.** It installs
+dependencies if they are missing, starts the server and opens the browser. Leave its window
+open while you play.
+
+Otherwise, and on any other platform. Every command below was run on this machine before it
+was written here.
 
     npm install
     npm run dev
 
-Then open the address the dev server prints, by default `http://localhost:5173/`.
+Then open the address the dev server prints, by default `http://localhost:5173/`. Leave the
+terminal open; closing it stops the game.
+
+**To play on a phone**, use the `Network:` address the server prints, with the phone on the
+same wifi. Windows Firewall may ask permission the first time. That is also the only way to
+feel the vibration, since a laptop has no vibration motor.
 
 To build and check the production bundle:
 

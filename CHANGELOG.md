@@ -5,6 +5,38 @@ Newest entry first. The version scheme is defined in `docs/VERSIONING.md`.
 Every entry carries a Validation Evidence line stating what was actually run or
 looked at. A claim with no evidence line behind it is not a claim this project makes.
 
+## v1.17.1+26 - 2026-09-02 - Fix
+
+**Author:** Claude Opus 5, unattended build session
+**Reason:** A deprecation warning on every page load, and the owner having to ask twice how
+to start the game.
+
+**Changes:**
+- `renderer.shadowMap.type` moved from `PCFSoftShadowMap` to `PCFShadowMap`. The soft
+  variant is deprecated as of three r185 and silently falls back to this one anyway, so the
+  only thing it produced was a console warning on every single load. Naming the real type
+  gives identical shadows without the noise.
+- `play.bat`. Double-click to play: it installs dependencies if they are missing, starts the
+  dev server, and opens the browser. Delete it freely if it is not wanted; nothing depends
+  on it.
+- README start instructions rewritten to lead with the double-click, and to explain the
+  `Network:` address for playing on a phone, which is also the only way to feel the
+  vibration since a laptop has no motor.
+
+**A note on the warning, and on the browser suite.** It had been logging since the project
+started and the suite never caught it, because those tests assert there are no console
+**errors** and this was a warning. That is a real gap in the gate rather than an oversight
+in this one case, and it is recorded here rather than quietly fixed: the suite should
+probably fail on unexpected warnings too, which is a change worth making deliberately
+rather than at the end of a long session.
+
+**Validation Evidence:** `npx eslint .` exits 0 and `npm run verify` reports 199 of 199 unit
+tests passing. The warning was read from the running dev server's own log, where it appeared
+once per page load, and `PCFShadowMap` is the replacement three itself names in the
+deprecation message. `play.bat` has not been double-clicked from a desktop session, because
+this session has no desktop; its two commands, `npm install` and `npm run dev`, have both
+been run here many times.
+
 ## v1.17.0+25 - 2026-09-01 - Fix
 
 **Author:** Claude Opus 5, unattended build session
